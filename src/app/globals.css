@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-white text-black;
+  font-family: var(--font-sans);
+  font-family: var(--font-poppins);
+}
+
+.custom-arrow {
+  @apply absolute top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center shadow cursor-pointer;
+}
+
+.custom-arrow::after {
+  content: "";
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.swiper-button-prev-custom::after {
+  transform: rotate(-135deg);
+}
+
+.swiper-button-next-custom::after {
+  transform: rotate(45deg);
+}
+
+.main-bg {
+  @apply bg-[#28C76F];
+}
+
+.main-text {
+  @apply bg-[#28C76F];
+}
+
+/* In styles/globals.css */
+.shadow-white-bottom {
+  box-shadow: 0px 40px 60px -10px rgba(255, 255, 255, 0.8);
+}
+
+.black-main {
+  @apply text-[#333333];
+}
+
+.para-main {
+  @apply text-[#777777];
+}
+
+.bg-black-button {
+  @apply bg-[#333333];
+}
+
+@theme {
+  --color-primary: #28c76f;
+  --color-subtitle: #777777;
+  --color-secondary: #333;
+  --color-card: #f8f8f8;
+  --color-warning: #FF4C4C;
+  --color-success: #00a63d;
+  --color-info: #a2f026;
+}
