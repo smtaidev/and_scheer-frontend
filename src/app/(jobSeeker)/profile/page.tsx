@@ -32,7 +32,7 @@ const ProfilePage: React.FC = () => {
 
         <SkillsSection
           skills={[]}
-          onSkillsUpdate={(skills) => updateProfileData("skills", skills)}
+          onSkillsUpdate={(skills) => updateProfileData("skills")}
         />
 
         <EducationSection education={[]} />

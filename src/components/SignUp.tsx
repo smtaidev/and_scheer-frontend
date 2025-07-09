@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import Input from "./ui/Input";
 import Logo from "./ui/MainLogo";
+import { toast } from "sonner";
+import { useSignUpMutation } from "@/redux/features/auth/auth";
+import LoadingButton from "./loading/LoadingButton";
 
 interface FormData {
   firstName?: string;
@@ -17,17 +20,39 @@ interface FormData {
 }
 
 export default function SignUpForm() {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const [isError, setIsError] = useState("");
 
   const router = useRouter();
 
-  const onSubmit = (data: FormData) => {
-    router.push("/");
-    console.log(data, "Check the data here: ");
+  const [createAcount, { isLoading }] = useSignUpMutation();
+
+  const onSubmit = async (data: FormData) => {
+    // router.push("/");
+
+    if (data.password !== data.confirmPassword) {
+      return toast.error(
+        " your password and Confirm Password Not match . please try again ! "
+      );
+    }
+
+    const userData = {
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      email: data?.email,
+      password: data?.confirmPassword,
+    };
+
     try {
-    } catch (error) {
-      setIsError(String(error));
+      const response = await createAcount(userData).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response?.message);
+        reset();
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.data.message);
     }
   };
 
@@ -108,8 +133,14 @@ export default function SignUpForm() {
             {isError && <p className="text-red-500 text-sm mb-1">{isError}</p>}
 
             {/* Login Button */}
-            <button className="w-full py-3 px-6 bg-green-600 text-white  rounded-lg hover:bg-green-700 transition">
-              Register
+            <button className="w-full py-3 px-6 cursor-pointer bg-green-600 text-white flex justify-center items-center  rounded-lg hover:bg-green-700 transition">
+              {isLoading ? (
+                <>
+                  <LoadingButton />{" "}
+                </>
+              ) : (
+                "Register"
+              )}
             </button>
           </form>
 
@@ -121,7 +152,7 @@ export default function SignUpForm() {
           </div>
 
           {/* Continue with Google */}
-          <button className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+          <button className="w-full border  border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
             <FcGoogle className="size-6" />
             Login with Google
           </button>
@@ -130,7 +161,7 @@ export default function SignUpForm() {
               If you don&apos;t have any account please
             </p>
             <Link
-              href={"/login"}
+              href={"/signIn"}
               className="text-primary underline font-semibold"
             >
               Login

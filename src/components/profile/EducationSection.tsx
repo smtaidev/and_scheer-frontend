@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GraduationCap, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import React, { useState } from "react";
-import EducationCard from "./EducationCard";
-import EducationForm from "./EducationForm";
 
-// import {
-//   useCreateEducationMutation,
-//   useDeleteEducationMutation,
-//   useUpdateEducationMutation,
-// } from "@/redux/api/profile/profileApi";
 import { toast } from "sonner";
 import EductionAddModal from "./modal/EductionAddModal";
 import EductionEditModal from "./modal/EductionEditModal";

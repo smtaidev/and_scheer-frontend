@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Plus, X, Wrench } from "lucide-react";
-import { Tag } from "./Tag";
 import SkillsAddModal from "./modal/SkillsAddModal";
 
 interface SkillsSectionProps {
