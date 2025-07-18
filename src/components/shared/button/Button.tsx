@@ -4,7 +4,7 @@ type ButtonProps = {
   name?: string;
   type?: "button" | "submit" | "reset";
   className?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: () => void;
   disabled?: boolean;
   [key: string]: unknown;
 };

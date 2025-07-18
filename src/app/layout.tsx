@@ -30,7 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={openSans.variable}>
+      <body
+        data-new-gr-c-s-check-loaded="14.1244.0"
+        data-gr-ext-installed=""
+        cz-shortcut-listen="true"
+        className={openSans.variable}
+      >
         <Toaster position="top-center" expand={true} richColors />
         <StoreProvider>
           <Suspense fallback={<Loading />}>{children}</Suspense>

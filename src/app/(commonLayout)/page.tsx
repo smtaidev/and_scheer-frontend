@@ -23,7 +23,7 @@ const page = () => {
       <TopTalent></TopTalent>
       <SuggestedCourses></SuggestedCourses>
       <JobSeekerPlan />
-      <EmployerPlan></EmployerPlan>
+
       <Newsletter />
       <Footer />
       <ScrollTop />

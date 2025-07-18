@@ -74,7 +74,7 @@ export default function SignInForm() {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Input Fields */}
-            <div className="space-y-4 mb-8  ">
+            <div className="space-y-4 mb-2  ">
               <Input
                 label="Email Address"
                 type="email"
@@ -88,6 +88,13 @@ export default function SignInForm() {
                 {...register("password", { required: true })}
               />
             </div>
+            <button
+              type="button"
+              className="text-primary text-lg underline cursor-pointer mb-5"
+              onClick={() => setModalOpen(true)}
+            >
+              Forget Password
+            </button>
 
             {/* Login Button */}
             <button className="w-full cursor-pointer bg-primary text-white py-3 px-6 rounded-lg hover:bg-green-700 transition">
@@ -100,13 +107,6 @@ export default function SignInForm() {
               )}
             </button>
           </form>
-          <button
-            type="button"
-            className="text-primary text-lg underline cursor-pointer"
-            onClick={() => setModalOpen(true)}
-          >
-            Forget Password
-          </button>
 
           {/* Divider */}
           <div className="flex items-center my-8">

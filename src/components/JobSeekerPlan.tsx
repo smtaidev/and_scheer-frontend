@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Container from "./ui/Container";
 import ComponentHeader from "./shared/ComponentHeader";
 import PackageCard from "./shared/PlanCard";
+import { useGetSubscirptionPlansQuery } from "@/redux/features/Subscription/subscriptionSlice";
+import Loading from "./Others/Loading";
 
 const SeekerPlan = [
   {
@@ -44,8 +47,23 @@ const SeekerPlan = [
 ];
 
 export default function JobSeekerPlan() {
+  const { data: JobSeekerPlans, isLoading } =
+    useGetSubscirptionPlansQuery("un");
+  console.log(
+    JobSeekerPlans?.data.filter(
+      (seeker: any) => seeker.description === "Job_Seeker_Plan"
+    )
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  const SeekerPlan = JobSeekerPlans?.data.filter(
+    (seeker: any) => seeker.description === "Job_Seeker_Plan"
+  );
+
   return (
-    <div className="bg-[#F8F8F8]">
+    <div id="price_planing" className="bg-[#F8F8F8]">
       <Container>
         <ComponentHeader
           title="Job Seeker Plans"
@@ -53,17 +71,15 @@ export default function JobSeekerPlan() {
         ></ComponentHeader>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 px-4 md:px-0">
-          {SeekerPlan.map((plan, index) => (
-            <div key={index} className="md:flex justify-center">
+          {SeekerPlan?.map((plan: any) => (
+            <div key={plan?.id} className="md:flex justify-center">
               <PackageCard
-                price={plan.price}
-                planType={plan.planType}
-                packageName={plan.packageName}
-                permissions={plan.permissions}
+                price={plan?.amount}
+                planType={plan?.planType}
+                packageName={plan?.planName}
+                permissions={plan?.features}
                 buttonText="Choose Plan"
-                onButtonClick={() =>
-                  console.log(`Selected ${plan.packageName}`)
-                }
+                onButtonClick={() => console.log(`Selected ${plan?.id}`)}
               />
             </div>
           ))}
