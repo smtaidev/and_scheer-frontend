@@ -48,9 +48,7 @@ export default function EmployerPlan() {
                 packageName={plan.packageName}
                 permissions={plan.permissions}
                 buttonText="Choose Plan"
-                onButtonClick={() =>
-                  console.log(`Selected ${plan.packageName}`)
-                }
+                // onButtonClick={() => console.log(`Selected `)}
               />
             </div>
           ))}
