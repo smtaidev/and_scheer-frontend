@@ -3,11 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "./ui/MainLogo";
 import Input from "./ui/Input";
+import { useSignInMutation } from "@/redux/features/auth/auth";
+import { toast } from "sonner";
+import LoadingButton from "./loading/LoadingButton";
+import ForgotPasswordModal from "./ForgetPasswordModal";
 
 interface FormData {
   email: string;
@@ -15,12 +19,25 @@ interface FormData {
 }
 
 export default function SignInForm() {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
+  const [sigInUser, { isLoading }] = useSignInMutation();
 
-  const onSubmit = (data: FormData) => {
-    console.log(data, "Check the data here: ");
-    router.push("/");
+  const onSubmit = async (data: FormData) => {
+    try {
+      const response = await sigInUser(data).unwrap();
+      console.log(response);
+      if (response?.success) {
+        localStorage.setItem("accessToken", response?.data?.accessToken);
+        toast.success(response?.message);
+        router.push("/");
+        reset();
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.data.message);
+    }
   };
 
   return (
@@ -57,7 +74,7 @@ export default function SignInForm() {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Input Fields */}
-            <div className="space-y-4 mb-8  ">
+            <div className="space-y-4 mb-2  ">
               <Input
                 label="Email Address"
                 type="email"
@@ -71,10 +88,23 @@ export default function SignInForm() {
                 {...register("password", { required: true })}
               />
             </div>
+            <button
+              type="button"
+              className="text-primary text-lg underline cursor-pointer mb-5"
+              onClick={() => setModalOpen(true)}
+            >
+              Forget Password
+            </button>
 
             {/* Login Button */}
-            <button className="w-full bg-primary text-white py-3 px-6 rounded-lg hover:bg-green-700 transition">
-              Login
+            <button className="w-full cursor-pointer bg-primary text-white py-3 px-6 rounded-lg hover:bg-green-700 transition">
+              {isLoading ? (
+                <>
+                  <LoadingButton />
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 
@@ -93,7 +123,7 @@ export default function SignInForm() {
           <div className="flex justify-center gap-2 text-gray-700  mt-3">
             <p className="text-center">If you dont have any account please</p>
             <Link
-              href={"/register"}
+              href={"/signUp"}
               className="text-primary underline font-semibold"
             >
               Create Account
@@ -101,6 +131,10 @@ export default function SignInForm() {
           </div>
         </div>
       </div>
+      <ForgotPasswordModal
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+      />
     </section>
   );
 }

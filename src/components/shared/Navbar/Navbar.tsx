@@ -27,7 +27,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
-  const [user, setUser] = useState({ ko: "h" });
+  const [user, setUser] = useState<string | null>(null);
 
   // const [searchView, setSearchView] = useState(false)
 
@@ -71,7 +71,8 @@ export default function Navbar({ navItem }: NavbarProps) {
         setShowMenu(false);
       }
     };
-    setUser(user);
+    let access: string | null = localStorage.getItem("accessToken");
+    setUser(access);
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -134,9 +135,9 @@ export default function Navbar({ navItem }: NavbarProps) {
           /> */}
           <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
           <div className="relative">
-            <button onClick={toggleMenu}>
+            {/* <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
-            </button>
+            </button> */}
 
             {showMenu && (
               <div className="absolute top-12 right-0 bg-white  rounded-md p-3 min-w-[120px] z-50">
@@ -163,7 +164,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                 ) : (
                   <Link
                     onClick={() => setShowMenu(false)}
-                    href={"/login"}
+                    href={"/signIn"}
                     className="w-full text-left hover:text-main-green"
                   >
                     Sign In
