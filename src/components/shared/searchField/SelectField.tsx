@@ -7,14 +7,24 @@ type SelectFieldProps = {
   label: string;
   name: string;
   options: Option[];
-  register: (name: string, options: { required: boolean }) => Record<string, unknown>;
+  register: (
+    name: string,
+    options: { required: boolean }
+  ) => Record<string, unknown>;
   required?: boolean;
   error?: string;
 };
 
-const SelectField: React.FC<SelectFieldProps> = ({ label, name, options, register, required = false, error }) => {
+const SelectField: React.FC<SelectFieldProps> = ({
+  label,
+  name,
+  options,
+  register,
+  required = false,
+  error,
+}) => {
   return (
-    <div className="w-full relative">
+    <div className="w-sm relative">
       <label htmlFor={name} className="block text-[#333333] font-medium">
         {label}
       </label>
@@ -32,9 +42,7 @@ const SelectField: React.FC<SelectFieldProps> = ({ label, name, options, registe
       </select>
 
       {/* Add the dropdown icon */}
-      <MdOutlineKeyboardArrowDown
-        className="w-5 h-5 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none mt-4"
-      />
+      <MdOutlineKeyboardArrowDown className="w-5 h-5 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none mt-4" />
 
       {error && <span className="text-red-500 text-sm">{error}</span>}
     </div>

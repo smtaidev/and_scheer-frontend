@@ -63,7 +63,7 @@ export default function JobSeekerPlan() {
   );
 
   return (
-    <div id="price_planing" className="bg-[#F8F8F8]">
+    <div id="pricing" className="bg-[#F8F8F8]">
       <Container>
         <ComponentHeader
           title="Job Seeker Plans"
