@@ -24,19 +24,19 @@ export default function SearchField() {
   };
 
   return (
-    <div>
+    <div className="">
       <h1 className="text-xl text-primary-dark font-medium">
         Find Your Favorite Job
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="">
-        <div className="  max-w-6xl mx-auto bg-white p-4 rounded-lg shadow flex flex-col lg:flex-row items-stretch gap-4 mt-2">
+        <div className="  bg-white p-4  rounded-lg shadow flex flex-col xl:flex-row items-stretch gap-4 mt-2">
           {/* Job Name Input */}
-          <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+          <div className=" flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
             <FaBriefcase className="text-gray-500" />
             <input
               type="text"
-              placeholder="Frontend Developer"
-              className="flex-1 bg-transparent focus:outline-none"
+              placeholder="Frontend "
+              className="flex-1 w-[100px] bg-transparent focus:outline-none"
               {...register("jobName", { required: true })}
             />
           </div>
@@ -63,13 +63,13 @@ export default function SearchField() {
             <input
               type="text"
               placeholder="Location"
-              className="flex-1 bg-transparent focus:outline-none"
+              className="flex-1 w-[100px] bg-transparent focus:outline-none"
               {...register("location", { required: true })}
             />
           </div>
 
           {/* Search Button */}
-          <button className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer">
+          <button className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded bg-neutral-700 hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer">
             <FaSearch />
             Search
           </button>

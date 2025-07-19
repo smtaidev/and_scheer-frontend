@@ -13,6 +13,7 @@ import {
 
 import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
+import { toast } from "sonner";
 
 type NavItem = {
   name: string;
@@ -36,13 +37,16 @@ export default function Navbar({ navItem }: NavbarProps) {
     label,
     active = false,
     danger = false,
+    logoutBtn,
   }: {
     icon: React.ReactNode;
     label: string;
     active?: boolean;
     danger?: boolean;
+    logoutBtn?: () => void;
   }) => (
     <div
+      onClick={logoutBtn}
       className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
       ${active ? "  font-medium" : ""}
       ${danger ? "text-red-500 hover:bg-red-100" : "hover:bg-gray-100"}`}
@@ -52,7 +56,13 @@ export default function Navbar({ navItem }: NavbarProps) {
     </div>
   );
 
-  const navItems = navItem;
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "For Job Seekers", href: "/jobSeeker/start-now" },
+    { name: "For Employers", href: "#employers" },
+    { name: "Course", href: "#course" },
+    { name: "Pricing", href: "#pricing" },
+  ];
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -88,6 +98,14 @@ export default function Navbar({ navItem }: NavbarProps) {
     console.log("first");
 
     setAnimate(!animate);
+  };
+
+  // logout
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    setShowMenu(false);
+    toast.success("Logged out successfully");
   };
 
   return (
@@ -133,11 +151,11 @@ export default function Navbar({ navItem }: NavbarProps) {
             height={60}
             className="rounded-full object-cover"
           /> */}
-          <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
+
           <div className="relative">
-            {/* <button onClick={toggleMenu}>
+            <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
-            </button> */}
+            </button>
 
             {showMenu && (
               <div className="absolute top-12 right-0 bg-white  rounded-md p-3 min-w-[120px] z-50">
@@ -158,6 +176,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                         icon={<FaSignOutAlt />}
                         label="Log Out"
                         danger
+                        logoutBtn={handleLogout}
                       />
                     </div>
                   </div>
@@ -230,6 +249,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                         icon={<FaSignOutAlt />}
                         label="Log Out"
                         danger
+                        logoutBtn={handleLogout}
                       />
                     </div>
                   </div>
