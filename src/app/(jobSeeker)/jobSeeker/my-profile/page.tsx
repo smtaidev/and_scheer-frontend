@@ -11,6 +11,7 @@ import ExperienceSection from "@/components/profile/Experience";
 import SkillsSection from "@/components/profile/SkillsSection";
 import EducationSection from "@/components/profile/EducationSection";
 import ContactInfoProfile from "@/components/profile/Contact_info";
+import Container from "@/components/ui/Container";
 
 const ProfilePage: React.FC = () => {
   const [bioLoading, setBioLoading] = useState(false);
@@ -22,23 +23,29 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
-      <ProfileHeader />
 
-      <div className="space-y-12 mt-8">
-        <AboutSection />
+    <div>
+      <Container>
+        <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
+          <ProfileHeader />
 
-        <ExperienceSection experiences={[]} />
+          <div className="space-y-12 mt-8">
+            <AboutSection />
 
-        <SkillsSection
-          skills={[]}
-          onSkillsUpdate={(skills) => updateProfileData("skills")}
-        />
+            <ExperienceSection experiences={[]} />
 
-        <EducationSection education={[]} />
-        <ContactInfoProfile />
-      </div>
+            <SkillsSection
+              skills={[]}
+              onSkillsUpdate={(skills) => updateProfileData("skills")}
+            />
+
+            <EducationSection education={[]} />
+            <ContactInfoProfile />
+          </div>
+        </div>
+      </Container>
     </div>
+
   );
 };
 

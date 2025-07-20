@@ -2,7 +2,7 @@ import AboutUs from "@/components/AboutUs";
 import Banner from "@/components/Banner";
 import ChooseUs from "@/components/ChooseUs";
 import EmployerPlan from "@/components/EmployerPlan";
-import Footer from "@/components/Footer";
+import Footer from "@/components/shared/footer/Footer";
 import JobSeekerPlan from "@/components/JobSeekerPlan";
 import Newsletter from "@/components/NewsLetter";
 import PerfectJob from "@/components/Perfectjob";
