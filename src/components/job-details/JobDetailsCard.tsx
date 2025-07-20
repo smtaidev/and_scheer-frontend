@@ -11,13 +11,13 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
             <header className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl md:text-5xl font-bold  dark:">{currentCompany?.name ||"dask"}</h1>
-                <button className="bg-green-500  font-medium px-4 py-2 rounded hover:bg-green-600 transition">
+                <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold  dark:">{currentCompany?.name ||"dask"}</h1>
+                <button className="bg-green-500 text-xs  font-medium px-2 md:px-4 py-2 rounded hover:bg-green-600 transition text-white">
                     Apply Now
                 </button>
             </header>
 
-            <h2 className="text-xl md:text-[42px]   dark:">{currentCompany?.position || "UI/UX Designer (Onsite)"}</h2>
+            <h2 className="text-xl md:text-3xl lg:text-[42px]   dark:">{currentCompany?.position || "UI/UX Designer (Onsite)"}</h2>
             <p className="text-sm  dark: mt-1">
                 Dhaka, Bangladesh • 1–2 Yr • Uploaded 2 days ago • 100+ applicants
             </p>
@@ -72,7 +72,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             </section>
 
             <footer className="mt-6 flex gap-3">
-                <button className="bg-scheer-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition">
+                <button className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition">
                     Apply Now
                 </button>
                 <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition">

@@ -14,6 +14,7 @@ import {
 import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
+import { ConfirmationModal } from "../Confirmation-modal";
 
 type NavItem = {
   name: string;
@@ -108,6 +109,18 @@ export default function Navbar({ navItem }: NavbarProps) {
     toast.success("Logged out successfully");
   };
 
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+
+  const handleDelete = () => {
+    console.log("Item deleted")
+    // Add your delete logic here
+    alert("Item deleted successfully!")
+  }
+
+
   return (
     <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -159,7 +172,7 @@ export default function Navbar({ navItem }: NavbarProps) {
               </React.Fragment>
             ))}</>
           }
-        
+
 
           {/* <Image
             src={"src"}
@@ -206,6 +219,13 @@ export default function Navbar({ navItem }: NavbarProps) {
                     Sign In
                   </Link>
                 )}
+                 <button
+              onClick={() => setShowDeleteModal(true)}
+             
+              className="w-full text-left hover:text-main-green py-5"
+            >
+              Modal
+            </button>
               </div>
             )}
           </div>
@@ -276,10 +296,12 @@ export default function Navbar({ navItem }: NavbarProps) {
                     className="w-full text-left hover:text-main-green"
                   >
                     Sign In
+
                   </Link>
                 )}
               </div>
             )}
+           
           </div>
         </div>
       </div>
@@ -300,6 +322,18 @@ export default function Navbar({ navItem }: NavbarProps) {
       >
         <SearchSection />
       </div>
+
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Delete Item"
+        message="Are you sure you want to delete this item? This action cannot be undone."
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        confirmButtonClass="bg-red-500 hover:bg-red-600 text-white"
+      />
     </nav>
   );
 }
