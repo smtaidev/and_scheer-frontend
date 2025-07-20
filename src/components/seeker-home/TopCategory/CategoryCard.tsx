@@ -27,8 +27,8 @@ export default function CategoryCard({ category }: CType) {
 
 
     return (
-        <div className='p-[20px] flex gap-4 border border-gray-300 rounded-md shadow-md '>
-            <div className={`${randomColor} p-[9px] rounded-full `}>
+        <div className='p-[20px] flex gap-2 md:gap-4 border border-gray-300 rounded-md shadow-md '>
+            <div className={`${randomColor} p-1 md:p-[9px] rounded-full `}>
                 <Image
                     src={category.icon}
                     alt='icon'

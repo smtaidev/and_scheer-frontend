@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 
 // Filter Sidebar Component
 export const FilterSidebar = () => {
-//   const [workMode, setWorkMode] = useState('');
+  //   const [workMode, setWorkMode] = useState('');
   const [experience, setExperience] = useState(5);
 
   return (
-    <div className="w-[337px] bg-white p-6 border border-gray-200 h-screen ">
+    <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50">
       <h2 className="text-lg font-semibold mb-6">All Filters</h2>
-      
+
       {/* Work Mode Filter */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
@@ -42,10 +42,10 @@ export const FilterSidebar = () => {
         <div className="flex items-center space-x-4">
           <span className="text-sm">0</span>
           <div className="flex-1 relative">
-            <input 
-              type="range" 
-              min="0" 
-              max="10" 
+            <input
+              type="range"
+              min="0"
+              max="10"
               value={experience}
               onChange={(e) => setExperience(Number(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
@@ -168,6 +168,10 @@ export const FilterSidebar = () => {
           ))}
         </div>
         <button className="text-blue-500 text-sm mt-2">View More</button>
+      </div>
+      <div className="flex justify-end">
+        <button className='px-3 py-1 border border-gray-200 rounded-md shadow-md bg-primary text-white'>Apply</button>
+
       </div>
     </div>
   );

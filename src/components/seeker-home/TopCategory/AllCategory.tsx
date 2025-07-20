@@ -66,7 +66,7 @@ export default function AllCategory() {
         <div >
             
             <div className=' ml-0  2xl:ml-44'>
-                <div className=' py-15  px-11 md:px-15'>
+                <div className='py-6 md:py-15  px-11 md:px-15'>
                     
 
 
@@ -82,7 +82,7 @@ export default function AllCategory() {
                             modules={[FreeMode, Navigation]}
                             className="mySwiper"
                             breakpoints={{
-                                320: { slidesPerView: 1 },
+                                320: { slidesPerView: 1.5 },
                                 640: { slidesPerView: 2 },
                                 768: { slidesPerView: 2.5 },
                                 1024: { slidesPerView: 3 },
@@ -90,7 +90,7 @@ export default function AllCategory() {
                             }}
                         >
                             {categories.map((category, index) => (
-                                <SwiperSlide key={index} className='pb-2'>
+                                <SwiperSlide key={index} className='pb-2 scale-80'>
                                     <CategoryCard  key={category.name} category={category}  />
                                 </SwiperSlide>
                             ))}

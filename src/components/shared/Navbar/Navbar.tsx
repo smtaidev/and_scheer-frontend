@@ -317,7 +317,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         className={`
         absolute bg-white border-t-2 border-gray-400 w-full py-12 
         transform transition-all duration-500 ease-out z-10
-        ${animate ? "translate-y-0 opacity-100" : "-translate-y-80 opacity-0"}
+        ${animate ? "translate-y-0 opacity-100" : "-translate-y-120 opacity-0"}
       `}
       >
         <SearchSection />
