@@ -55,7 +55,7 @@ export default function Navbar({ navItem }: NavbarProps) {
       <span>{label}</span>
     </div>
   );
-
+  console.log(navItem)
   const navItems = [
     { name: "Home", href: "/" },
     { name: "For Job Seekers", href: "/jobSeeker/start-now" },
@@ -129,20 +129,37 @@ export default function Navbar({ navItem }: NavbarProps) {
             Search
           </button>
           <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
-          {navItems?.map((item, index) => (
-            <React.Fragment key={item.name}>
-              <Link
-                href={item.href}
-                className="hover:text-primary hover:underline transition-colors duration-200 "
-              >
-                {item.name}
-              </Link>
 
-              {index < navItems.length - 1 && (
-                <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
-              )}
-            </React.Fragment>
-          ))}
+          {
+            navItem ? <> {navItem?.map((item, index) => (
+              <React.Fragment key={item.name}>
+                <Link
+                  href={item.href}
+                  className="hover:text-primary hover:underline transition-colors duration-200 "
+                >
+                  {item.name}
+                </Link>
+
+                {index < navItems.length - 1 && (
+                  <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
+                )}
+              </React.Fragment>
+            ))}</> : <> {navItems?.map((item, index) => (
+              <React.Fragment key={item.name}>
+                <Link
+                  href={item.href}
+                  className="hover:text-primary hover:underline transition-colors duration-200 "
+                >
+                  {item.name}
+                </Link>
+
+                {index < navItems.length - 1 && (
+                  <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
+                )}
+              </React.Fragment>
+            ))}</>
+          }
+        
 
           {/* <Image
             src={"src"}
@@ -210,9 +227,8 @@ export default function Navbar({ navItem }: NavbarProps) {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          mobileMenuOpen ? "max-h-screen" : "max-h-0"
-        }`}
+        className={`md:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"
+          }`}
       >
         <div className="bg-white border-t border-gray-100 px-4 py-4 space-y-3">
           {navItems.map((item) => (

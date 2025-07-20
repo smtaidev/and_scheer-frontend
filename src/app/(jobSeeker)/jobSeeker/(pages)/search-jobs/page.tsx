@@ -18,7 +18,7 @@ import AllCategory from "@/components/seeker-home/TopCategory/AllCategory";
 export default function SearchJobPage() {
     return (
         <div>
-            <JobSeekerNavbar></JobSeekerNavbar>
+
             <AllCategory />
             <div className='max-w-[1420px]  mx-auto'>
                 {/* <JobSearchPage /> */}

@@ -13,7 +13,6 @@ export default function JobSeekerHomePage() {
   const title="Recommend for you"
   return (
     <div>
-        <JobSeekerNavbar></JobSeekerNavbar>
         <SeekerBanner/>
         <RecentJob title={title}></RecentJob>
         <TopCategory/>

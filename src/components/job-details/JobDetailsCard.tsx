@@ -1,4 +1,4 @@
-import { Company } from '@/app/(jobSeeker)/jobSeeker/job-details/page';
+import { Company } from '@/app/(jobSeeker)/jobSeeker/(pages)/job-details/page';
 import React from 'react';
 
 

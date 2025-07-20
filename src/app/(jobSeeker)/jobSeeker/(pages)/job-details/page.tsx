@@ -1,6 +1,6 @@
 'use client'
 import AllFilterSection from '@/components/job-details/AllfilterSection';
-import companies from '../../../../../public/companies.json'
+import companies from '../../../../../../public/companies.json'
 import JobDetailsCard from '@/components/job-details/JobDetailsCard';
 import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar';
 import Container from '@/components/ui/Container';
@@ -27,8 +27,6 @@ export default function JobDetailspage() {
     return (
         <div>
 
-
-            <JobSeekerNavbar />
             <Container>
                 <AllFilterSection/>
                 <div className='flex mt-16 '>
