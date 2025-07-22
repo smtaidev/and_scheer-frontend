@@ -36,8 +36,8 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         className={openSans.variable}
       >
-        <Toaster position="top-center" expand={true} richColors />
         <StoreProvider>
+        <Toaster position="top-center" expand={true} richColors />
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </StoreProvider>
       </body>
