@@ -20,9 +20,9 @@ const companyApi = baseUrlApi.injectEndpoints({
       query: (id) => `/companies/${id}`,
     }),
 
-    createCompany: builder.mutation<CompanyResponse, CreateCompanyRequest>({
+    createCompany: builder.mutation({
       query: (data) => ({
-        url: "/companies",
+        url: "/companies/create",
         method: "POST",
         body: data,
       }),

@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Upload, ArrowRight } from 'lucide-react';
+import { useUpdateCompanyMutation } from '@/redux/features/company/companySlice';
 
 type FormData = {
     companyLogo: File | null;
@@ -18,6 +19,12 @@ function LogoContact() {
     });
 
     const [isDragOver, setIsDragOver] = useState(false);
+ 
+    const [updateCompany]=useUpdateCompanyMutation()
+
+
+
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -60,13 +67,15 @@ function LogoContact() {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         console.log("Form Data:", formData);
-        alert("Form submitted successfully! Check console for data.");
+        const res =await updateCompany({data:formData});
+        console.log(res)
+        
     };
 
     return (
-        <div className="w-full max-w-[1180px] mx-auto bg-white min-h-screen">
+        <div className="w-full max-w-[1180px] mx-auto  bg-white ">
             <div className="px-8 py-10">
                 {/* Header */}
                 <div className=" mb-8">
@@ -81,9 +90,9 @@ function LogoContact() {
                 {/* Form Content */}
                 <div className="space-y-8">
                     {/* Upload Logo and Company Number Row */}
-                    <div className="flex gap-8">
+                    <div className=" flex flex-col md:flex-row gap-8">
                         {/* Upload Company Logo */}
-                        <div className="space-y-3 w-[458px]">
+                        <div className="space-y-3 md:w-[458px]">
                             <label className="block text-sm font-medium text-gray-900">
                                 Upload Company Logo
                             </label>

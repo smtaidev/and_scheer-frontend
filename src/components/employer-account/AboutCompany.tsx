@@ -1,17 +1,24 @@
 'use client'
+import { useCreateCompanyMutation } from '@/redux/features/company/companySlice';
+import { Company } from '@/types/AllTypes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 type FormData = {
     companyName: string;
     industryType: string;
-    role: string;
+    roleInCompany: string;
+    description: string;
     country: string;
-    companyDescription: string;
-    companyAddress: string;
-    cityName: string;
-    stateName: string;
+    email: string;
+    phoneNumber: string;
+    address: string;
+    city: string;
+    state: string;
     zipCode: string;
+    website: string;
+    logo:string;
 };
 
 type FormErrors = {
@@ -37,21 +44,32 @@ const regionOptions = [
 ];
 
 function AboutCompany() {
+
+
+     const [company]=useCreateCompanyMutation()
+      const navigate = useRouter();
     const [formData, setFormData] = useState<FormData>({
-        companyName: '',
-        industryType: '',
-        role: '',
-        country: '',
-        companyDescription: '',
-        companyAddress: '',
-        cityName: '',
-        stateName: '',
-        zipCode: '',
+        companyName: "",
+        industryType: "",
+        roleInCompany: "",
+        description: "",
+        country: "",
+        email: "example@gmail.com",
+        phoneNumber: "+123456789",
+        address: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        website: "https://www.google.com/",
+        logo: "" 
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+
+       
+
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
@@ -67,53 +85,63 @@ function AboutCompany() {
         }
     };
 
-    const validateForm = (): boolean => {
-        const newErrors: FormErrors = {};
+ 
 
-        if (!formData.companyName.trim()) {
-            newErrors.companyName = 'Company name is required';
-        }
-        if (!formData.industryType.trim()) {
-            newErrors.industryType = 'Industry type is required';
-        }
-        if (!formData.role) {
-            newErrors.role = 'Role is required';
-        }
-        if (!formData.country) {
-            newErrors.country = 'Country is required';
-        }
-        if (!formData.companyDescription.trim()) {
-            newErrors.companyDescription = 'Company description is required';
-        }
-        if (!formData.companyAddress.trim()) {
-            newErrors.companyAddress = 'Company address is required';
-        }
-        if (!formData.cityName.trim()) {
-            newErrors.cityName = 'City is required';
-        }
-        if (!formData.stateName.trim()) {
-            newErrors.stateName = 'State is required';
-        }
-        if (!formData.zipCode.trim()) {
-            newErrors.zipCode = 'ZIP code is required';
-        }
+    // const validateForm = (): boolean => {
+    //     const newErrors: FormErrors = {};
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    //     if (!formData.companyName.trim()) {
+    //         newErrors.companyName = 'Company name is required';
+    //     }
+    //     if (!formData.industryType.trim()) {
+    //         newErrors.industryType = 'Industry type is required';
+    //     }
+    //     if (!formData.role) {
+    //         newErrors.role = 'Role is required';
+    //     }
+    //     if (!formData.country) {
+    //         newErrors.country = 'Country is required';
+    //     }
+    //     if (!formData.description.trim()) {
+    //         newErrors.companyDescription = 'Company description is required';
+    //     }
+    //     if (!formData.companyAddress.trim()) {
+    //         newErrors.companyAddress = 'Company address is required';
+    //     }
+    //     if (!formData.cityName.trim()) {
+    //         newErrors.cityName = 'City is required';
+    //     }
+    //     if (!formData.stateName.trim()) {
+    //         newErrors.stateName = 'State is required';
+    //     }
+    //     if (!formData.zipCode.trim()) {
+    //         newErrors.zipCode = 'ZIP code is required';
+    //     }
 
-    const handleSubmit = () => {
-        if (validateForm()) {
-            console.log("Form Data:", formData);
-            alert("Form submitted successfully! Check console for data.");
+    //     setErrors(newErrors);
+    //     return Object.keys(newErrors).length === 0;
+    // };
 
-            // You can also display the data in a more user-friendly way
-            const dataString = Object.entries(formData)
-                .map(([key, value]) => `${key}: ${value}`)
-                .join('\n');
-            console.log("Formatted Data:\n", dataString);
-        }
+    const handleSubmit = async() => {
+        // if (validateForm()) {
+        //     console.log("Form Data:", formData);
+        //     alert("Form submitted successfully! Check console for data.");
+
+        //     // You can also display the data in a more user-friendly way
+        //     const dataString = Object.entries(formData)
+        //         .map(([key, value]) => `${key}: ${value}`)
+        //         .join('\n');
+        //     console.log("Formatted Data:\n", dataString);
+        // }
         console.log(formData)
+        try {
+            const res = await company(formData)
+           if (res && 'data' in res && res.data?.success) {
+             navigate.push("/logo-contact");
+           }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     return (
@@ -175,8 +203,8 @@ function AboutCompany() {
                             </label>
                             <select
                                 id="role"
-                                name="role"
-                                value={formData.role}
+                                name="roleInCompany"
+                                value={formData.roleInCompany}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             >
@@ -187,8 +215,8 @@ function AboutCompany() {
                                     </option>
                                 ))}
                             </select>
-                            {errors.role && (
-                                <span className="text-red-500 text-sm mt-1 block">{errors.role}</span>
+                            {errors.roleInCompany && (
+                                <span className="text-red-500 text-sm mt-1 block">{errors.roleInCompany}</span>
                             )}
                         </div>
                     </div>
@@ -200,15 +228,15 @@ function AboutCompany() {
                         </label>
                         <textarea
                             id="companyDescription"
-                            name="companyDescription"
+                            name="description"
                             rows={5}
                             placeholder="Tell us about your company..."
-                            value={formData.companyDescription}
+                            value={formData.description}
                             onChange={handleInputChange}
                             className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
-                        {errors.companyDescription && (
-                            <span className="text-red-500 text-sm mt-1 block">{errors.companyDescription}</span>
+                        {errors.description && (
+                            <span className="text-red-500 text-sm mt-1 block">{errors.description}</span>
                         )}
                     </div>
 
@@ -244,15 +272,15 @@ function AboutCompany() {
                             </label>
                             <input
                                 id="companyAddress"
-                                name="companyAddress"
+                                name="address"
                                 type="text"
                                 placeholder="Section-06, Mirpur, Dhaka"
-                                value={formData.companyAddress}
+                                value={formData.address}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
-                            {errors.companyAddress && (
-                                <span className="text-red-500 text-sm mt-1 block">{errors.companyAddress}</span>
+                            {errors.address && (
+                                <span className="text-red-500 text-sm mt-1 block">{errors.address}</span>
                             )}
                         </div>
                     </div>
@@ -265,15 +293,15 @@ function AboutCompany() {
                             </label>
                             <input
                                 id="cityName"
-                                name="cityName"
+                                name="city"
                                 type="text"
                                 placeholder="Dhaka"
-                                value={formData.cityName}
+                                value={formData.city}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
-                            {errors.cityName && (
-                                <span className="text-red-500 text-sm mt-1 block">{errors.cityName}</span>
+                            {errors.city && (
+                                <span className="text-red-500 text-sm mt-1 block">{errors.city}</span>
                             )}
                         </div>
 
@@ -284,15 +312,15 @@ function AboutCompany() {
                             </label>
                             <input
                                 id="stateName"
-                                name="stateName"
+                                name="state"
                                 type="text"
                                 placeholder="Dhaka"
-                                value={formData.stateName}
+                                value={formData.state}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
-                            {errors.stateName && (
-                                <span className="text-red-500 text-sm mt-1 block">{errors.stateName}</span>
+                            {errors.state && (
+                                <span className="text-red-500 text-sm mt-1 block">{errors.state}</span>
                             )}
                         </div>
 
@@ -316,9 +344,7 @@ function AboutCompany() {
                         </div>
                     </div>
 
-                    <Link
-                        href={"/logo-contact"}
-                    >
+                   
                         <button
 
                             onClick={handleSubmit}
@@ -326,7 +352,7 @@ function AboutCompany() {
                         >
                             Next
                         </button>
-                    </Link>
+
                 </div>
             </div>
         </div>
