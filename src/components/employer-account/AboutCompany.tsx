@@ -4,6 +4,7 @@ import { Company } from '@/types/AllTypes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useFormContext } from './FormContext';
 
 type FormData = {
     companyName: string;
@@ -11,14 +12,11 @@ type FormData = {
     roleInCompany: string;
     description: string;
     country: string;
-    email: string;
-    phoneNumber: string;
     address: string;
     city: string;
     state: string;
     zipCode: string;
-    website: string;
-    logo:string;
+  
 };
 
 type FormErrors = {
@@ -48,20 +46,17 @@ function AboutCompany() {
 
      const [company]=useCreateCompanyMutation()
       const navigate = useRouter();
+       const { formData:data, updatePage2Data } = useFormContext();
     const [formData, setFormData] = useState<FormData>({
         companyName: "",
         industryType: "",
         roleInCompany: "",
         description: "",
         country: "",
-        email: "example@gmail.com",
-        phoneNumber: "+123456789",
         address: "",
         city: "",
         state: "",
         zipCode: "",
-        website: "https://www.google.com/",
-        logo: "" 
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -87,61 +82,21 @@ function AboutCompany() {
 
  
 
-    // const validateForm = (): boolean => {
-    //     const newErrors: FormErrors = {};
-
-    //     if (!formData.companyName.trim()) {
-    //         newErrors.companyName = 'Company name is required';
-    //     }
-    //     if (!formData.industryType.trim()) {
-    //         newErrors.industryType = 'Industry type is required';
-    //     }
-    //     if (!formData.role) {
-    //         newErrors.role = 'Role is required';
-    //     }
-    //     if (!formData.country) {
-    //         newErrors.country = 'Country is required';
-    //     }
-    //     if (!formData.description.trim()) {
-    //         newErrors.companyDescription = 'Company description is required';
-    //     }
-    //     if (!formData.companyAddress.trim()) {
-    //         newErrors.companyAddress = 'Company address is required';
-    //     }
-    //     if (!formData.cityName.trim()) {
-    //         newErrors.cityName = 'City is required';
-    //     }
-    //     if (!formData.stateName.trim()) {
-    //         newErrors.stateName = 'State is required';
-    //     }
-    //     if (!formData.zipCode.trim()) {
-    //         newErrors.zipCode = 'ZIP code is required';
-    //     }
-
-    //     setErrors(newErrors);
-    //     return Object.keys(newErrors).length === 0;
-    // };
 
     const handleSubmit = async() => {
-        // if (validateForm()) {
-        //     console.log("Form Data:", formData);
-        //     alert("Form submitted successfully! Check console for data.");
-
-        //     // You can also display the data in a more user-friendly way
-        //     const dataString = Object.entries(formData)
-        //         .map(([key, value]) => `${key}: ${value}`)
-        //         .join('\n');
-        //     console.log("Formatted Data:\n", dataString);
-        // }
+  
         console.log(formData)
-        try {
-            const res = await company(formData)
-           if (res && 'data' in res && res.data?.success) {
+
+
+        updatePage2Data(formData)
+        // try {
+        //     const res = await company(formData)
+        //    if (res && 'data' in res && res.data?.success) {
              navigate.push("/logo-contact");
-           }
-        } catch (error) {
-            console.log(error)
-        }
+        //    }
+        // } catch (error) {
+        //     console.log(error)
+        // }
     };
 
     return (
