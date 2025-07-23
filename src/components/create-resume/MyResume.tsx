@@ -24,7 +24,7 @@ export default function MyResume() {
             Download Resume
           </button>
 
-          <Link href={"/jobseekeruser/jobSeekerHome"} className="w-full">
+          <Link href={"/jobSeeker/home"} className="w-full">
             <Button name="Find Your Favorite Job">
               Find Your Favorite Job
             </Button>

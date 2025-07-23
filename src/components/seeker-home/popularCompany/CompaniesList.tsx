@@ -6,23 +6,23 @@ import { Company } from '@/types/AllTypes'
 
 export default function CompaniesList() {
 
-  const [company,setCompany]=useState<Company[]>([])
+  const [companies,setCompanies]=useState<Company[]>([])
   const {data:res} =useGetAllCompaniesQuery();
 
   useEffect(()=>{
          if(res?.data){
-          setCompany(res.data)
+          setCompanies(res.data)
          }
   },[res?.data])
 
-  console.log(company)
+  console.log(companies)
 
 
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6  '>
         {
-            [5,6,1,2].map((p, index) => <PopularCompanyCard key={index}/>)
+            companies?.map((company, index) => <PopularCompanyCard company={company} key={index}/>)
         }
     </div>
   )

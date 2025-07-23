@@ -56,13 +56,7 @@ export default function Navbar({ navItem }: NavbarProps) {
       <span>{label}</span>
     </div>
   );
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "For Job Seekers", href: "/jobSeeker/start-now" },
-    { name: "For Employers", href: "#employers" },
-    { name: "Course", href: "#course" },
-    { name: "Pricing", href: "#pricing" },
-  ];
+
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -142,35 +136,20 @@ export default function Navbar({ navItem }: NavbarProps) {
           </button>
           <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
 
-          {
-            navItem ? <> {navItem?.map((item, index) => (
-              <React.Fragment key={item.name}>
-                <Link
-                  href={item.href}
-                  className="hover:text-primary hover:underline transition-colors duration-200 "
-                >
-                  {item.name}
-                </Link>
+          {Array.isArray(navItem) && navItem.map((item, index) => (
+            <React.Fragment key={item.name}>
+              <Link
+                href={item.href}
+                className="hover:text-primary hover:underline transition-colors duration-200 "
+              >
+                {item.name}
+              </Link>
 
-                {index < navItems.length - 1 && (
-                  <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
-                )}
-              </React.Fragment>
-            ))}</> : <> {navItems?.map((item, index) => (
-              <React.Fragment key={item.name}>
-                <Link
-                  href={item.href}
-                  className="hover:text-primary hover:underline transition-colors duration-200 "
-                >
-                  {item.name}
-                </Link>
-
-                {index < navItems.length - 1 && (
-                  <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
-                )}
-              </React.Fragment>
-            ))}</>
-          }
+              {index < navItem.length - 1 && (
+                <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
+              )}
+            </React.Fragment>
+          ))}
 
 
           {/* <Image
@@ -250,7 +229,7 @@ export default function Navbar({ navItem }: NavbarProps) {
           }`}
       >
         <div className="bg-white border-t border-gray-100 px-4 py-4 space-y-3">
-          {navItems.map((item) => (
+          {navItem.map((item) => (
             <Link
               key={item.name}
               href={item.href}

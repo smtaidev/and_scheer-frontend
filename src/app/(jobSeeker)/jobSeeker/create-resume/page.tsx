@@ -2,7 +2,7 @@ import MainComponents from "@/components/create-resume/Main";
 
 const page = () => {
   return (
-    <div>
+    <div >
       <MainComponents />
     </div>
   );

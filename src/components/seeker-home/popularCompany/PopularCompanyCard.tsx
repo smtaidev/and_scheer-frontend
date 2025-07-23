@@ -1,6 +1,8 @@
+import { Company } from '@/types/AllTypes';
 import Image from 'next/image';
 
-export default function PopularCompanyCard() {
+export default function PopularCompanyCard({company}:{company:Company}) {
+    console.log(company)
     return (
         <div className="w-full md:max-w-[457px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-[18px]">
             <div className="relative ">
@@ -30,8 +32,8 @@ export default function PopularCompanyCard() {
                         SMT
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold">SM Technology</h3>
-                        <p className="text-sm text-gray-500">Software Company</p>
+                        <h3 className="text-lg font-semibold">{company.companyName}</h3>
+                        <p className="text-sm text-gray-500">{company.industryType}</p>
                     </div>
                 </div>
 

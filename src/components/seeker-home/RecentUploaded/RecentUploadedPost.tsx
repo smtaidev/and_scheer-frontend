@@ -1,73 +1,28 @@
 
-
+"use client"
 import RecentJobCard from '@/components/recent-job/RecentJobCard'
-import React from 'react'
+import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
+import { Job } from '@/types/AllTypes';
+import React, { useEffect, useState } from 'react'
 
 export default function RecentUploadedPost() {
-    const jobs = [
-        {
-            icnos: "/company1.png",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: " $4500",
+    const [allJobs, setAllJobs] = useState<Job[]>([])
+    const { data: jobs } = useGetAllJobPostsQuery({});
 
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: " $4500",
 
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: "$4500",
+    useEffect(() => {
+        if (jobs?.data) {
+            setAllJobs(jobs.data.data)
+        }
+    }, [jobs?.data])
 
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: "$4500",
 
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: "$4500",
-
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: "$4500",
-
-        },
-        {
-            icnos: "",
-            name: "BLUE Technology",
-            position: "Full Stack Developer",
-            location: "Dhaka, Bangladesh",
-            salary: "$4500",
-
-        },
-
-    ]
+    console.log(allJobs);
     return (
 
-         
+
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6  '>
-            {jobs.slice(0, 15).map((job, index) => (
+            {allJobs?.slice(0, 15).map((job, index) => (
 
                 <RecentJobCard key={index} job={job} />
 

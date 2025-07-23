@@ -22,57 +22,7 @@ interface JobTitle {
   title: string;
 }
 
-  const fakejobs = [
-    {
-      icnos: "/company1.png",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: " $4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: " $4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-  ];
+ 
 export default function RecentJob({ title }: JobTitle) {
          
         const [allJobs,setAllJobs]=useState<Job[]>([])
@@ -81,12 +31,12 @@ export default function RecentJob({ title }: JobTitle) {
 
       useEffect(()=>{
           if(jobs?.data){
-            setAllJobs(jobs.data)
+            setAllJobs(jobs.data.data)
           }
       },[jobs?.data])
 
 
-  console.log(allJobs);
+  console.log(jobs);
 
   return (
     <div className="bg-card ">
@@ -118,7 +68,7 @@ export default function RecentJob({ title }: JobTitle) {
                 1280: { slidesPerView: 3.5 },
               }}
             >
-              {fakejobs?.map((job, index) => (
+              {allJobs?.map((job, index) => (
                 <SwiperSlide key={index} className="pb-2">
                   <RecentJobCard job={job} />
                 </SwiperSlide>
