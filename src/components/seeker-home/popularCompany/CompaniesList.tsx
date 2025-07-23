@@ -7,14 +7,18 @@ import { Company } from '@/types/AllTypes'
 export default function CompaniesList() {
 
   const [companies,setCompanies]=useState<Company[]>([])
-  const {data:res} =useGetAllCompaniesQuery();
+  const {data:res,isLoading} =useGetAllCompaniesQuery();
+
+
 
   useEffect(()=>{
+    
          if(res?.data){
           setCompanies(res.data)
          }
-  },[res?.data])
-
+  },[res?.data]);
+  
+  if(isLoading) return <p>Loading...</p>
   console.log(companies)
 
 

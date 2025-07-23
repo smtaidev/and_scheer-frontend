@@ -22,7 +22,6 @@ export default function JobSeekerHomePage() {
         <RecentUpload/>
         <PopularCompany/>
         <SuggestedCourses/>
-        <Footer/>
 
     </div>
   )

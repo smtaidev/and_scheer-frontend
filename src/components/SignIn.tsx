@@ -60,7 +60,10 @@ export default function SignInForm() {
           <div className="flex justify-center items-center flex-col">
             {/* Logo */}
             <div className="mb-6">
-              <Logo height={120} width={268}></Logo>
+              <Link href={"/"}>
+               <Logo height={120} width={268}></Logo>
+              </Link>
+             
             </div>
 
             {/* Welcome Message */}

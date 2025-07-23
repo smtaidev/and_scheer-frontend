@@ -140,7 +140,7 @@ export default function JobList() {
     return (
 
         <div>
-            <div className="px-6  w-full  ">
+            <div className=" w-full  ">
                 {jobs.slice(0, 10).map((job, index) => (
                     <JobCard key={index} job={job} />
                 ))}

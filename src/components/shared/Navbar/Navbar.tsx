@@ -39,12 +39,14 @@ export default function Navbar({ navItem }: NavbarProps) {
     active = false,
     danger = false,
     logoutBtn,
+    onClick
   }: {
     icon: React.ReactNode;
     label: string;
     active?: boolean;
     danger?: boolean;
     logoutBtn?: () => void;
+    onClick?: () => void;
   }) => (
     <div
       onClick={logoutBtn}
@@ -94,23 +96,21 @@ export default function Navbar({ navItem }: NavbarProps) {
     setAnimate(!animate);
   };
 
-  // logout
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setUser(null);
-    setShowMenu(false);
-    toast.success("Logged out successfully");
-  };
 
+  const handleLogout = () => {
+    setShowDeleteModal(true)
+
+  };
 
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
 
   const handleDelete = () => {
-    console.log("Item deleted")
-    // Add your delete logic here
-    alert("Item deleted successfully!")
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    setShowMenu(false);
+    toast.success("Logged out successfully");
   }
 
 
@@ -166,7 +166,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute top-12 right-0 bg-white  rounded-md p-3 min-w-[120px] z-50">
+              <div className="absolute top-12 right-0 bg-gray-200  rounded-md p-3 min-w-[120px] z-50">
                 {user ? (
                   // <button
                   //   onClick={() => setShowMenu(false)}
@@ -185,6 +185,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                         label="Log Out"
                         danger
                         logoutBtn={handleLogout}
+                         onClick={() => setShowDeleteModal(true)}
                       />
                     </div>
                   </div>
@@ -197,13 +198,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                     Sign In
                   </Link>
                 )}
-                 <button
-              onClick={() => setShowDeleteModal(true)}
-             
-              className="w-full text-left hover:text-main-green py-5"
-            >
-              Modal
-            </button>
+               
               </div>
             )}
           </div>
@@ -245,13 +240,13 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute -top-2 left-10 bg-white shadow-lg rounded-md p-3 min-w-[120px] z-50">
+              <div className="absolute -top-50 left- bg-gray-200/80 shadow-lg rounded-md p-3 min-w-[120px] z-50 scale-75 ">
                 {user ? (
                   // <Link
                   //   onClick={() => setShowMenu(false)}
                   //   href={"/profile"} className="w-full text-left hover:text-main-green">Profile</Link>
                   <div onClick={() => setShowMenu(false)}>
-                    <div className="w-72 bg-white shadow-lg rounded-xl p-4 space-y-2">
+                    <div className="w-72 bg-white  rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
                       <MenuItem
                         icon={<FaDownload />}
@@ -279,7 +274,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                 )}
               </div>
             )}
-           
+
           </div>
         </div>
       </div>
@@ -295,22 +290,23 @@ export default function Navbar({ navItem }: NavbarProps) {
         className={`
         absolute bg-white border-t-2 border-gray-400 w-full py-12 
         transform transition-all duration-500 ease-out z-10
-        ${animate ? "translate-y-0 opacity-100" : "-translate-y-120 opacity-0"}
+        ${animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"}
       `}
       >
         <SearchSection />
       </div>
 
 
+
       <ConfirmationModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}
-        title="Delete Item"
-        message="Are you sure you want to delete this item? This action cannot be undone."
-        confirmText="Yes, Delete"
-        cancelText="Cancel"
-        confirmButtonClass="bg-red-500 hover:bg-red-600 text-white"
+        title= {<>Are you sure <br/> Logout your Account?</>}
+        message=""
+        confirmText="Yes, Logout"
+        cancelText="No, Cancel"
+        confirmButtonClass="bg-red-400 hover:bg-red-600 text-white"
       />
     </nav>
   );
