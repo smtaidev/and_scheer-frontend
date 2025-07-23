@@ -1,7 +1,9 @@
 
 import PopularCompanyCard from '@/components/seeker-home/popularCompany/PopularCompanyCard'
 import CourseCard from '@/components/Suggested/CourseCard'
-import React from 'react'
+import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
+import { Company } from '@/types/AllTypes'
+import React, { useEffect, useState } from 'react'
 // import PopularCompanyCard from '../../jobSeekerHome/popularCompany/PopularCompanyCard'
 // import CourseCard from '@/app/alloveruser/Suggested/CourseCard'
 
@@ -34,6 +36,24 @@ export default function SerachRightSideBar() {
     },
 
   ]
+
+  const [companies, setCompanies] = useState<Company[]>([])
+  const { data: res, isLoading } = useGetAllCompaniesQuery();
+
+
+
+  useEffect(() => {
+
+    if (res?.data) {
+      setCompanies(res.data)
+    }
+  }, [res?.data]);
+
+  if (isLoading) return <p>Loading...</p>
+  console.log(companies)
+
+
+
 
   return (
     <div>
@@ -68,7 +88,9 @@ export default function SerachRightSideBar() {
             </div>
           </div>
         </div> */}
-          <PopularCompanyCard />
+          {
+            companies?.slice(0,1).map((company, index) => <PopularCompanyCard company={company} key={index} />)
+          }
         </div>
 
         {/* Suggested Course Section */}

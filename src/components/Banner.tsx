@@ -32,7 +32,7 @@ export default function Banner() {
           <SearchField />
 
           <div className="flex gap-3 mt-4">
-            <button className="border px-3 text-xs md:text-base rounded py-2 hover:bg-green-300 hover:text-white transition-all duration-300">
+            <button className="border px-3 text-xs md:text-base rounded py-2 hover:bg-gray-300 hover:shadow-lg border-gray-300  transition-all duration-300 cursor-pointer">
               For Employers
             </button>
             <Link

@@ -46,7 +46,7 @@ export default function SearchField() {
             <FaBuilding className="text-gray-500" />
             <select
               {...register("company", { required: true })}
-              className="flex-1    text-gray-700"
+              className="flex-1    text-gray-700 "
             >
               <option value="">Select Company </option>
               {companies.map((company) => (

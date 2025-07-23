@@ -1,5 +1,6 @@
 import { Company } from '@/types/AllTypes';
 import Image from 'next/image';
+import { CiLocationOn } from 'react-icons/ci';
 
 export default function PopularCompanyCard({company}:{company:Company}) {
     console.log(company)
@@ -32,22 +33,24 @@ export default function PopularCompanyCard({company}:{company:Company}) {
                         SMT
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold">{company.companyName}</h3>
-                        <p className="text-sm text-gray-500">{company.industryType}</p>
+                        <h3 className="text-lg font-semibold">{company?.companyName}</h3>
+                        <p className="text-sm text-gray-500">{company?.industryType}</p>
                     </div>
                 </div>
 
-                <div className="mt-4 flex items-center text-yellow-500 space-x-1">
+                {/* <div className="mt-4 flex items-center text-yellow-500 space-x-1">
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12 .587l3.668 7.431 8.2 1.191-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.868 1.4-8.168-5.934-5.787 8.2-1.191z" />
                     </svg>
                     <span className="text-sm font-semibold">4.9</span>
-                </div>
+                </div> */}
 
                 <div className="mt-4 flex flex-wrap gap-2 text-sm text-gray-700">
-                    <span className="bg-gray-100 px-3 py-1 rounded">Software Company</span>
-                    <span className="bg-gray-100 px-3 py-1 rounded">256 Employees</span>
-                    <span className="bg-gray-100 px-3 py-1 rounded">Two slots left</span>
+                    <p className='flex items-center gap-1'>   Location:<span className="bg-gray-100 px-3 py-1 rounded flex items-center gap-1"> <CiLocationOn/>  {company?.city},{company?.country}</span></p>
+                 
+                    {/* <span className="bg-gray-100 px-3 py-1 rounded">Software Company</span> */}
+                    {/* <span className="bg-gray-100 px-3 py-1 rounded">256 Employees</span>
+                    <span className="bg-gray-100 px-3 py-1 rounded">Two slots left</span> */}
                 </div>
             </div>
         </div>

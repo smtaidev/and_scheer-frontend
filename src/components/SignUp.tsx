@@ -77,7 +77,10 @@ export default function SignUpForm() {
             {/* Logo */}
             <div className="mb-6">
               {/* <img src="/logo.svg" alt="Logo" className="h-10" /> */}
+              <Link href={"/"}>
               <Logo height={120} width={268}></Logo>
+              </Link>
+              
             </div>
 
             {/* Welcome Message */}

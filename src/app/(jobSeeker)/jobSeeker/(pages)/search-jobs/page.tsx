@@ -26,13 +26,27 @@ export default function SearchJobPage() {
             </button>
 
             <div className="max-w-[1420px] flex mx-auto">
+                <div
+                    className={`
+    transition-all duration-300
 
-                {/* FilterSidebar with visibility controlled by the state */}
-                <div className={`transition-all duration-300 ${isFilterSidebarVisible ? 'absolute translate-y-0 opacity-100 visible' : ' -translate-x-120 opacity-0 hidden'} lg:relative lg:block `}>
+    // Small screens (mobile/tablet)
+    absolute
+    ${isFilterSidebarVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
+
+    // Large screens (desktop and up)
+    lg:relative
+    lg:translate-x-0
+    lg:opacity-100
+    lg:visible
+    lg:block
+  `}
+                >
                     <FilterSidebar />
                 </div>
 
-                <div className="flex-1 px-4 md:px-6 lg:px-8 md:flex">
+
+                <div className="flex-1 gap-5 px-4 md:px-6 lg:px-8 md:flex">
                     <JobList />
                     <SerachRightSideBar />
                 </div>
