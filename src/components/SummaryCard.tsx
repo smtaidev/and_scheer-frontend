@@ -1,7 +1,17 @@
 "use client";
 import Container from "@/components/ui/Container";
+import {
+  useCreateSubscirptionPlansMutation,
+  useGetSubscirptionSinglePlansQuery,
+} from "@/redux/features/Subscription/subscriptionSlice";
+import { useParams, useRouter } from "next/navigation";
 import { FaCheckCircle } from "react-icons/fa";
-
+import Loading from "./Others/Loading";
+import Link from "next/link";
+import { toast } from "sonner";
+import LoadingButton from "./loading/LoadingButton";
+import { useDispatch } from "react-redux";
+import { setSubscriptionData } from "@/redux/features/Subscription/subscriptionDataSlice";
 
 // components/PlanSummaryCard.tsx
 interface PlanSummaryProps {
@@ -17,8 +27,43 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
   permissions,
   roleName,
 }) => {
-  const handlePayment = () => {
-    console.log("You clicked on Next");
+  const { id } = useParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { data, isLoading } = useGetSubscirptionSinglePlansQuery(id);
+  const [createSubscription, { isLoading: btnLoading }] =
+    useCreateSubscirptionPlansMutation();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
+  console.log("aaa== ", accessToken);
+  const planDetails = data?.data;
+  console.log(planDetails);
+
+  // payment submit
+  const handlePayment = async () => {
+    const planIdData = { planId: id };
+
+    try {
+      const response = await createSubscription({
+        planIdData,
+        accessToken,
+      }).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response?.message);
+        router.push(`/payment/${id}`);
+        dispatch(setSubscriptionData(response.data));
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -32,13 +77,13 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
             {/* Plan Details Section */}
             <div className="bg-white p-6 rounded-lg shadow w-full">
               <h3 className=" md:text-2xl text-subtitle  font-semibold text-scheer-body-gray">
-                {roleName}
+                {planDetails?.description}
               </h3>
               <h2 className="text-2xl md:text-5xl font-semibold text-gray-800">
-                {planName}
+                {planDetails?.planName}
               </h2>
               <p className="text-3xl font-bold text-primary mt-2">
-                €{price.toFixed(2)}{" "}
+                €{planDetails?.amount.toFixed(2)}{" "}
                 <span className="text-base text-scheer-body-gray font-normal">
                   /month
                 </span>{" "}
@@ -48,7 +93,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
                 Permissions:
               </h3>
               <ul className="  text-gray-700 space-y-4">
-                {permissions.map((perm, index) => (
+                {planDetails?.features.map((perm: any, index: number) => (
                   <li key={index} className="flex items-start gap-2">
                     <FaCheckCircle className="text-green-500 mt-1" />
                     <span>{perm}</span>
@@ -67,17 +112,23 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
               You can change your plan at any time.
             </p>
             <p className="text-3xl font-bold text-primary mt-2">
-              €{price.toFixed(2)}{" "}
+              €{planDetails?.amount.toFixed(2)}{" "}
               <span className="text-base text-scheer-body-gray font-normal">
                 /month
               </span>{" "}
             </p>
 
             <button
-              onClick={() => handlePayment}
-              className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary transition"
+              onClick={handlePayment}
+              className="w-full px-4 py-2 block bg-primary text-center text-white rounded-md hover:bg-primary transition"
             >
-              Next
+              {btnLoading ? (
+                <>
+                  <LoadingButton />
+                </>
+              ) : (
+                "Next"
+              )}
             </button>
           </div>
         </div>

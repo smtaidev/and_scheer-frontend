@@ -1,7 +1,9 @@
 "use client";
-import { PaymentInfoType } from "@/app/(commonLayout)/payment/page";
+import { PaymentInfoType } from "@/app/(commonLayout)/payment/[id]/page";
 import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface PaymentFormProps {
   handlePayment: (data: PaymentInfoType) => void;
@@ -13,6 +15,15 @@ export default function PaymentForm({ handlePayment }: PaymentFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<PaymentInfoType>();
+
+  const subData: any = useSelector(
+    (state: RootState) => state.subscriptionData.subscription
+  );
+
+  const clientSecretId = subData?.clientSecret;
+  const paymentIntentId = subData?.paymentIntentId;
+
+  console.log(clientSecretId, paymentIntentId);
 
   const onSubmit = (data: PaymentInfoType) => {
     console.log("clicked ");

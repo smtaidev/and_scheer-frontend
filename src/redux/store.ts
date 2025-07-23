@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseUrlApi } from "./api/baseUrlApi";
+import subscriptionDataReducer from "./features/Subscription/subscriptionDataSlice";
+
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      subscriptionData: subscriptionDataReducer,
       [baseUrlApi.reducerPath]: baseUrlApi.reducer,
     },
 

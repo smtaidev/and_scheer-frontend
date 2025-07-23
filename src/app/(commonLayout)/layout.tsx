@@ -3,7 +3,7 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 
 const navitem = [
   { name: "Home", href: "#" },
-  { name: "For Job Seekers", href: "/jobseekeruser/jobSeekerHome" },
+  { name: "For Job Seekers", href: "/jobSeeker/start-now" },
   { name: "For Employers", href: "#" },
   { name: "Course", href: "#" },
   { name: "Pricing", href: "#" },
