@@ -56,7 +56,6 @@ export default function Navbar({ navItem }: NavbarProps) {
       <span>{label}</span>
     </div>
   );
-  console.log(navItem)
   const navItems = [
     { name: "Home", href: "/" },
     { name: "For Job Seekers", href: "/jobSeeker/start-now" },

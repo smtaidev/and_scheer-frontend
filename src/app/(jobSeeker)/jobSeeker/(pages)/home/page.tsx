@@ -7,10 +7,13 @@ import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar'
 import TopCategory from '@/components/seeker-home/TopCategory/page'
 import SuggestedCourses from '@/components/Suggested/SuggestedCourses'
 import React from 'react'
+import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice'
+
 
 
 export default function JobSeekerHomePage() {
   const title="Recommend for you"
+
   return (
     <div>
         <SeekerBanner/>

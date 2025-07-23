@@ -130,3 +130,24 @@ export interface CreateCompanyRequest {
 export interface UpdateCompanyRequest extends Partial<CreateCompanyRequest> { }
 
 
+export type FormData = {
+  // Page 1 data
+  page1Data: {
+    email: string;
+    phoneNumber: string;
+    website: string;
+    logo: File | null;
+  };
+  // Page 2 data (add your page 2 fields here)
+  page2Data: {
+  companyName: string;
+    industryType: string;
+    roleInCompany: string;
+    description: string;
+    country: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+};

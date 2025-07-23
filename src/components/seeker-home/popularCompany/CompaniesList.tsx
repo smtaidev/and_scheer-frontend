@@ -1,7 +1,21 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import PopularCompanyCard from './PopularCompanyCard'
+import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
+import { Company } from '@/types/AllTypes'
 
 export default function CompaniesList() {
+
+  const [company,setCompany]=useState<Company[]>([])
+  const {data:res} =useGetAllCompaniesQuery();
+
+  useEffect(()=>{
+         if(res?.data){
+          setCompany(res.data)
+         }
+  },[res?.data])
+
+  console.log(company)
 
 
 

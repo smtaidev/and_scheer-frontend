@@ -15,6 +15,11 @@ import 'swiper/css/navigation';
 // import required modules
 import { FreeMode, Navigation } from 'swiper/modules';
 import CategoryCard from './CategoryCard';
+import { RiHomeFill } from 'react-icons/ri';
+import { BsBank2, BsFuelPumpFill } from 'react-icons/bs';
+import { FaGraduationCap } from 'react-icons/fa';
+import { IoIosRocket, IoIosStats } from 'react-icons/io';
+import { PiBagSimpleFill } from 'react-icons/pi';
 
 
 
@@ -24,37 +29,37 @@ export default function AllCategory() {
 
       const categories=[
         {
-            icon:"/Frame.png",
+            icon:<RiHomeFill className='text-white' />,
             name:"Remote",
             
         },
         {
-            icon:"/Frame 1.png",
+            icon:<BsFuelPumpFill className='text-white'/>,
             name:"MNC",
        
         },
         {
-            icon:"/Frame 2.png",
+            icon:<FaGraduationCap className='text-white'/>,
             name:"Fresher",
            
         },
         {
-            icon:"/Frame 3.png",
+            icon:<IoIosRocket className='text-white'/>,
             name:"Startup",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<IoIosStats className='text-white'/>,
             name:"Anlytics ",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<PiBagSimpleFill className='text-white' />,
             name:"Internship",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<BsBank2 className='text-white' />,
             name:"Banking",
                
         },

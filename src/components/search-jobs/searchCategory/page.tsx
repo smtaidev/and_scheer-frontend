@@ -14,8 +14,9 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { FreeMode, Navigation } from 'swiper/modules';
+import CategoryCard from '@/components/seeker-home/TopCategory/CategoryCard';
 
-import CategoryCard from '../../jobSeekerHome/TopCategory/CategoryCard';
+
 
 
 
