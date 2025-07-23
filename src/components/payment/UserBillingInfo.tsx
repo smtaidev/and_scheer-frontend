@@ -1,5 +1,5 @@
 "use client";
-import { UserBillingType } from "@/app/(commonLayout)/payment/page";
+import { UserBillingType } from "@/app/(commonLayout)/payment/[id]/page";
 // import DropdownInput from '@/components/DropdownInput';
 // import Input from '@/components/Input';
 // import SelectField from '@/components/SelectField';

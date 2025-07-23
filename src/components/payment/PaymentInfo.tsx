@@ -1,5 +1,5 @@
 "use client";
-import { PaymentInfoType } from "@/app/(commonLayout)/payment/page";
+import { PaymentInfoType } from "@/app/(commonLayout)/payment/[id]/page";
 import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 

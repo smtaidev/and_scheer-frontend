@@ -5,48 +5,10 @@ import ComponentHeader from "./shared/ComponentHeader";
 import PackageCard from "./shared/PlanCard";
 import { useGetSubscirptionPlansQuery } from "@/redux/features/Subscription/subscriptionSlice";
 import Loading from "./Others/Loading";
-
-const SeekerPlan = [
-  {
-    price: "$9.99",
-    planType: "Job Seeker Plan",
-    packageName: "Basic Plan",
-    permissions: [
-      "Limited job applications",
-      "Basic profile visibility",
-      "No resume feedback",
-      "All free tier benifits included",
-      "Receive up to 5 job suggestions",
-    ],
-  },
-
-  {
-    price: "$19.99",
-    planType: "Job Seeker Plan",
-    packageName: "Standard Plan",
-    permissions: [
-      "Limited job applications",
-      "Standard profile visibility",
-      "Basic resume feedback",
-      "All free tier benifits included",
-      "Receive up to 10 job suggestions",
-    ],
-  },
-  {
-    price: "$29.99",
-    planType: "Job Seeker Plan",
-    packageName: "Premium Plan",
-    permissions: [
-      "Unlimited job applications",
-      "Priority profile visibility",
-      "AI resume feedback",
-      "All free tier benifits included",
-      "Receive up to 25 job suggestions",
-    ],
-  },
-];
+import { useRouter } from "next/navigation";
 
 export default function JobSeekerPlan() {
+  const router = useRouter();
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
   console.log(
@@ -61,6 +23,20 @@ export default function JobSeekerPlan() {
   const SeekerPlan = JobSeekerPlans?.data.filter(
     (seeker: any) => seeker.description === "Job_Seeker_Plan"
   );
+
+  const handleClick = (id: string) => {
+    const jobName = "frontend";
+    const company = "Google";
+    const location = "New York";
+
+    const query = new URLSearchParams({
+      job: jobName,
+      company,
+      location,
+    }).toString();
+
+    router.push(`/checkout/${id}`);
+  };
 
   return (
     <div id="pricing" className="bg-[#F8F8F8]">
@@ -79,7 +55,7 @@ export default function JobSeekerPlan() {
                 packageName={plan?.planName}
                 permissions={plan?.features}
                 buttonText="Choose Plan"
-                onButtonClick={() => console.log(`Selected ${plan?.id}`)}
+                onButtonClick={() => handleClick(plan?.id)}
               />
             </div>
           ))}
