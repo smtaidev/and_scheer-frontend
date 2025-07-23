@@ -1,15 +1,14 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export const Pagination = ({ currentPage, totalPages, onPageChange }: {
-  currentPage: any;
-  totalPages: any;
-  onPageChange: any;
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }) => {
-
-  currentPage = 1;
-  totalPages = 10;
-  onPageChange = 1;
-
   const getPageNumbers = () => {
     const pages = [];
     const showPages = 5; // Number of page buttons to show
@@ -35,10 +34,11 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`flex items-center px-3 py-2 rounded-lg border transition-colors ${currentPage === 1
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
-            : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-300 hover:border-gray-400'
-          }`}
+        className={`flex items-center px-3 py-2 rounded-lg border transition-colors ${
+          currentPage === 1
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+            : "bg-white text-gray-600 hover:bg-gray-50 border-gray-300 hover:border-gray-400"
+        }`}
       >
         <ChevronLeft className="w-4 h-4 mr-1" />
         Previous
@@ -66,10 +66,11 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: {
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-2 rounded-lg border transition-colors ${currentPage === page
-                ? 'bg-blue-500 text-white border-blue-500'
-                : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-              }`}
+            className={`px-3 py-2 rounded-lg border transition-colors ${
+              currentPage === page
+                ? "bg-blue-500 text-white border-blue-500"
+                : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+            }`}
           >
             {page}
           </button>
@@ -95,10 +96,11 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`flex items-center px-3 py-2 rounded-lg border transition-colors ${currentPage === totalPages
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
-            : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-300 hover:border-gray-400'
-          }`}
+        className={`flex items-center px-3 py-2 rounded-lg border transition-colors ${
+          currentPage === totalPages
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+            : "bg-white text-gray-600 hover:bg-gray-50 border-gray-300 hover:border-gray-400"
+        }`}
       >
         Next
         <ChevronRight className="w-4 h-4 ml-1" />
