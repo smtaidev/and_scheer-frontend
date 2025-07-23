@@ -1,10 +1,17 @@
 "use client";
 import Container from "@/components/ui/Container";
-import { useGetSubscirptionSinglePlansQuery } from "@/redux/features/Subscription/subscriptionSlice";
-import { useParams } from "next/navigation";
+import {
+  useCreateSubscirptionPlansMutation,
+  useGetSubscirptionSinglePlansQuery,
+} from "@/redux/features/Subscription/subscriptionSlice";
+import { useParams, useRouter } from "next/navigation";
 import { FaCheckCircle } from "react-icons/fa";
 import Loading from "./Others/Loading";
 import Link from "next/link";
+import { toast } from "sonner";
+import LoadingButton from "./loading/LoadingButton";
+import { useDispatch } from "react-redux";
+import { setSubscriptionData } from "@/redux/features/Subscription/subscriptionDataSlice";
 
 // components/PlanSummaryCard.tsx
 interface PlanSummaryProps {
@@ -21,16 +28,42 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
   roleName,
 }) => {
   const { id } = useParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const { data, isLoading } = useGetSubscirptionSinglePlansQuery(id);
+  const [createSubscription, { isLoading: btnLoading }] =
+    useCreateSubscirptionPlansMutation();
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
+  console.log("aaa== ", accessToken);
   const planDetails = data?.data;
   console.log(planDetails);
-  const handlePayment = () => {
-    console.log("You clicked on Next");
+
+  // payment submit
+  const handlePayment = async () => {
+    const planIdData = { planId: id };
+
+    try {
+      const response = await createSubscription({
+        planIdData,
+        accessToken,
+      }).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response?.message);
+        router.push(`/payment/${id}`);
+        dispatch(setSubscriptionData(response.data));
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -85,12 +118,18 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
               </span>{" "}
             </p>
 
-            <Link
-              href={`/payment/${id}`}
+            <button
+              onClick={handlePayment}
               className="w-full px-4 py-2 block bg-primary text-center text-white rounded-md hover:bg-primary transition"
             >
-              Next
-            </Link>
+              {btnLoading ? (
+                <>
+                  <LoadingButton />
+                </>
+              ) : (
+                "Next"
+              )}
+            </button>
           </div>
         </div>
       </Container>
