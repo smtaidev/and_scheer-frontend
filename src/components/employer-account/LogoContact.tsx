@@ -4,12 +4,14 @@ import { Upload, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from './FormContext';
 import { useCreateCompanyMutation } from '@/redux/features/company/companySlice';
+import { toast } from 'sonner';
 // Import the context
 
 function LogoContact() {
     const router = useRouter();
     const { formData, updatePage1Data } = useFormContext();
     const [updateCompany] = useCreateCompanyMutation()
+    const [image, setImage] = useState<FileList | null>(null)
 
     const [localFormData, setLocalFormData] = useState({
         email: formData.page1Data.email || "",
@@ -69,45 +71,21 @@ function LogoContact() {
 
     const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
+        setImage(files)
         if (files && files.length > 0) {
             handleFileUpload(files[0]);
         }
     };
 
-
+console.log(image)
 
     const handleSubmit = async () => {
         try {
             updatePage1Data(localFormData);
 
-            // Combine all form data
+       
             const formDataToSend = new FormData();
-            // const formDataApi = new FormData();
 
-
-            // Page 1 data
-            // formDataToSend.append("email", formData.page1Data.email);
-            // formDataToSend.append("phoneNumber", formData.page1Data.phoneNumber);
-            // formDataToSend.append("website", formData.page1Data.website);
-            // if (formData.page1Data.logo) {
-            //     formDataToSend.append("logo", formData.page1Data.logo);
-            // }
-
-            // Page 2 data
-            // formDataToSend.append("companyName", formData.page2Data.companyName);
-            // formDataToSend.append("industryType", formData.page2Data.industryType);
-            // formDataToSend.append("roleInCompany", formData.page2Data.roleInCompany);
-            // formDataToSend.append("description", formData.page2Data.description);
-            // formDataToSend.append("country", formData.page2Data.country);
-            // formDataToSend.append("address", formData.page2Data.address);
-            // formDataToSend.append("city", formData.page2Data.city);
-            // formDataToSend.append("state", formData.page2Data.state);
-            // formDataToSend.append("zipCode", formData.page2Data.zipCode);
-
-            // console.log('Sending combined data:', {
-            //     page1: formData.page1Data,
-            //     page2: formData.page2Data
-            // });
 
             const fullData = {
                 companyName: formData.page2Data.companyName,
@@ -125,18 +103,22 @@ function LogoContact() {
             };
 
             // ✅ 2. Append logo file
-            if (formData.page1Data.logo) {
-                formDataToSend.append("logo", formData.page1Data.logo); // file
-            }
+        
 
             // ✅ 3. Append data object as JSON string
             formDataToSend.append("data", JSON.stringify(fullData));
+            if (image && image.length > 0) {
+                formDataToSend.append("file", image[0]);
+            }
+            
 
 
             const res = await updateCompany(formDataToSend).unwrap();
             console.log('Success:', res);
-
-            // Handle success (redirect, show message, etc.)
+        if(res.success){
+            toast.success("Your Company has Successfully Created!")
+            router.push("/success-account")
+        }
 
         } catch (error) {
             console.error('Error submitting form:', error);

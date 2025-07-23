@@ -19,7 +19,7 @@ export default function SuccessAccount() {
                 You’ve successfully set up your company profile. Now, you can start posting jobs and connecting with top talent!
             </p>
 
-            <button className="px-6 py-3 bg-scheer-primary text-white rounded-lg font-semibold flex items-center gap-2">
+            <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
                 Go to Dashboard →
             </button>
         </div>
