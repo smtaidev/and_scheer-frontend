@@ -15,6 +15,11 @@ import 'swiper/css/navigation';
 // import required modules
 import { FreeMode, Navigation } from 'swiper/modules';
 import CategoryCard from './CategoryCard';
+import { RiHomeFill } from 'react-icons/ri';
+import { BsBank2, BsFuelPumpFill } from 'react-icons/bs';
+import { FaGraduationCap } from 'react-icons/fa';
+import { IoIosRocket, IoIosStats } from 'react-icons/io';
+import { PiBagSimpleFill } from 'react-icons/pi';
 
 
 
@@ -24,37 +29,37 @@ export default function AllCategory() {
 
       const categories=[
         {
-            icon:"/Frame.png",
+            icon:<RiHomeFill className='text-white' />,
             name:"Remote",
             
         },
         {
-            icon:"/Frame 1.png",
+            icon:<BsFuelPumpFill className='text-white'/>,
             name:"MNC",
        
         },
         {
-            icon:"/Frame 2.png",
+            icon:<FaGraduationCap className='text-white'/>,
             name:"Fresher",
            
         },
         {
-            icon:"/Frame 3.png",
+            icon:<IoIosRocket className='text-white'/>,
             name:"Startup",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<IoIosStats className='text-white'/>,
             name:"Anlytics ",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<PiBagSimpleFill className='text-white' />,
             name:"Internship",
                
         },
         {
-            icon:"/Frame.png",
+            icon:<BsBank2 className='text-white' />,
             name:"Banking",
                
         },
@@ -66,7 +71,7 @@ export default function AllCategory() {
         <div >
             
             <div className=' ml-0  2xl:ml-44'>
-                <div className=' py-15  px-11 md:px-15'>
+                <div className='py-6 md:py-15  px-11 md:px-15'>
                     
 
 
@@ -82,7 +87,7 @@ export default function AllCategory() {
                             modules={[FreeMode, Navigation]}
                             className="mySwiper"
                             breakpoints={{
-                                320: { slidesPerView: 1 },
+                                320: { slidesPerView: 1.5 },
                                 640: { slidesPerView: 2 },
                                 768: { slidesPerView: 2.5 },
                                 1024: { slidesPerView: 3 },
@@ -90,7 +95,7 @@ export default function AllCategory() {
                             }}
                         >
                             {categories.map((category, index) => (
-                                <SwiperSlide key={index} className='pb-2'>
+                                <SwiperSlide key={index} className='pb-2 scale-80'>
                                     <CategoryCard  key={category.name} category={category}  />
                                 </SwiperSlide>
                             ))}

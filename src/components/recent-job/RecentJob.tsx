@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import RecentJobCard from './RecentJobCard'
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,65 +15,28 @@ import "swiper/css/navigation";
 // import required modules
 import { FreeMode, Navigation } from "swiper/modules";
 import RecentJobCard from "./RecentJobCard";
+import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
+import { Job } from "@/types/AllTypes";
 
 interface JobTitle {
   title: string;
 }
 
+ 
 export default function RecentJob({ title }: JobTitle) {
-  const jobs = [
-    {
-      icnos: "/company1.png",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: " $4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: " $4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-    {
-      icnos: "",
-      name: "BLUE Technology",
-      position: "Full Stack Developer",
-      location: "Dhaka, Bangladesh",
-      salary: "$4500",
-    },
-  ];
+         
+        const [allJobs,setAllJobs]=useState<Job[]>([])
+      const {data:jobs} = useGetAllJobPostsQuery({});
 
-  console.log(title);
+
+      useEffect(()=>{
+          if(jobs?.data){
+            setAllJobs(jobs.data.data)
+          }
+      },[jobs?.data])
+
+
+  console.log(jobs);
 
   return (
     <div className="bg-card ">
@@ -105,7 +68,7 @@ export default function RecentJob({ title }: JobTitle) {
                 1280: { slidesPerView: 3.5 },
               }}
             >
-              {jobs.map((job, index) => (
+              {allJobs?.map((job, index) => (
                 <SwiperSlide key={index} className="pb-2">
                   <RecentJobCard job={job} />
                 </SwiperSlide>

@@ -20,7 +20,7 @@ const MainComponents = () => {
 
   return (
     <Container>
-      <div className="min-h-screen px-2">
+      <div className=" px-2">
         <ProgressBar currentStep={step} totalSteps={7} />
         {step === 1 && <PersonalInformation setStep={setStep} />}
         {step === 2 && <CareerOverview setStep={setStep} />}
