@@ -128,7 +128,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     };
   }, [showMenu, me?.data]);
 
-  console.log(user.fullName)
+
   const handleSearch = () => {
     console.log("first");
 

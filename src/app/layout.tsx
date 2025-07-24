@@ -8,6 +8,8 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import StoreProvider from "./StoreProvider";
 import { FormProvider } from "@/components/employer-account/FormContext";
+import { SessionProvider } from "next-auth/react";
+import SessionWrapper from "./SessionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,12 +39,14 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         className={openSans.variable}
       >
-        <StoreProvider>
-          <FormProvider>
-        <Toaster position="top-center" expand={true} richColors />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-          </FormProvider>
-        </StoreProvider>
+      <SessionWrapper>
+          <StoreProvider>
+            <FormProvider>
+              <Toaster position="top-center" expand={true} richColors />
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </FormProvider>
+          </StoreProvider>
+       </SessionWrapper>
       </body>
     </html>
   );

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
 import Cookies from 'js-cookie';
+import { signIn } from "next-auth/react";
 
 interface FormData {
   email: string;
@@ -24,6 +25,13 @@ export default function SignInForm() {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const [sigInUser, { isLoading }] = useSignInMutation();
+
+  const handleGoogle=()=>{
+    signIn("google");
+    // Cookies.set("accessToken",)
+     toast.success("Login Successfull!");
+        router.push("/");
+  }
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -121,7 +129,7 @@ export default function SignInForm() {
           </div>
 
           {/* Continue with Google */}
-          <button className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+          <button  onClick={() => handleGoogle()} className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
             <FcGoogle className="size-6" />
             Login with Google
           </button>
