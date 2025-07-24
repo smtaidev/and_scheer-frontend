@@ -2,6 +2,12 @@ import { baseUrlApi } from "@/redux/api/baseUrlApi";
 
 const authApi = baseUrlApi.injectEndpoints({
   endpoints: (build) => ({
+    getMe: build.query({
+      query: () => ({
+        url: "/auth/me",
+        method: "GET"
+      }),
+    }),
     signUp: build.mutation({
       query: (userData) => ({
         url: "/users/register",
@@ -44,4 +50,5 @@ export const {
   useSignInMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
+  useGetMeQuery
 } = authApi;
