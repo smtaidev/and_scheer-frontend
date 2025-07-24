@@ -15,6 +15,7 @@ import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
 import { ConfirmationModal } from "../Confirmation-modal";
+import Cookies from 'js-cookie';
 
 type NavItem = {
   name: string;
@@ -102,12 +103,11 @@ export default function Navbar({ navItem }: NavbarProps) {
 
   };
 
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
 
   const handleDelete = () => {
-    localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
     setUser(null);
     setShowMenu(false);
     toast.success("Logged out successfully");
@@ -129,7 +129,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
           <button
             onClick={() => handleSearch()}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer hidden"
           >
             <FaSearch />
             Search
