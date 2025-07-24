@@ -34,7 +34,7 @@ export default function CourseCard({ course }:{ course: Course }) {
                 {/* Button at bottom right */}
                 <div className="p-4 pt-0 mt-auto flex justify-end">
 
-                    <button className="text-sm text-green-600  underline rounded 0 transition">
+                    <button className="text-sm text-green-600  underline rounded cursor-pointer hover:font-semibold transition-all duration-300">
                         See Details
                     </button>
                 </div>

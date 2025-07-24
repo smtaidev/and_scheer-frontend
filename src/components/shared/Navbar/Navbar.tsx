@@ -15,6 +15,9 @@ import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
 import { ConfirmationModal } from "../Confirmation-modal";
+import Cookies from 'js-cookie';
+import { usePathname } from "next/navigation";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 type NavItem = {
   name: string;
@@ -28,10 +31,22 @@ type NavbarProps = {
 export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const { data: me } = useGetMeQuery({})
 
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<string | any>("");
 
-  // const [searchView, setSearchView] = useState(false)
+  const [searchView, setSearchView] = useState(false)
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const targetRoutes = ['/', '/jobSeeker/home', '/jobs'];
+
+    if (targetRoutes.includes(pathname)) {
+      setSearchView(true);
+    } else {
+      setSearchView(false);
+    }
+  }, [pathname]);
 
   const MenuItem = ({
     icon,
@@ -51,12 +66,33 @@ export default function Navbar({ navItem }: NavbarProps) {
     <div
       onClick={logoutBtn}
       className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
-      ${active ? "  font-medium" : ""}
-      ${danger ? "text-red-500 hover:bg-red-100" : "hover:bg-gray-100"}`}
+    ${active ? "font-medium" : ""}
+    ${danger ? "text-red-500 hover:bg-red-100" : "hover:bg-gray-100"}
+  `}
     >
-      <div className="text-xl">{icon}</div>
-      <span>{label}</span>
+      {label === "Applied Job" ? (
+        <Link className="flex gap-3" href="/jobSeeker/my-applications">
+          <div className="text-xl">{icon}</div>
+          <span>{label}</span>
+        </Link>
+      ) : label === "My Profile" ? (
+        <Link className="flex gap-3" href="/jobSeeker/my-profile">
+          <div className="text-xl">{icon}</div>
+          <span>{label}</span>
+        </Link>
+      ) : label === "Download My Resume" ? (
+        <Link className="flex gap-3" href="/jobSeeker/resume-download">
+          <div className="text-xl">{icon}</div>
+          <span>{label}</span>
+        </Link>
+      ) : (
+        <>
+          <div className="text-xl">{icon}</div>
+          <span>{label}</span>
+        </>
+      )}
     </div>
+
   );
 
 
@@ -77,8 +113,10 @@ export default function Navbar({ navItem }: NavbarProps) {
         setShowMenu(false);
       }
     };
-    let access: string | null = localStorage.getItem("accessToken");
-    setUser(access);
+    if (me?.data) {
+      setUser(me?.data);
+    }
+
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -88,7 +126,8 @@ export default function Navbar({ navItem }: NavbarProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showMenu, user]);
+  }, [showMenu, me?.data]);
+
 
   const handleSearch = () => {
     console.log("first");
@@ -102,12 +141,11 @@ export default function Navbar({ navItem }: NavbarProps) {
 
   };
 
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
 
   const handleDelete = () => {
-    localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
     setUser(null);
     setShowMenu(false);
     toast.success("Logged out successfully");
@@ -129,12 +167,12 @@ export default function Navbar({ navItem }: NavbarProps) {
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
           <button
             onClick={() => handleSearch()}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer"
+            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${searchView ? "hidden" : ""} `}
           >
             <FaSearch />
             Search
           </button>
-          <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
+          <span className={`w-0.5 h-6 bg-gray-300   ${searchView ? "hidden" : "inline-block"}`}></span>
 
           {Array.isArray(navItem) && navItem.map((item, index) => (
             <React.Fragment key={item.name}>
@@ -160,9 +198,9 @@ export default function Navbar({ navItem }: NavbarProps) {
             className="rounded-full object-cover"
           /> */}
 
-          <div className="relative">
-            <button onClick={toggleMenu}>
-              <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
+          <div className="relative ">
+            <button onClick={toggleMenu} className="flex items-center gap-2 cursor-pointer">
+              <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" /> <p>{user?.fullName}</p>
             </button>
 
             {showMenu && (
@@ -185,7 +223,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                         label="Log Out"
                         danger
                         logoutBtn={handleLogout}
-                         onClick={() => setShowDeleteModal(true)}
+                        onClick={() => setShowDeleteModal(true)}
                       />
                     </div>
                   </div>
@@ -198,7 +236,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                     Sign In
                   </Link>
                 )}
-               
+
               </div>
             )}
           </div>
@@ -253,7 +291,8 @@ export default function Navbar({ navItem }: NavbarProps) {
                         label="Download My Resume"
                         active
                       />
-                      <MenuItem icon={<FaBriefcase />} label="Applied Job" />
+                      <Link href={"/jobSeeker/my-application"}></Link>
+                      <Link href={"/jobSeeker/my-application"}>   <MenuItem icon={<FaBriefcase />} label="Applied Job" /></Link>
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
@@ -302,7 +341,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}
-        title= {<>Are you sure <br/> Logout your Account?</>}
+        title={<>Are you sure <br /> Logout your Account?</>}
         message=""
         confirmText="Yes, Logout"
         cancelText="No, Cancel"

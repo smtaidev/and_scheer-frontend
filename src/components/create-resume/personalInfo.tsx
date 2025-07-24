@@ -126,13 +126,22 @@ export default function PersonalInformation({
               />
             </div>
 
-            <Button
-              type="submit"
-              text="Next"
-              icon="arrow-right"
-              action="submit"
-              bgColor="#28C76F"
-            />
+            <div className="flex justify-between">
+              <button className="px-4  py-2 rounded-md bg-secondary text-white">
+                Back
+              </button>
+              <Button
+                type="submit"
+                text="Next"
+                icon="arrow-right"
+                action="submit"
+                bgColor="#28C76F"
+                name="Next"
+                className="px-4  py-2  rounded-md"
+              />
+            </div>
+
+
           </form>
         </div>
       </div>

@@ -51,7 +51,7 @@ export default function InfoSection({
 
         <button
           onClick={onButtonClick}
-          className="px-6 py-3 bg-black-button text-white font-semibold rounded bg-primary transition flex"
+          className="px-6 py-3  text-white font-semibold rounded bg-secondary  flex hover:bg-black cursor-pointer transition-all duration-300"
         >
           {buttonText}
           <BsArrowRight className="my-auto ml-2"> </BsArrowRight>

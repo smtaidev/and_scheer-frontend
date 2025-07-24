@@ -12,6 +12,8 @@ import { useSignInMutation } from "@/redux/features/auth/auth";
 import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
+import Cookies from 'js-cookie';
+import { signIn } from "next-auth/react";
 
 interface FormData {
   email: string;
@@ -24,12 +26,20 @@ export default function SignInForm() {
   const router = useRouter();
   const [sigInUser, { isLoading }] = useSignInMutation();
 
+  const handleGoogle=()=>{
+    signIn("google");
+    // Cookies.set("accessToken",)
+     toast.success("Login Successfull!");
+        router.push("/");
+  }
+
   const onSubmit = async (data: FormData) => {
     try {
       const response = await sigInUser(data).unwrap();
       console.log(response);
       if (response?.success) {
-        localStorage.setItem("accessToken", response?.data?.accessToken);
+        // localStorage.setItem("accessToken", response?.data?.accessToken);
+        Cookies.set('accessToken',response?.data?.accessToken )
         toast.success(response?.message);
         router.push("/");
         reset();
@@ -72,7 +82,7 @@ export default function SignInForm() {
               Hi, Welcome Back!
             </h2>
             <p className="text-sm text-gray-600 mb-8">
-              Please exter your email and password below!
+              Please enter your email and password below!
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -119,7 +129,7 @@ export default function SignInForm() {
           </div>
 
           {/* Continue with Google */}
-          <button className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+          <button  onClick={() => handleGoogle()} className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
             <FcGoogle className="size-6" />
             Login with Google
           </button>

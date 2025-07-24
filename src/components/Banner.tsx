@@ -36,7 +36,7 @@ export default function Banner() {
               For Employers
             </button>
             <Link
-              href={"/jobseekeruser/airesumecreate"}
+              href={"/jobSeeker/start-now"}
               className="text-white text-xs md:text-base font-semibold px-3 rounded py-2 flex gap-1 bg-primary hover:bg-green-600 transition-all duration-300"
             >
               Create AI Resume <BsArrowRight className="my-auto" />

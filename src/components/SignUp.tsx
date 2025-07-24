@@ -89,7 +89,7 @@ export default function SignUpForm() {
               Create your account!
             </h2>
             <p className="text-sm text-gray-600 mb-6 text-center">
-              Welcome to Passit, Please enter the information requested to
+              Welcome, Please enter the information requested to
               create <br /> your account!
             </p>
           </div>

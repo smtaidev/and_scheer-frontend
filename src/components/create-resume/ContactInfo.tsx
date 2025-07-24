@@ -6,12 +6,15 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import FormInput from "../ui/FormInput";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 
 interface ContactInfoType {
   linkedProfile: string;
-  portfolio: string;
+  portfolio?: string;
   socialMedia: string;
-  socialMediaLink: string; // Use string instead of URL for form compatibility
+  socialMediaLink?: string;
 }
 
 export default function ContactInfo({
@@ -19,10 +22,47 @@ export default function ContactInfo({
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const { register, handleSubmit } = useForm<ContactInfoType>();
+
+
+
+
+
   const router = useRouter();
 
-  const onSubmit = (data: ContactInfoType) => {
+  const contactInfoSchema = z.object({
+    linkedProfile: z
+      .string()
+      .url({ message: "LinkedIn profile must be a valid URL" }),
+
+    portfolio: z
+      .string()
+      .url({ message: "Portfolio must be a valid URL" })
+      .optional()
+      .or(z.literal("")), // allow empty string
+
+    socialMedia: z.string().min(1, { message: "Please select a platform" }),
+
+    socialMediaLink: z
+      .string()
+      .url({ message: "Social media URL must be a valid URL" })
+      .optional()
+      .or(z.literal("")), // allow empty
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactInfoType>({
+    resolver: zodResolver(contactInfoSchema),
+  });
+
+
+  const handleBack = (): void => {
+    setStep(4);
+    console.log("Back")
+  };
+
+  const onSubmit = (data: any) => {
     console.log(data, "Got the personal info");
     setStep(6)
     // router.push("/jobseekeruser/aimagic");
@@ -45,6 +85,10 @@ export default function ContactInfo({
               placeholder="Enter your LinkedIn profile URL"
               {...register("linkedProfile", { required: true })}
             />
+            {errors.linkedProfile && (
+              <p className="text-red-500 text-sm mt-1">{errors.linkedProfile.message}</p>
+            )}
+
           </div>
 
           {/* Portfolio */}
@@ -55,6 +99,9 @@ export default function ContactInfo({
               placeholder="Enter your personal website or portfolio URL"
               {...register("portfolio")}
             />
+               {errors.portfolio && (
+              <p className="text-red-500 text-sm mt-1">{errors.portfolio.message}</p>
+            )}
           </div>
 
           {/* Social Media Selection and Link */}
@@ -82,16 +129,26 @@ export default function ContactInfo({
                 placeholder="Enter other social media profile URL"
                 {...register("socialMediaLink")}
               />
+                 {errors.socialMediaLink && (
+              <p className="text-red-500 text-sm mt-1">{errors.socialMediaLink.message}</p>
+            )}
             </div>
           </div>
 
-          <Button
-                        type="submit"
-            text="Next"
-            icon="arrow-right"
-            action="submit"
-            bgColor="#28C76F"
-          />
+          <div className="flex justify-between">
+            <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+              Back
+            </button>
+            <Button
+              type="submit"
+              text="Next"
+              icon="arrow-right"
+              action="submit"
+              bgColor="#28C76F"
+              name="Next"
+              className="px-4  py-2  rounded-md"
+            />
+          </div>
         </form>
       </div>
     </div>

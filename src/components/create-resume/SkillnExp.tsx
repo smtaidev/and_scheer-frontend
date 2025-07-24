@@ -48,6 +48,13 @@ export default function SkillsExperience({
 
   const router = useRouter();
 
+  
+  const handleBack = (): void => {
+
+    setStep(2);
+    console.log("Back")
+  };
+
   const onSubmit = (data: WorkForm) => {
     console.log("Got all skills data:", data);
     setStep(4);
@@ -120,7 +127,7 @@ export default function SkillsExperience({
                   type="file"
                   multiple
                   {...register(`experiences.${index}.achievements`)}
-                  className="border border-gray-300 p-2 rounded-md w-full"
+                  className={`px-4 py-4 bg-gray-50 border border-[#c2c2c2]  rounded-md w-full`}
                 />
               </div>
 
@@ -136,7 +143,7 @@ export default function SkillsExperience({
                         type="checkbox"
                         value={skill}
                         {...register(`experiences.${index}.skills`)}
-                        className="mr-2"
+                        className={`px-4 py-4 bg-gray-50 border border-[#c2c2c2]  rounded-md w-full`}
                       />
                       {skill}
                     </label>
@@ -180,14 +187,20 @@ export default function SkillsExperience({
             </button>
           </div>
 
-          {/* Submit */}
-          <Button
-            type="submit"
-            text="Next"
-            icon="arrow-right"
-            action="submit"
-            bgColor="#28C76F"
-          />
+          <div className="flex justify-between">
+            <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+              Back
+            </button>
+            <Button
+              type="submit"
+              text="Next"
+              icon="arrow-right"
+              action="submit"
+              bgColor="#28C76F"
+              name="Next"
+              className="px-4  py-2  rounded-md"
+            />
+          </div>
         </form>
       </div>
     </div>

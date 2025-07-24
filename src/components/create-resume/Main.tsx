@@ -9,6 +9,7 @@ import EducationalBackground from "./EducationalBackground";
 import ContactInfo from "./ContactInfo";
 import GenerateResume from "./GenerateResume";
 import MyResume from "./MyResume";
+import Education from "./EducationCertificate";
 
 const MainComponents = () => {
   const [step, setStep] = useState(1);
@@ -25,7 +26,7 @@ const MainComponents = () => {
         {step === 1 && <PersonalInformation setStep={setStep} />}
         {step === 2 && <CareerOverview setStep={setStep} />}
         {step === 3 && <SkillsExperience setStep={setStep} />}
-        {step === 4 && <EducationalBackground setStep={setStep} />}
+        {step === 4 && <Education setStep={setStep} />}
         {step === 5 && <ContactInfo setStep={setStep} />}
         {step === 6 && <GenerateResume setStep={setStep} />}
         {step === 7 && <MyResume />}

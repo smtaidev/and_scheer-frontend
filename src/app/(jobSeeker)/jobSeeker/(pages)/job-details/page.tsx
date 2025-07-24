@@ -1,10 +1,9 @@
 'use client'
 import AllFilterSection from '@/components/job-details/AllfilterSection';
-import companies from '../../../../../../public/companies.json'
 import JobDetailsCard from '@/components/job-details/JobDetailsCard';
 import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar';
 import Container from '@/components/ui/Container';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RecentJobCard from '@/components/recent-job/RecentJobCard';
 // import companies from '@/data/companies.json'
 // import RecentJobCard from '@/app/alloveruser/recentJobs/RecentJobCard'
@@ -13,24 +12,50 @@ import RecentJobCard from '@/components/recent-job/RecentJobCard';
 // import JobDetailsCard from './JobDetailsCard'
 // import AllFilterSection from './AllfilterSection'
 import { ChevronLeft, List, Search, X } from "lucide-react"
+import { Company, Job } from '@/types/AllTypes';
+import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
+import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 
-export type Company = {
-    icnos: string;
-    name: string;
-    position: string;
-    location: string;
-    salary: string;
-};
+
 
 export default function JobDetailspage() {
 
-    const [currentCompany, setCurrentCompany] = useState<Company | undefined>(companies[0]);
+
+    const [currentCompany, setCurrentCompany] = useState<Job | undefined>();
     const [showCompanies, setShowCompanies] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
+    const [companies, setCompanies] = useState<Company[]>([])
+    const { data: res, isLoading } = useGetAllCompaniesQuery();
 
-    const filteredCompanies = companies.filter((company) => company.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    const [allJobs, setAllJobs] = useState<Job[]>([])
+    const { data: jobs } = useGetAllJobPostsQuery({});
 
-    const handleCompanySelect = (company: Company) => {
+
+    useEffect(() => {
+        if (jobs?.data) {
+            setAllJobs(jobs.data.data)
+        }
+    }, [jobs?.data])
+
+
+console.log(allJobs)
+
+
+    const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
+
+
+    useEffect(() => {
+
+        if (res?.data) {
+            setCompanies(res.data)
+        }
+    }, [res?.data]);
+
+    if (isLoading) return <p>Loading...</p>
+    console.log(companies)
+
+
+    const handleCompanySelect = (company: Job) => {
         setCurrentCompany(company)
         setShowCompanies(false)
     }
@@ -61,7 +86,7 @@ export default function JobDetailspage() {
                                     </button>
                                 )}
                                 <h1 className="text-lg font-semibold">
-                                    {showCompanies ? "Companies" : currentCompany?.name || "Job Details"}
+                                    {showCompanies ? "Companies" : currentCompany?.title || "Job Details"}
                                 </h1>
                             </div>
 
@@ -77,7 +102,7 @@ export default function JobDetailspage() {
                             )}
                         </div>
 
-                       
+
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-6">
@@ -89,20 +114,20 @@ export default function JobDetailspage() {
             ${showCompanies ? "block" : "hidden md:block"}
           `}
                         >
-                            {filteredCompanies.length > 0 ? (
-                                filteredCompanies.map((company) => (
+                            {allJobs.length > 0 ? (
+                                allJobs.map((company) => (
                                     <div
-                                        key={company.name}
+                                        key={company.companyId}
                                         className={`
                   cursor-pointer transition-all duration-200
-                  ${currentCompany === company
+                  ${currentCompany?.id === company.companyId
                                                 ? "border border-blue-500 rounded-lg shadow-sm shadow-blue-500/20"
                                                 : "hover:shadow-md"
                                             }
                 `}
                                         onClick={() => handleCompanySelect(company)}
                                     >
-                                       <RecentJobCard key={company.name} job={company} />
+                                        <RecentJobCard job={company} />
                                     </div>
                                 ))
                             ) : (
