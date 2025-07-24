@@ -15,6 +15,12 @@ export default function GenerateResume({
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  
+  const handleBack = (): void => {
+    setStep(5);
+    console.log("Back")
+  };
+
   const simulateLoading = () => {
     setIsLoading(true);
     let currentProgress = 0;
@@ -28,6 +34,7 @@ export default function GenerateResume({
       }
     }, 150);
   };
+
 
   return (
     <div className="flex justify-center mt-12">
@@ -59,16 +66,25 @@ export default function GenerateResume({
             //   bgColor="#28C76F"
             // />
           )}
-          <button className="w-full" onClick={() => simulateLoading()}>
-            {" "}
-            <Button
-              type="submit"
-              text="Next"
-              icon="arrow-right"
-              action="submit"
-              bgColor="#28C76F"
-            />
-          </button>
+
+          <div className="flex justify-between">
+            <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+              Back
+            </button>
+            <button  onClick={() => simulateLoading()}>
+              {" "}
+              <Button
+                type="submit"
+                text="Generate"
+                icon="arrow-right"
+                action="submit"
+                bgColor="#28C76F"
+                name="Next"
+                 className="px-4  py-2  rounded-md"
+              />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

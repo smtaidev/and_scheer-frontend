@@ -19,6 +19,10 @@ export default function CareerOverview({
   const { register, handleSubmit } = useForm<CareerFormData>();
   const router = useRouter();
 
+  const handleBack = (): void => {
+    setStep(1);
+    console.log("Back")
+  };
   const onSubmit = (data: CareerFormData): void => {
     console.log(data, " Tour career here");
     setStep(3);
@@ -34,29 +38,20 @@ export default function CareerOverview({
               title="Your Career Overview"
               description="A strong career summary will make a lasting impression on recruiters. Let’s create a summary that highlights your experience and goals."
             ></SectionHeader>
-
             <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
-              <div className="w-full ">
-                <label className="block text-xl font-medium text-gray-800 ">
+              <div className="w-full">
+                <label className="block text-xl font-medium text-gray-800">
                   Job Title
                 </label>
-                <select
+                <input
+                  type="text"
+                  placeholder="Enter your most recent or current job title"
                   className="w-full bg-gray-50 py-4 px-4 border border-[#c2c2c2] rounded"
                   {...register("jobTitle", { required: true })}
-                >
-                  <option value="" disabled hidden>
-                    Enter your most recent or current job title
-                  </option>
-                  <option value="software-engineer">Software Engineer</option>
-                  <option value="marketing-manager">Marketing Manager</option>
-                  <option value="graphic-designer">Graphic Designer</option>
-                  <option value="sales-representative">
-                    Sales Representative
-                  </option>
-                  <option value="project-manager">Project Manager</option>
-                </select>
+                />
               </div>
             </div>
+
             <div>
               <label className="block text-xl font-medium text-gray-800 ">
                 Job Description
@@ -69,13 +64,21 @@ export default function CareerOverview({
               />
             </div>
 
-            <Button
-                          type="submit"
-              text="Next"
-              icon="arrow-right"
-              action="log"
-              bgColor="#28C76F"
-            />
+
+            <div className="flex justify-between">
+              <button type="button" onClick={()=>handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+                Back
+              </button>
+              <Button
+                type="submit"
+                text="Next"
+                icon="arrow-right"
+                action="submit"
+                bgColor="#28C76F"
+                name="Next"
+                className="px-4  py-2  rounded-md"
+              />
+            </div>
           </form>
         </div>
       </div>

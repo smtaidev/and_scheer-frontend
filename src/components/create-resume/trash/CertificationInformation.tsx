@@ -18,7 +18,11 @@ type WorkForm = {
   }[];
 };
 
-export default function CertificationInformation() {
+export default function CertificationInformation({
+  setStep,
+}: {
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const { control, register, handleSubmit } = useForm<WorkForm>({
     defaultValues: {
       certificate: [
@@ -39,9 +43,15 @@ export default function CertificationInformation() {
 
   //   const router = useRouter();
 
-  const onSubmit = (data: WorkForm) => {
-    console.log("Certification Data:", data);
-    // router.push('/jobseekeruser/education'); // Change route as needed
+  const handleBack = (): void => {
+    setStep(3);
+    console.log("Back")
+  };
+
+  const onSubmit = (data:WorkForm) => {
+    console.log("Educational Data Submitted:", data);
+    setStep(5)
+    // router.push("/jobseekeruser/contactInfo");
   };
 
   return (
@@ -128,12 +138,20 @@ export default function CertificationInformation() {
               </button>
             </div>
 
-            <Button
-              text="Next"
-              icon="arrow-right"
-              action="submit"
-              bgColor="#28C76F"
-            />
+            <div className="flex justify-between">
+              <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+                Back
+              </button>
+              <Button
+                type="submit"
+                text="Next"
+                icon="arrow-right"
+                action="submit"
+                bgColor="#28C76F"
+                name="Next"
+                className="px-4  py-2  rounded-md"
+              />
+            </div>
           </form>
         </div>
       </div>

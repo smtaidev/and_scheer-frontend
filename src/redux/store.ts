@@ -2,6 +2,23 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseUrlApi } from "./api/baseUrlApi";
 import subscriptionDataReducer from "./features/Subscription/subscriptionDataSlice";
 
+
+
+// const persistMiddleware = (store) => (next) => (action) => {
+//   const result = next(action);
+  
+//   if (typeof window !== 'undefined' && action.type.startsWith('resume/')) {
+//     const state = store.getState();
+//     const { files, ...stateWithoutFiles } = state.resume;
+    
+//     sessionStorage.setItem('resumeFormData', JSON.stringify(stateWithoutFiles));
+//   }
+  
+//   return result;
+// };
+
+
+
 export const makeStore = () => {
   return configureStore({
     reducer: {

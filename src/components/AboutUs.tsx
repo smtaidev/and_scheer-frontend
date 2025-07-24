@@ -72,7 +72,7 @@ export default function AboutUs() {
               </div>
 
               {/* Button */}
-              <button className="mt-4 px-6 py-3 flex bg-black-button text-white font-semibold rounded hover:bg-neutral-900 transition">
+              <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
                 Join Us Today{" "}
                 <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
               </button>

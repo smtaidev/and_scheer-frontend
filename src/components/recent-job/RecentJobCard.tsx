@@ -9,6 +9,7 @@ interface RecentJobCardProps {
 }
 
 export default function RecentJobCard({ job }: RecentJobCardProps) {
+  console.log(job)
   return (
     <div className='w-full md:max-w-[457px]  border border-gray-100 rounded-lg shadow-md p-4 bg-white '>
         <div className='flex gap-2 items-center'>
@@ -22,7 +23,7 @@ export default function RecentJobCard({ job }: RecentJobCardProps) {
 
         <div className='flex items-center justify-between'>
             <h1 className='text-xs xl:text-base'><span className='text-md 2xl:text-xl font-semibold'>{job.salaryRange}</span>/Month</h1>
-            <button className='2xl:px-6 px-2 py-2 2xl:py-3 main-bg rounded xl:text-base  text-xs text-white cursor-pointer'>Apply Now</button>
+            <button className='2xl:px-6 px-2 py-2 2xl:py-3 bg-primary rounded xl:text-base  text-xs text-white cursor-pointer hover:bg-green-600' >Apply Now</button>
         </div>
 
     </div>

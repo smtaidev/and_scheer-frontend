@@ -12,6 +12,7 @@ import { useSignInMutation } from "@/redux/features/auth/auth";
 import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
+import Cookies from 'js-cookie';
 
 interface FormData {
   email: string;
@@ -29,7 +30,8 @@ export default function SignInForm() {
       const response = await sigInUser(data).unwrap();
       console.log(response);
       if (response?.success) {
-        localStorage.setItem("accessToken", response?.data?.accessToken);
+        // localStorage.setItem("accessToken", response?.data?.accessToken);
+        Cookies.set('accessToken',response?.data?.accessToken )
         toast.success(response?.message);
         router.push("/");
         reset();
@@ -72,7 +74,7 @@ export default function SignInForm() {
               Hi, Welcome Back!
             </h2>
             <p className="text-sm text-gray-600 mb-8">
-              Please exter your email and password below!
+              Please enter your email and password below!
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>

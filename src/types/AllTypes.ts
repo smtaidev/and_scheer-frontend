@@ -151,3 +151,62 @@ export type FormData = {
     zipCode: string;
   };
 };
+
+
+export interface ResumeFormData {
+  // Personal Info
+  phoneNumber: string;
+  countryRegion: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  linkedInProfileUrl: string;
+  personalWebsiteUrl: string;
+  otherSocialMedia: string;
+  otherSocialMediaUrl: string;
+
+  // Experience
+  recentJobTitle: string;
+  jobExplanation: string;
+  jobTitle: string;
+  CompanyName: string;
+  startDate: string; // ISO date string
+  endDate: string;   // ISO date string
+  jobDescription: string;
+
+  // Skills
+  skills: string[];
+
+  // Education
+  degree: string;
+  institutionName: string;
+  major: string;
+  graduationStartDate: string;
+  graduationEndDate: string;
+
+  // Certificate
+  certificateTitle: string;
+  issuingOrganization: string;
+  certificateIssuedDate: string;
+  certificateExpiryDate: string;
+
+  // Files
+  achievementFiles: File;
+  graduationCertificateFiles: File;
+}
+
+
+export interface ResumeState {
+  personalInfo: Partial<ResumeFormData>; // store personal info separately
+  experience: Array<Partial<ResumeFormData>>;
+  education: Array<Partial<ResumeFormData>>;
+  certifications: Array<Partial<ResumeFormData>>;
+  skills: string[];
+  projects: any[]; // adjust this if needed
+  graduationCertificateFiles: File | null;
+  achievementFiles: File | null;
+  currentStep: number;
+  isSubmitting: boolean;
+  submitError: string | null;
+}
