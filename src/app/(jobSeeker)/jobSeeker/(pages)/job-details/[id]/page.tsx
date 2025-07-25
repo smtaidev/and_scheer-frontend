@@ -15,6 +15,7 @@ import { ChevronLeft, List, Search, X } from "lucide-react"
 import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
+import { useParams } from 'next/navigation';
 
 
 
@@ -27,6 +28,8 @@ export default function JobDetailspage() {
     const [companies, setCompanies] = useState<Company[]>([])
     const { data: res, isLoading } = useGetAllCompaniesQuery();
 
+    const {id }=useParams();
+
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
 
@@ -36,13 +39,17 @@ export default function JobDetailspage() {
             setAllJobs(jobs.data.data)
             setCurrentCompany(jobs.data.data[0])
         }
+        if(allJobs){
+            const nowJob=jobs?.data.data.find((p:any)=>p.id ==id)
+            setCurrentCompany(nowJob)
+        }
+       
     }, [jobs?.data])
 
 
-console.log(allJobs)
 
 
-    const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
+    // const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
 
 
     useEffect(() => {
