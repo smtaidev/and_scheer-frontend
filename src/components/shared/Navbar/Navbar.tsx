@@ -146,6 +146,7 @@ export default function Navbar({ navItem }: NavbarProps) {
 
   const handleDelete = () => {
     Cookies.remove("accessToken");
+    localStorage.removeItem("accessToken")
     setUser(null);
     setShowMenu(false);
     toast.success("Logged out successfully");

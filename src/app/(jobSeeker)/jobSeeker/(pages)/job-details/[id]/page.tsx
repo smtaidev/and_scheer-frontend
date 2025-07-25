@@ -15,6 +15,7 @@ import { ChevronLeft, List, Search, X } from "lucide-react"
 import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
+import { useParams } from 'next/navigation';
 
 
 
@@ -27,6 +28,8 @@ export default function JobDetailspage() {
     const [companies, setCompanies] = useState<Company[]>([])
     const { data: res, isLoading } = useGetAllCompaniesQuery();
 
+    const {id }=useParams();
+
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
 
@@ -34,14 +37,19 @@ export default function JobDetailspage() {
     useEffect(() => {
         if (jobs?.data) {
             setAllJobs(jobs.data.data)
+            setCurrentCompany(jobs.data.data[0])
         }
+        if(allJobs){
+            const nowJob=jobs?.data.data.find((p:any)=>p.id ==id)
+            setCurrentCompany(nowJob)
+        }
+       
     }, [jobs?.data])
 
 
-console.log(allJobs)
 
 
-    const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
+    // const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
 
 
     useEffect(() => {
@@ -108,23 +116,14 @@ console.log(allJobs)
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Companies List Section */}
                         <div
-                            className={`
-            space-y-2 md:space-y-6 
-            w-full md:w-[457px] 
-            ${showCompanies ? "block" : "hidden md:block"}
-          `}
+                            className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
                         >
                             {allJobs.length > 0 ? (
                                 allJobs.map((company) => (
                                     <div
                                         key={company.companyId}
-                                        className={`
-                  cursor-pointer transition-all duration-200
-                  ${currentCompany?.id === company.companyId
-                                                ? "border border-blue-500 rounded-lg shadow-sm shadow-blue-500/20"
-                                                : "hover:shadow-md"
-                                            }
-                `}
+                                        className={`cursor-pointer transition-all duration-200 
+                                            ${currentCompany?.id === company.id? "border border-primary rounded-lg shadow-sm shadow-primary/20": "hover:shadow-md"}`}
                                         onClick={() => handleCompanySelect(company)}
                                     >
                                         <RecentJobCard job={company} />

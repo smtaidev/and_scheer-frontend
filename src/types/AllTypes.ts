@@ -58,7 +58,7 @@ export interface Job {
   }[];
   userId: string;
   companyId: string;
-  type: string;
+  jobType: string;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -210,3 +210,4 @@ export interface ResumeState {
   isSubmitting: boolean;
   submitError: string | null;
 }
+
