@@ -1,11 +1,30 @@
 'use client'
-import React, { useState } from 'react';
+import { useGetCompanyNamesQuery, useGetDepartmentsQuery, useGetWorkModesQuery } from '@/redux/features/filters/filterSlice';
+import { Department, WorkMode } from '@/types/categoryType/Category';
+import React, { useMemo, useState } from 'react';
 
 
 // Filter Sidebar Component
 export const FilterSidebar = () => {
   //   const [workMode, setWorkMode] = useState('');
   const [experience, setExperience] = useState(5);
+  const [showAll, setShowAll] = useState(false);
+
+  const { data: type } = useGetWorkModesQuery({});
+  const { data: department } = useGetDepartmentsQuery({})
+  const {data:comName}=useGetCompanyNamesQuery({})
+
+
+  const workType = type?.data;
+  const allDepartment = department?.data || [];
+
+  // Sort departments by length (highest to lowest) and slice based on showAll state
+  const displayedDepartments = useMemo(() => {
+    const sorted = [...allDepartment].sort((a, b) => b.length - a.length);
+    return showAll ? sorted : sorted.slice(0, 6);
+  }, [allDepartment, showAll]);
+
+  const hasMoreDepartments = allDepartment.length > 5;
 
   return (
     <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 ">
@@ -18,21 +37,16 @@ export const FilterSidebar = () => {
           <span className="text-blue-500 text-sm cursor-pointer">Applied (1)</span>
         </div>
         <div className="space-y-2">
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="rounded" />
-            <span className="text-sm">On Desk</span>
-            <span className="text-gray-400 text-xs ml-auto">(375)</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="rounded" />
-            <span className="text-sm">Remote</span>
-            <span className="text-gray-400 text-xs ml-auto">(267)</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="rounded text-green-500" defaultChecked />
-            <span className="text-sm">Hybrid</span>
-            <span className="text-gray-400 text-xs ml-auto">(156)</span>
-          </label>
+          {
+            workType?.map((type: WorkMode) => <><label className="flex items-center space-x-2">
+
+              <input type="checkbox" className="rounded" />
+              <span className="text-sm">{type.jobType}</span>
+              <span className="text-gray-400 text-xs ml-auto">({type.length})</span>
+            </label></>)
+
+          }
+
         </div>
       </div>
 
@@ -62,23 +76,23 @@ export const FilterSidebar = () => {
       <div className="mb-6">
         <h3 className="font-medium mb-3">Department</h3>
         <div className="space-y-2">
-          {[
-            { name: 'UI/UX Designer', count: '(573)' },
-            { name: 'Font-End Development', count: '(387)' },
-            { name: 'Back-End Development', count: '(287)' },
-            { name: 'Data Entry Operator', count: '(167)' },
-            { name: 'Graphics Designer', count: '(123)' },
-            { name: 'Data Analytics', count: '(98)' },
-            { name: 'Devops Engineer', count: '(87)' }
-          ].map((dept, index) => (
+          {displayedDepartments.map((dept, index) => (
             <label key={index} className="flex items-center space-x-2">
               <input type="checkbox" className="rounded" />
-              <span className="text-sm">{dept.name}</span>
-              <span className="text-gray-400 text-xs ml-auto">{dept.count}</span>
+              <span className="text-sm">{dept.title}</span>
+              <span className="text-gray-400 text-xs ml-auto">{dept.length}</span>
             </label>
           ))}
         </div>
-        <button className="text-blue-500 text-sm mt-2">View More</button>
+
+        {hasMoreDepartments && (
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="text-blue-500 text-sm mt-2 hover:text-blue-600 transition-colors"
+          >
+            {showAll ? 'View Less' : 'View More'}
+          </button>
+        )}
       </div>
 
       {/* Location Filter */}

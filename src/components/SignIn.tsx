@@ -3,17 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "./ui/MainLogo";
 import Input from "./ui/Input";
-import { useSignInMutation } from "@/redux/features/auth/auth";
+import { useSignInMutation, useSignUpMutation } from "@/redux/features/auth/auth";
 import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
 import Cookies from 'js-cookie';
-import { signIn } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 
 interface FormData {
   email: string;
@@ -25,13 +25,31 @@ export default function SignInForm() {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const [sigInUser, { isLoading }] = useSignInMutation();
+    const [createAcount, ] = useSignUpMutation();
+  const { data: session, status } = useSession();
 
-  const handleGoogle=()=>{
-    signIn("google");
-    // Cookies.set("accessToken",)
-     toast.success("Login Successfull!");
-        router.push("/");
-  }
+    useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      console.log("User authenticated:", session.user);
+      const res = createAcount(session.user);
+      // if(res.success){
+      //     toast.success("Success");
+      //   router.push("/")
+      // }
+    }
+  }, [session, status]);
+
+  const handleGoogle = async () => { 
+    console.log("Starting Google login") 
+    try { 
+      // This will redirect, but useEffect will handle the success
+      await signIn("google");
+    } catch (error) { 
+      console.error("Login error:", error); 
+      toast.error("Login failed!"); 
+    } 
+  }; 
+
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -39,7 +57,7 @@ export default function SignInForm() {
       console.log(response);
       if (response?.success) {
         // localStorage.setItem("accessToken", response?.data?.accessToken);
-        Cookies.set('accessToken',response?.data?.accessToken )
+        Cookies.set('accessToken', response?.data?.accessToken)
         toast.success(response?.message);
         router.push("/");
         reset();
@@ -71,9 +89,9 @@ export default function SignInForm() {
             {/* Logo */}
             <div className="mb-6">
               <Link href={"/"}>
-               <Logo height={120} width={268}></Logo>
+                <Logo height={120} width={268}></Logo>
               </Link>
-             
+
             </div>
 
             {/* Welcome Message */}
@@ -129,7 +147,7 @@ export default function SignInForm() {
           </div>
 
           {/* Continue with Google */}
-          <button  onClick={() => handleGoogle()} className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+          <button onClick={() => handleGoogle()} className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
             <FcGoogle className="size-6" />
             Login with Google
           </button>

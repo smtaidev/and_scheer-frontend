@@ -210,3 +210,4 @@ export interface ResumeState {
   isSubmitting: boolean;
   submitError: string | null;
 }
+
