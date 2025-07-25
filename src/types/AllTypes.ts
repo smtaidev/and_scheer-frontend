@@ -58,7 +58,7 @@ export interface Job {
   }[];
   userId: string;
   companyId: string;
-  type: string;
+  jobType: string;
   status: string;
   createdAt: string;
   updatedAt: string;

@@ -7,3 +7,4 @@ export interface Department {
   title: string;
   length: number;
 }
+
