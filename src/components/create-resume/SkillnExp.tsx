@@ -20,11 +20,14 @@ type WorkForm = {
   }[];
 };
 
-export default function SkillsExperience({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+interface IPersonal {
+  setStep: any;
+  formData: any
+  setFormData: any;
+}
+
+
+export default function SkillsExperience({setStep,formData,setFormData}: IPersonal) {
   const { control, register, handleSubmit } = useForm<WorkForm>({
     defaultValues: {
       experiences: [
@@ -58,6 +61,7 @@ export default function SkillsExperience({
   const onSubmit = (data: WorkForm) => {
     console.log("Got all skills data:", data);
     setStep(4);
+       setFormData(data)
     // router.push("/jobseekeruser/education");
   };
 

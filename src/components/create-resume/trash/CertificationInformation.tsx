@@ -7,6 +7,7 @@ import FormInput from "@/components/ui/FormInput";
 // import { useRouter } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { IPersonal } from "../personalInfo";
 
 // ✅ Corrected type
 type WorkForm = {
@@ -18,11 +19,7 @@ type WorkForm = {
   }[];
 };
 
-export default function CertificationInformation({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function CertificationInformation({setStep,formData,setFormData}: IPersonal) {
   const { control, register, handleSubmit } = useForm<WorkForm>({
     defaultValues: {
       certificate: [
@@ -51,6 +48,7 @@ export default function CertificationInformation({
   const onSubmit = (data:WorkForm) => {
     console.log("Educational Data Submitted:", data);
     setStep(5)
+     setFormData(data)
     // router.push("/jobseekeruser/contactInfo");
   };
 

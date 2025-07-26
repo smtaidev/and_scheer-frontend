@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import FormInput from "../ui/FormInput";
+import { useDispatch, useSelector } from "react-redux";
+import { addInfo } from "@/redux/features/resume/resumeSlice";
+import { useEffect, useState } from "react";
 
 interface PersonalInfoType {
   firstName: string;
@@ -16,20 +19,26 @@ interface PersonalInfoType {
   state: string;
   zip: string;
 }
+export interface IPersonal {
+  setStep: any;
+  formData: any
+  setFormData: any;
+}
 
-export default function PersonalInformation({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function PersonalInformation({setStep,formData,setFormData}: IPersonal) {
   const { register, handleSubmit } = useForm<PersonalInfoType>();
+  const [personal, setPersonal]=useState<PersonalInfoType>()
 
   const router = useRouter();
+  const dispatch = useDispatch();
+const formInfo=localStorage.getItem("formData")
 
   const onSubmit = (data: PersonalInfoType) => {
     console.log(data, "Got the personal info");
+    dispatch(addInfo(data));
+    setFormData(data)
     setStep(2);
-    // router.push("/jobseekeruser/careersummary");
+
   };
 
   return (
@@ -48,12 +57,14 @@ export default function PersonalInformation({
                 label="First Name"
                 type="text"
                 placeholder="Saifur"
+                defaultValue={formData?.firstName||"firstName" }
                 {...register("firstName", { required: true })}
               />
               <FormInput
                 label="Last Name"
                 type="text"
                 placeholder="Rahman"
+                defaultValue={formData?.lastName||"firstName" }
                 {...register("lastName", { required: true })}
               />
             </div>
@@ -64,12 +75,14 @@ export default function PersonalInformation({
                 label="Phone Number"
                 type="text"
                 placeholder="+880 1567808747"
+                  defaultValue={formData?.phone||"firstName" }
                 {...register("phone", { required: true })}
               />
               <FormInput
                 label="Email Address"
                 type="email"
                 placeholder="ux.saifur.ug@gmail.com"
+                 defaultValue={formData?.email||"firstName" }
                 {...register("email", { required: true })}
               />
             </div>

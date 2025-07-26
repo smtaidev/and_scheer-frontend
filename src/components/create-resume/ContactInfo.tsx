@@ -17,11 +17,14 @@ interface ContactInfoType {
   socialMediaLink?: string;
 }
 
-export default function ContactInfo({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+interface IPersonal {
+  setStep: any;
+  formData: any
+  setFormData: any;
+}
+
+
+export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
 
 
 
@@ -65,6 +68,7 @@ export default function ContactInfo({
   const onSubmit = (data: any) => {
     console.log(data, "Got the personal info");
     setStep(6)
+       setFormData(data)
     // router.push("/jobseekeruser/aimagic");
   };
 

@@ -15,12 +15,14 @@ import CertificationInformation from "./trash/CertificationInformation";
 //   graduationStart: string;
 //   graduationEnd: string;
 // };
+interface IPersonal {
+  setStep: any;
+  formData: any
+  setFormData: any;
+}
 
-export default function Education({
-    setStep,
-}: {
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+
+export default function Education({setStep,formData,setFormData}: IPersonal) {
     // const { register, handleSubmit } = useForm<EducationFormData>();
     const [certificate, setCertificate] = useState(true);
 
@@ -48,7 +50,7 @@ export default function Education({
 
                         <div>
                             {
-                                certificate ? <EducationalBackground setStep={setStep}/> : <CertificationInformation setStep={setStep}/>
+                                certificate ? <EducationalBackground setStep={setStep}  formData={formData} setFormData={setFormData}/> : <CertificationInformation setStep={setStep}  formData={formData} setFormData={setFormData}/>
                             }
                         </div>
 

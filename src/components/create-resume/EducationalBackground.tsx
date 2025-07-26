@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import Button from "../shared/button/Button";
 import FormInput from "../ui/FormInput";
+import { IPersonal } from "./personalInfo";
 
 type EducationFormData = {
   education: {
@@ -15,11 +16,7 @@ type EducationFormData = {
   }[];
 };
 
-export default function EducationalBackground({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function EducationalBackground({setStep,formData,setFormData}: IPersonal) {
   const { register, control, handleSubmit } = useForm<EducationFormData>({
     defaultValues: {
       education: [
@@ -49,6 +46,7 @@ export default function EducationalBackground({
   const onSubmit = (data: EducationFormData) => {
     console.log("Educational Data Submitted:", data);
     setStep(5)
+     setFormData(data);
     // router.push("/jobseekeruser/contactInfo");
   };
 
