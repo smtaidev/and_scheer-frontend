@@ -13,7 +13,7 @@ type JobDetailsCardProps = {
 
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
-    console.log(currentCompany)
+    console.log(currentCompany, "Current country")
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
             <header className="flex justify-between items-center mb- 4">

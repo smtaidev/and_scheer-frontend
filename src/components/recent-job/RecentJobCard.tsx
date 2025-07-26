@@ -18,7 +18,7 @@ export default function RecentJobCard({ job }: RecentJobCardProps) {
     <div className='w-full md:max-w-[457px]  border border-gray-100 rounded-lg shadow-md p-4 bg-white '>
         <div className='flex gap-2 items-center'>
             <Image src={"/company1.png"} alt="company" height={48} width={48} className=' rounded-3xl'/>
-            <h1 className='text-md xl:text-xl font-semibold'>{job.company?.companyName}</h1>
+            <h1 className='text-md xl:text-xl font-semibold'>{job?.company?.companyName}</h1>
         </div>
         <h2 className='text-sm  mt-3 xl:text-lg  font-semibold'>{job.title}</h2>
         <p className='text-gray-500 text-xs xl:text-base'>{job.location}</p>

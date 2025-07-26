@@ -30,8 +30,9 @@ export default function SignInForm() {
 
     useEffect(() => {
     if (status === 'authenticated' && session?.user) {
-      console.log("User authenticated:", session.user);
+      console.log("User authenticated:", session);
       const res = createAcount(session.user);
+      console.log(Cookies.get("next-auth.csrf-token"))
       // if(res.success){
       //     toast.success("Success");
       //   router.push("/")
@@ -43,7 +44,8 @@ export default function SignInForm() {
     console.log("Starting Google login") 
     try { 
       // This will redirect, but useEffect will handle the success
-      await signIn("google");
+      const res =await signIn("google");
+      console.log(res)
     } catch (error) { 
       console.error("Login error:", error); 
       toast.error("Login failed!"); 
