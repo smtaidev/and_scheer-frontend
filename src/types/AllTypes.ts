@@ -153,7 +153,7 @@ export type FormData = {
 };
 
 
-export interface ResumeFormData {
+export interface ProfileData {
   // Personal Info
   phoneNumber: string;
   countryRegion: string;
@@ -197,17 +197,17 @@ export interface ResumeFormData {
 }
 
 
-export interface ResumeState {
-  personalInfo: Partial<ResumeFormData>; // store personal info separately
-  experience: Array<Partial<ResumeFormData>>;
-  education: Array<Partial<ResumeFormData>>;
-  certifications: Array<Partial<ResumeFormData>>;
-  skills: string[];
-  projects: any[]; // adjust this if needed
-  graduationCertificateFiles: File | null;
-  achievementFiles: File | null;
-  currentStep: number;
-  isSubmitting: boolean;
-  submitError: string | null;
-}
+// export interface ResumeState {
+//   personalInfo: Partial<ResumeFormData>; // store personal info separately
+//   experience: Array<Partial<ResumeFormData>>;
+//   education: Array<Partial<ResumeFormData>>;
+//   certifications: Array<Partial<ResumeFormData>>;
+//   skills: string[];
+//   projects: any[]; // adjust this if needed
+//   graduationCertificateFiles: File | null;
+//   achievementFiles: File | null;
+//   currentStep: number;
+//   isSubmitting: boolean;
+//   submitError: string | null;
+// }
 

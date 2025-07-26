@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../ui/Container";
 import ProgressBar from "../ui/progressBar";
 import PersonalInformation from "./personalInfo";
@@ -13,21 +13,32 @@ import Education from "./EducationCertificate";
 
 const MainComponents = () => {
   const [step, setStep] = useState(1);
-  // to-do
-  // there will be a staet to manage all data
-  const handleStep = (step: number) => {
-    setStep(step);
+const [formData,setNewForm ] = useState({})
+
+ const setFormData = (newData: any) => {
+    setNewForm((prevFormData) => ({
+      ...prevFormData,
+      ...newData
+    }));
   };
 
+useEffect(()=>{
+     if(formData){
+      localStorage.setItem("formData",JSON.stringify(formData))
+     }
+},[formData])
+
+
+  console.log(formData)
   return (
     <Container>
       <div className=" px-2">
         <ProgressBar currentStep={step} totalSteps={7} />
-        {step === 1 && <PersonalInformation setStep={setStep} />}
-        {step === 2 && <CareerOverview setStep={setStep} />}
-        {step === 3 && <SkillsExperience setStep={setStep} />}
-        {step === 4 && <Education setStep={setStep} />}
-        {step === 5 && <ContactInfo setStep={setStep} />}
+        {step === 1 && <PersonalInformation setStep={setStep} formData={formData} setFormData={setFormData} />}
+        {step === 2 && <CareerOverview setStep={setStep} formData={formData} setFormData={setFormData}/>}
+        {step === 3 && <SkillsExperience setStep={setStep} formData={formData} setFormData={setFormData}/>}
+        {step === 4 && <Education setStep={setStep} formData={formData} setFormData={setFormData}/>}
+        {step === 5 && <ContactInfo setStep={setStep} formData={formData} setFormData={setFormData}/>}
         {step === 6 && <GenerateResume setStep={setStep} />}
         {step === 7 && <MyResume />}
       </div>

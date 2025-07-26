@@ -4,28 +4,38 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
+import { useDispatch, useSelector } from "react-redux";
+import { addInfo } from "@/redux/features/resume/resumeSlice";
 // Adjust path if different
 
 interface CareerFormData {
   jobTitle: string;
   jobDescription: string;
 }
+interface IPersonal {
+  setStep: any;
+  formData: any
+  setFormData: any;
+}
 
-export default function CareerOverview({
-  setStep,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+
+export default function CareerOverview({setStep,formData,setFormData}: IPersonal) {
   const { register, handleSubmit } = useForm<CareerFormData>();
   const router = useRouter();
-
+const dispatch=useDispatch()
   const handleBack = (): void => {
     setStep(1);
     console.log("Back")
   };
+  //  const data = useSelector(state => state.allResumeData.resumeData);
+
+  // console.log(data)
   const onSubmit = (data: CareerFormData): void => {
     console.log(data, " Tour career here");
+    dispatch(addInfo(data))
     setStep(3);
+    setFormData(data)
+
     // router.push("/jobseekeruser/skillexprience");
   };
 
