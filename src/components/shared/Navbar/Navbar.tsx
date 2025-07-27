@@ -31,7 +31,7 @@ type NavbarProps = {
 export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const { data: me } = useGetMeQuery({})
+  const { data: me,refetch } = useGetMeQuery({})
 
   const [user, setUser] = useState<string | any>("");
 
@@ -92,9 +92,9 @@ export default function Navbar({ navItem }: NavbarProps) {
         </>
       )}
     </div>
-
   );
 
+  console.log(user)
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -116,6 +116,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     if (me?.data) {
       setUser(me?.data);
     }
+   
 
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -150,6 +151,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     setUser(null);
     setShowMenu(false);
     toast.success("Logged out successfully");
+    refetch()
   }
 
 

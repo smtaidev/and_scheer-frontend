@@ -69,7 +69,7 @@ export default function SearchField() {
           </div>
 
           {/* Search Button */}
-          <button className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded bg-neutral-700 hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer">
+          <button type="submit" className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded bg-neutral-700 hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer">
             <FaSearch />
             Search
           </button>
