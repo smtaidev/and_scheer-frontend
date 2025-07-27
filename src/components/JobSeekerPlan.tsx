@@ -11,11 +11,12 @@ export default function JobSeekerPlan() {
   const router = useRouter();
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
-  console.log(
-    JobSeekerPlans?.data.filter(
-      (seeker: any) => seeker.description === "Job_Seeker_Plan"
-    )
-  );
+  // console.log(
+  //   JobSeekerPlans?.data.filter(
+  //     (seeker: any) => seeker.description === "Job_Seeker_Plan"
+  //   )
+  // );
+  console.log("yes", JobSeekerPlans);
 
   if (isLoading) {
     return <Loading />;

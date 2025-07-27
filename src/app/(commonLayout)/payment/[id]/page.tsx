@@ -67,6 +67,7 @@ export default function Billing() {
             setUserBillingInfo={setUserBillingInfo}
           />
           <PaymentForm handlePayment={handlePayment} />
+          {/* <CheckoutPage /> */}
         </div>
       </Container>
     </div>
