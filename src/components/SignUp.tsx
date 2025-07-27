@@ -58,6 +58,8 @@ export default function SignUpForm() {
     }
   };
 
+  // google login
+
   const handleSuccess = async (credentialResponse: any) => {
     console.log("yesTonek= ", credentialResponse.credential);
 

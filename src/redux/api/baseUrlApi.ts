@@ -7,8 +7,8 @@ export const baseUrlApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://172.252.13.71:5005/api/v1",
     prepareHeaders: (headers) => {
-      // const token  = localStorage.getItem("accessToken")
-      const token = localStorage.get("accessToken");
+      const token = localStorage.getItem("accessToken");
+      // const token = localStorage.get("accessToken");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

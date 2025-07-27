@@ -35,7 +35,6 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [isTrue, setIsTrue] = useState(false);
   const { data: me } = useGetMeQuery({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  console.log(me);
 
   const [user, setUser] = useState<string | any>("");
   const [isLogned, setIsLogned] = useState<string | null>(null);
@@ -133,7 +132,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showMenu, me?.data, isTrue]);
+  }, [showMenu, me?.data]);
 
   const handleSearch = () => {
     console.log("first");
@@ -145,6 +144,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     setShowDeleteModal(true);
   };
 
+  // logout functtion working
   const handleDelete = () => {
     localStorage.removeItem("accessToken");
     setUser(null);
@@ -153,8 +153,6 @@ export default function Navbar({ navItem }: NavbarProps) {
     setIsLogned(null);
     toast.success("Logged out successfully");
   };
-
-  console.log(user);
 
   return (
     <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
@@ -214,7 +212,7 @@ export default function Navbar({ navItem }: NavbarProps) {
               className="flex items-center gap-2 cursor-pointer"
             >
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />{" "}
-              <p>{user?.fullName}</p>
+              <p>{isLogned && user?.fullName}</p>
             </button>
 
             {showMenu && (
