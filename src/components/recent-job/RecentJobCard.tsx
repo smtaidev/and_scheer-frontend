@@ -26,10 +26,10 @@ export default function RecentJobCard({ job }: RecentJobCardProps) {
     <hr className="xl:my-3 my-2 border-t border-gray-200" />
 
         <div className='flex items-center justify-between'>
-            <h1 className='text-xs xl:text-base'><span className='text-md 2xl:text-xl font-semibold'>{job.salaryRange}</span>/Month</h1>
+            <h1 className='text-xs xl:text-base'><span className='text-md 2xl:text-xl font-semibold text-nowrap'>{job.salaryRange}</span>/Month</h1>
             {pathname.includes("/jobSeeker/job-details")? <><p className='text-primary underline'>View Details</p></>:<> 
              <Link href={`/jobSeeker/job-details/${job.id}`}>
-             <button className='2xl:px-6 px-2 py-2 2xl:py-3 bg-primary rounded xl:text-base  text-xs text-white cursor-pointer hover:bg-green-600' >Apply Now</button></Link></>}
+             <button className='2xl:px-6 px-2 py-2 2xl:py-3 bg-primary rounded xl:text-base 2xl:scale-75 2xl:pr-3 3xl:pr-0 3xl:scale-100 text-xs text-white cursor-pointer hover:bg-green-600 text-nowrap' >Apply Now</button></Link></>}
         </div>
 
     </div>
