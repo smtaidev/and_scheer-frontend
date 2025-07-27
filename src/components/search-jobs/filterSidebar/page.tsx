@@ -102,7 +102,7 @@ export const FilterSidebar = () => {
   };
 
   return (
-    <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50">
+    <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">
       <h2 className="text-lg font-semibold mb-6">All Filters</h2>
 
       {/* Work Mode Filter */}
