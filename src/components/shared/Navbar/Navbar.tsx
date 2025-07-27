@@ -205,7 +205,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute top-12 right-0 bg-gray-200  rounded-md p-3 min-w-[120px] z-50">
+              <div className="absolute top-12 right-0 min-w-[120px] z-50">
                 {user ? (
                   // <button
                   //   onClick={() => setShowMenu(false)}
@@ -232,7 +232,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                   <Link
                     onClick={() => setShowMenu(false)}
                     href={"/signIn"}
-                    className="w-full text-left hover:text-main-green"
+                    className="w-full text-left hover:text-main-green bg-gray-200 px-6 py-2 rounded-md"
                   >
                     Sign In
                   </Link>
@@ -277,9 +277,8 @@ export default function Navbar({ navItem }: NavbarProps) {
             <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
             </button>
-
             {showMenu && (
-              <div className="absolute -top-2 lg:-top-50 left-8 lg:left-0 bg-gray-200/80 shadow-lg rounded-md p-3 min-w-[120px] z-50 scale-75">
+              <div className="absolute top-1 lg:-top-50 left-8 lg:left-0 z-50 scale-75">
                 {user ? (
                   // <Link
                   //   onClick={() => setShowMenu(false)}
@@ -305,8 +304,8 @@ export default function Navbar({ navItem }: NavbarProps) {
                 ) : (
                   <Link
                     onClick={() => setShowMenu(false)}
-                    href={"/login"}
-                    className="w-full text-left hover:text-main-green"
+                    href={"/signIn"}
+                    className="w-full text-left hover:text-main-green cursor-pointer bg-gray-200/80 shadow-lg rounded-md px-5 py-2 min-w-[120px]"
                   >
                     Sign In
 
