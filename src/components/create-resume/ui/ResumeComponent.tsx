@@ -1,13 +1,11 @@
 import React from 'react';
 import { CgMail } from 'react-icons/cg';
-import { FiExternalLink } from 'react-icons/fi';
 import { FaDribbble } from "react-icons/fa6";
-import { HiExternalLink } from 'react-icons/hi';
 import { FaLinkedin } from "react-icons/fa6";
 import Image from 'next/image';
 import { PiPhone } from 'react-icons/pi';
 import { TbMapPinCode } from 'react-icons/tb';
-import { FC, RefObject } from 'react';
+import { RefObject } from 'react';
 
 interface ResumeComponentProps {
   downloadResume: () => void;
@@ -19,9 +17,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
     <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
       {/* Header Section */}
       <div className="p-8">
-        {/* <div className="flex gap-28 items-center space-x-6"> */}
         <div className='p-8 flex gap-20'>
-          {/* <div className="relative"> */}
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
               <Image
@@ -54,7 +50,6 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
         </div>
       </div>
 
-      {/* <div className='p-8 grid grid-cols-2 gap-10'> */}
       <div className='p-8 flex gap-20'>
         {/* Left Column */}
         <div className='border-r-[1px] border-[#a2d2f0] pr-16'>
@@ -149,7 +144,6 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 time: "2016 - 2018"
               }].map((edu, idx) => (
                 <div key={idx} className='mb-3'>
-                  {/* <h3 className="font-semibold text-gray-800">{edu.degree}</h3> */}
                   <h3 className="font-semibold text-[#1F2937]">{edu.degree}</h3>
                   <p className="text-sm text-[#374151]">{edu.school}</p>
                   <p className="text-sm text-[#374151]">{edu.time}</p>
