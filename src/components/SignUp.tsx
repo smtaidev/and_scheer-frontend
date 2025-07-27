@@ -12,6 +12,7 @@ import { useSignUpMutation } from "@/redux/features/auth/auth";
 import LoadingButton from "./loading/LoadingButton";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface FormData {
   firstName?: string;
@@ -73,7 +74,8 @@ export default function SignUpForm() {
       );
 
       if (response?.data?.success) {
-        localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }

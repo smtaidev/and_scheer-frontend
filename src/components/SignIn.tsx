@@ -35,8 +35,8 @@ export default function SignInForm() {
       const response = await sigInUser(data).unwrap();
       console.log(response);
       if (response?.success) {
-        localStorage.setItem("accessToken", response?.data?.accessToken);
-        // Cookies.set("accessToken", response?.data?.accessToken);
+        // localStorage.setItem("accessToken", response?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
         toast.success(response?.message);
         router.push("/");
         reset();
@@ -64,7 +64,8 @@ export default function SignInForm() {
       );
 
       if (response?.data?.success) {
-        localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }

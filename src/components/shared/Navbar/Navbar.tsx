@@ -106,7 +106,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = Cookies.get("accessToken");
     if (accessToken) {
       setIsLogned(accessToken);
     }
@@ -147,6 +147,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   // logout functtion working
   const handleDelete = () => {
     localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
     setUser(null);
     setShowMenu(false);
     setShowDeleteModal(false);
