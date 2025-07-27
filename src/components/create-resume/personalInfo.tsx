@@ -1,11 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import FormInput from "../ui/FormInput";
+
 
 interface PersonalInfoType {
   firstName: string;
@@ -33,7 +32,6 @@ export default function PersonalInformation({ setStep, formData, setFormData }: 
     console.log(data, "Got the personal info");
     setFormData(data)
     setStep(2);
-
   };
 
   return (
