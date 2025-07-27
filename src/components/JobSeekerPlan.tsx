@@ -24,6 +24,8 @@ export default function JobSeekerPlan() {
     (seeker: any) => seeker.description === "Job_Seeker_Plan"
   );
 
+  console.log(JobSeekerPlans);
+
   const handleClick = (id: string) => {
     const jobName = "frontend";
     const company = "Google";
