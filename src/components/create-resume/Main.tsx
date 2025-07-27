@@ -10,7 +10,6 @@ import ContactInfo from "./ContactInfo";
 import GenerateResume from "./GenerateResume";
 import MyResume from "./MyResume";
 import Education from "./EducationCertificate";
-import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 
 const MainComponents = () => {
@@ -64,50 +63,48 @@ const MainComponents = () => {
   }, [formData])
 
 
-  console.log(formData);
-  //   const profileData = {
-  //   firstName: formData.firstName,
-  //   lastName: formData.lastName,
-  //   phoneNumber: formData.phone,
-  //   countryRegion: formData.country,
-  //   address: formData.address,
-  //   city: formData.city,
-  //   state: formData.state,
-  //   zipCode: formData.zip,
-  //   // recentJobTitle: fromData.jobTitle,
-  //   // jobExplanation: formData.jobDescription,
-  //   jobTitle: formData.jobTitle,
-  //   CompanyName: formData.companyName,
-  //   startDate: "2022-01-15T00:00:00.000Z",
-  //   endDate: "2024-06-30T00:00:00.000Z",
-  //   jobDescription: formData.jobDescription,
-  //   skills: [
-  //     "JavaScript",
-  //     "React",
-  //     "TypeScript",
-  //     "Next.js",
-  //     "Tailwind CSS"
-  //   ],
-  //   degree: "BSc in Computer Science",
-  //   institutionName: "North South University",
-  //   major: "Software Engineering",
-  //   graduationStartDate: "2017-01-01T00:00:00.000Z",
-  //   graduationEndDate: "2021-01-01T00:00:00.000Z",
-  //   certificateTitle: "Full Stack Web Development",
-  //   issuingOrganization: "Coursera",
-  //   certificateIssuedDate: "2021-08-01T00:00:00.000Z",
-  //   certificateExpiryDate: null,
-  //   linkedInProfileUrl: "https://www.linkedin.com/in/exampleuser",
-  //   personalWebsiteUrl: "https://portfolio.example.com",
-  //   otherSocialMedia: "GitHub",
-  //   otherSocialMediaUrl: "https://github.com/exampleuser"
-  // };
+  console.log("form Data", formData);
+
+  const profileData = {
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    phoneNumber: formData.phoneNumber,
+    countryRegion: formData.countryRegion,
+    address: formData.address,
+    city: formData.city,
+    state: formData.state,
+    zipCode: formData.zipCode,
+    // recentJobTitle: "Frontend Developer",
+    // "jobExplanation": "Worked mainly on React.js and UI optimization.",
+    jobTitle: formData.jobTitle,
+    CompanyName: formData.CompanyName,
+    startDate: formData.startDate,
+    endDate: formData.endDate,
+    jobDescription: formData.jobDescription,
+    skills: formData.skills || [], // e.g. ["React", "TypeScript"]
+    degree: formData.degree,
+    institutionName: formData.institutionName,
+    major: formData.major,
+    graduationStartDate: formData.graduationStartDate,
+    graduationEndDate: formData.graduationEndDate,
+    certificateTitle: formData.certificateTitle,
+    issuingOrganization: formData.issuingOrganization,
+    certificateIssuedDate: formData.certificateIssuedDate,
+    certificateExpiryDate: formData.certificateExpiryDate || null,
+    linkedInProfileUrl: formData.linkedInProfileUrl,
+    personalWebsiteUrl: formData.personalWebsiteUrl,
+    otherSocialMedia: formData.otherSocialMedia || "",
+    otherSocialMediaUrl: formData.otherSocialMediaUrl || "",
+
+  };
+
+
   const onSubmit = async () => {
     try {
       const sendForm = new FormData();
 
       // 🔄 Append dynamic profile data
-      sendForm.append("data", JSON.stringify(formData));
+      sendForm.append("data", JSON.stringify(profileData));
 
       // 📄 Append achievement file if selected
       if (achievementRef.current?.files?.[0]) {
@@ -123,7 +120,10 @@ const MainComponents = () => {
       const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
         method: "POST",
         body: sendForm,
-        credentials: "include", // if using HttpOnly cookie
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        } // if using HttpOnly cookie
       });
 
       const result = await res.json();
