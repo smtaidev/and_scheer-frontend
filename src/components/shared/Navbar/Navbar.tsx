@@ -279,7 +279,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute -top-50 left- bg-gray-200/80 shadow-lg rounded-md p-3 min-w-[120px] z-50 scale-75 ">
+              <div className="absolute -top-2 lg:-top-50 left-8 lg:left-0 bg-gray-200/80 shadow-lg rounded-md p-3 min-w-[120px] z-50 scale-75">
                 {user ? (
                   // <Link
                   //   onClick={() => setShowMenu(false)}
