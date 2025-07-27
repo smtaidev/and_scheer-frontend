@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import FormInput from "../ui/FormInput";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addInfo } from "@/redux/features/resume/resumeSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface PersonalInfoType {
   firstName: string;
@@ -38,7 +38,6 @@ const formInfo=localStorage.getItem("formData")
     dispatch(addInfo(data));
     setFormData(data)
     setStep(2);
-
   };
 
   return (
