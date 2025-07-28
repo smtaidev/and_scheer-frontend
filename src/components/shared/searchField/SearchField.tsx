@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import { useGetCompanyNamesQuery } from "@/redux/features/filters/filterSlice";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   FaBriefcase,
@@ -18,6 +19,16 @@ export default function SearchField() {
   }
 
   const { register, handleSubmit } = useForm<SearchFormInputs>();
+
+  const [showAllCompanies, setShowAllCompanies] = useState(false);
+  const { data: comName } = useGetCompanyNamesQuery({});
+  const allCompany = comName?.data;
+
+  const displayedCompanies = useMemo(() => {
+    if (!Array.isArray(allCompany)) return [];
+    const sorted = [...allCompany].sort((a, b) => b.length - a.length);
+    return showAllCompanies ? sorted : sorted.slice(0, 6);
+  }, [allCompany, showAllCompanies]);
 
   const onSubmit = (data: SearchFormInputs) => {
     console.log(data, "Check the data here: ");
@@ -42,16 +53,16 @@ export default function SearchField() {
           </div>
 
           {/* Company Select */}
-          <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+          <div className="flex items-center border-b border-gray-300 text-black px-3 py-2 flex-1 gap-2">
             <FaBuilding className="text-gray-500" />
             <select
               {...register("company", { required: true })}
-              className="flex-1    text-gray-700 "
+              className="flex-1 text-gray-700 "
             >
               <option value="">Select Company </option>
-              {companies.map((company) => (
-                <option key={company} value={company}>
-                  {company}
+              {displayedCompanies.map((company, idx) => (
+                <option key={idx} value={company.companyName} className="text-black">
+                  {company.companyName}
                 </option>
               ))}
             </select>
