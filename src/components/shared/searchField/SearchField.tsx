@@ -1,7 +1,9 @@
 "use client";
 import { useGetCompanyNamesQuery } from "@/redux/features/filters/filterSlice";
+
 import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
 import Link from "next/link";
+
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -41,6 +43,16 @@ export default function SearchField() {
   const displayedCompanies = useMemo(() => {
     if (!Array.isArray(allCompany)) return [];
     const sorted = [...allCompany].sort((a: any, b: any) => b.length - a.length);
+    return showAllCompanies ? sorted : sorted.slice(0, 6);
+  }, [allCompany, showAllCompanies]);
+
+  const [showAllCompanies, setShowAllCompanies] = useState(false);
+  const { data: comName } = useGetCompanyNamesQuery({});
+  const allCompany = comName?.data;
+
+  const displayedCompanies = useMemo(() => {
+    if (!Array.isArray(allCompany)) return [];
+    const sorted = [...allCompany].sort((a, b) => b.length - a.length);
     return showAllCompanies ? sorted : sorted.slice(0, 6);
   }, [allCompany, showAllCompanies]);
 
@@ -100,8 +112,10 @@ export default function SearchField() {
             >
               <option value="">Select Company </option>
               {displayedCompanies.map((company, idx) => (
+
                 <option key={idx} value={company?.companyName} className="text-black">
                   {company?.companyName}
+
                 </option>
               ))}
             </select>

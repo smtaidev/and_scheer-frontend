@@ -100,7 +100,7 @@ export default function AppliedJobList() {
                     <div className="col-span-1">{row.userName}</div>
                     <div className="col-span-1">{row.userName}</div>
                     <div className="col-span-1"><StatusBadge status={row.status} /></div>
-                    <div className="col-span-1 underline text-scheer-primary">View Details</div>
+                    <div className="col-span-1 underline text-primary hover:text-green-700 cursor-pointer ">View Details</div>
                   </div>
                 </div>
               ))}
