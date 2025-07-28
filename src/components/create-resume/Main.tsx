@@ -2,16 +2,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import Container from "../ui/Container";
 import ProgressBar from "../ui/progressBar";
-import PersonalInformation from "./personalInfo";
 import CareerOverview from "./CareerOverview";
-import SkillsExperience from "./SkillnExp";
-import EducationalBackground from "./EducationalBackground";
 import ContactInfo from "./ContactInfo";
+import Education from "./EducationCertificate";
 import GenerateResume from "./GenerateResume";
 import MyResume from "./MyResume";
-import Education from "./EducationCertificate";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
+import PersonalInformation from "./personalInfo";
+import SkillsExperience from "./SkillnExp";
 
 const MainComponents = () => {
   const [step, setStep] = useState(1);
@@ -106,7 +105,7 @@ const MainComponents = () => {
 
   const onSubmit = async () => {
     console.log("profileData", profileData);
-    
+
     // try {
     //   const sendForm = new FormData();
 
