@@ -16,7 +16,7 @@ type JobDetailsCardProps = {
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
     console.log("Current Compamy: ", currentCompany?.id)
-    // console.log("Company: ", company);
+    console.log("Company: ", company);
 
     // const id = Number(currentCompany?.id);
 
