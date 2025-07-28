@@ -3,6 +3,7 @@ import Container from "./ui/Container";
 import InfoSection from "./shared/TwoCloumn";
 
 export default function PerfectJob() {
+  
   return (
     <div className="relative ">
       <div className="absolute right-0 z-10">

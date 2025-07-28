@@ -1,11 +1,42 @@
 'use client'
 import { useGetCompanyNamesQuery, useGetDepartmentsQuery, useGetWorkModesQuery } from '@/redux/features/filters/filterSlice';
+import { JobFilterType, useGetAllJobPostsQuery, useLazyGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { Department, WorkMode } from '@/types/categoryType/Category';
 import React, { useMemo, useState } from 'react';
 
+const allLocation = [
+  { name: 'Dhaka', count: '(2706)' },
+  { name: 'Chattogram', count: '(567)' },
+  { name: 'Cumilla', count: '(234)' },
+  { name: 'Jashore', count: '(187)' },
+  { name: 'Barishal', count: '(156)' },
+  { name: 'Rangpur', count: '(98)' },
+  { name: 'Sylhet', count: '(87)' },
+]
+
+const salaryRanges = [
+  { range: '1tk - 20k', count: '(1760)' },
+  { range: '20k - 40k', count: '(876)' },
+  { range: '40k - 60k', count: '(567)' },
+  { range: '60k - 80k', count: '(345)' },
+  { range: '80k - 1lakh', count: '(234)' },
+  { range: '1lakh - 2lakh', count: '(123)' },
+  { range: 'Negotiable', count: '(89)' },
+];
+
+const educationQualifications = [
+  { qual: 'Any Postgraduate', count: '(1240)' },
+  { qual: 'Graduate', count: '(876)' },
+  { qual: 'MSC', count: '(567)' },
+  { qual: 'B.Sc Honours', count: '(456)' },
+  { qual: 'B.Sc Engineer', count: '(345)' },
+  { qual: 'Diploma Engineer', count: '(234)' },
+];
+
+
 // Filter Sidebar Component
-export const FilterSidebar = () => {
-  const [experience, setExperience] = useState(5);
+export const FilterSidebar = ({ setFiltersData }: any) => {
+  const [experience, setExperience] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   // State for tracking selected filters
@@ -16,9 +47,31 @@ export const FilterSidebar = () => {
   const [selectedEducations, setSelectedEducations] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
+  // Handle All Location Button
+  const [showAllLocations, setShowAllLocations] = useState(false);
+  const [showAllSalaries, setShowAllSalaries] = useState(false);
+  const [showAllEducations, setShowAllEducations] = useState(false);
+  // const [showAllCompanies, setShowAllCompanies] = useState(false);
+
+  // Filter store data
+  const filters: JobFilterType = {
+    companies: [],
+    departments: [],
+    educations: [],
+    experience: 0,
+    locations: [],
+    salaryRanges: [],
+    jobType: []
+  };
+
   const { data: type } = useGetWorkModesQuery({});
   const { data: department } = useGetDepartmentsQuery({});
   const { data: comName } = useGetCompanyNamesQuery({});
+  // const [filterJobPostsTrigger, { isFetching }] = useGetAllJobPostsQuery({});
+  // const { data: info, isFetching } = useGetAllJobPostsQuery({ filters });
+  // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
+  const [filterJobPostsTrigger, { data: info, isFetching }] = useLazyGetAllJobPostsQuery();
+  // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
 
   const workType = type?.data;
   const allDepartment = department?.data || [];
@@ -38,6 +91,7 @@ export const FilterSidebar = () => {
   }, [allCompany, showAllCompanies]);
   const hasMoreCompanies = Array.isArray(allCompany) && allCompany.length > 5;
 
+  console.log(allCompany)
   // Handlers for checkbox changes
   const handleWorkModeChange = (jobType: string) => {
     setSelectedWorkModes((prev) =>
@@ -88,9 +142,9 @@ export const FilterSidebar = () => {
   };
 
   // Handle Apply button click
-  const handleApply = () => {
+  const handleApply = async () => {
     const formData = {
-      workModes: selectedWorkModes,
+      jobType: selectedWorkModes,
       experience: experience,
       departments: selectedDepartments,
       locations: selectedLocations,
@@ -98,11 +152,18 @@ export const FilterSidebar = () => {
       educations: selectedEducations,
       companies: selectedCompanies,
     };
-    console.log('Form Data:', formData);
+    console.log('Form Data printed:', formData);
+
+    // filterJobPostsTrigger(formData);
+
+    const response = await filterJobPostsTrigger(formData);
+    setFiltersData(response?.data?.data?.data);
+    // const response = await filterJobPostsTrigger(formData);
+    console.log(response?.data?.data?.data);
   };
 
   return (
-    <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50">
+    <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">
       <h2 className="text-lg font-semibold mb-6">All Filters</h2>
 
       {/* Work Mode Filter */}
@@ -182,15 +243,7 @@ export const FilterSidebar = () => {
       <div className="mb-6">
         <h3 className="font-medium mb-3">Location</h3>
         <div className="space-y-2">
-          {[
-            { name: 'Dhaka', count: '(2706)' },
-            { name: 'Chittagong', count: '(567)' },
-            { name: 'Cumilla', count: '(234)' },
-            { name: 'Jashore', count: '(187)' },
-            { name: 'Barishal', count: '(156)' },
-            { name: 'Rangpur', count: '(98)' },
-            { name: 'Sylhet', count: '(87)' },
-          ].map((location, index) => (
+          {(showAllLocations ? allLocation : allLocation.slice(0, 5)).map((location, index) => (
             <label key={index} className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -203,22 +256,21 @@ export const FilterSidebar = () => {
             </label>
           ))}
         </div>
-        <button className="text-blue-500 text-sm mt-2">View More</button>
+        {allLocation.length > 5 && (
+          <button
+            className="text-blue-500 text-sm mt-2"
+            onClick={() => setShowAllLocations(!showAllLocations)}
+          >
+            {showAllLocations ? "Show Less" : "View More"}
+          </button>
+        )}
       </div>
 
       {/* Salary Range Filter */}
       <div className="mb-6">
         <h3 className="font-medium mb-3">Salary Range</h3>
         <div className="space-y-2">
-          {[
-            { range: '1tk - 20k', count: '(1760)' },
-            { range: '20k - 40k', count: '(876)' },
-            { range: '40k - 60k', count: '(567)' },
-            { range: '60k - 80k', count: '(345)' },
-            { range: '80k - 1lakh', count: '(234)' },
-            { range: '1lakh - 2lakh', count: '(123)' },
-            { range: 'Negotiable', count: '(89)' },
-          ].map((salary, index) => (
+          {(showAllSalaries ? salaryRanges : salaryRanges.slice(0, 5)).map((salary, index) => (
             <label key={index} className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -231,21 +283,21 @@ export const FilterSidebar = () => {
             </label>
           ))}
         </div>
-        <button className="text-blue-500 text-sm mt-2">View More</button>
+        {salaryRanges.length > 5 && (
+          <button
+            className="text-blue-500 text-sm mt-2"
+            onClick={() => setShowAllSalaries(!showAllSalaries)}
+          >
+            {showAllSalaries ? "Show Less" : "View More"}
+          </button>
+        )}
       </div>
 
       {/* Education Qualification Filter */}
       <div className="mb-6">
         <h3 className="font-medium mb-3">Education Qualification</h3>
         <div className="space-y-2">
-          {[
-            { qual: 'Any Postgraduate', count: '(1240)' },
-            { qual: 'Graduate', count: '(876)' },
-            { qual: 'MSC', count: '(567)' },
-            { qual: 'B.Sc Honours', count: '(456)' },
-            { qual: 'B.Sc Engineer', count: '(345)' },
-            { qual: 'Diploma Engineer', count: '(234)' },
-          ].map((edu, index) => (
+          {(showAllEducations ? educationQualifications : educationQualifications.slice(0, 4)).map((edu, index) => (
             <label key={index} className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -258,7 +310,14 @@ export const FilterSidebar = () => {
             </label>
           ))}
         </div>
-        <button className="text-blue-500 text-sm mt-2">View More</button>
+        {educationQualifications.length > 4 && (
+          <button
+            className="text-blue-500 text-sm mt-2"
+            onClick={() => setShowAllEducations(!showAllEducations)}
+          >
+            {showAllEducations ? "Show Less" : "View More"}
+          </button>
+        )}
       </div>
 
       {/* Companies Filter */}
@@ -293,8 +352,9 @@ export const FilterSidebar = () => {
         <button
           onClick={handleApply}
           className="px-3 py-1 border border-gray-200 rounded-md shadow-md bg-primary text-white hover:bg-green-600 cursor-pointer transition-all duration-300"
+          disabled={isFetching}
         >
-          Apply
+          {isFetching ? "Applying..." : "Apply"}
         </button>
       </div>
     </div>

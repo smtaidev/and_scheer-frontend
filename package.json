@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@react-pdf/renderer": "^4.3.0",
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@stripe/react-stripe-js": "^3.8.0",
@@ -19,6 +20,7 @@
     "dotenv": "^17.2.0",
     "framer-motion": "^12.9.1",
     "js-cookie": "^3.0.5",
+    "jspdf": "^3.0.1",
     "jwt-decode": "^4.0.0",
     "lucide": "^0.525.0",
     "lucide-react": "^0.525.0",
@@ -30,6 +32,7 @@
     "react-redux": "^9.2.0",
     "react-select": "^5.10.2",
     "react-spinners": "^0.17.0",
+    "react-to-print": "^3.1.1",
     "sonner": "^2.0.6",
     "swiper": "^11.2.10",
     "zod": "^4.0.8"
@@ -40,6 +43,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "postcss-color-function": "^4.1.0",
+    "postcss-preset-env": "^10.2.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

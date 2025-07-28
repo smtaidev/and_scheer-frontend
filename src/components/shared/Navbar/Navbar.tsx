@@ -4,21 +4,20 @@ import SearchSection from "@/components/ui/SearchSection";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  FaUser,
-  FaDownload,
   FaBriefcase,
-  FaSignOutAlt,
+  FaDownload,
   FaSearch,
+  FaSignOutAlt,
+  FaUser,
 } from "react-icons/fa";
 
+import { useGetMeQuery } from "@/redux/features/auth/auth";
+import Cookies from "js-cookie";
+import { X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
-import { ConfirmationModal } from "../Confirmation-modal";
-import Cookies from "js-cookie";
-import { usePathname } from "next/navigation";
-import { useGetMeQuery } from "@/redux/features/auth/auth";
-import { X } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -122,6 +121,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     if (me?.data) {
       setUser(me?.data);
     }
+   
 
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);

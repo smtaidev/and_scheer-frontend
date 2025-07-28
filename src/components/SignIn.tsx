@@ -94,7 +94,7 @@ export default function SignInForm() {
             width={588}
             layout="intrinsic"
           />
-        </div>
+        </div> 
 
         {/* Right: Form Section */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
