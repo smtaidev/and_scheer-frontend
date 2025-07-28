@@ -11,10 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 
 interface ContactInfoType {
-  linkedProfile: string;
-  portfolio?: string;
-  socialMedia: string;
-  socialMediaLink?: string;
+  linkedin_profile_url: string;
+  personal_website_url?: string;
+  other_social_media: string;
+  other_social_media_url?: string;
 }
 
 interface IPersonal {
@@ -24,28 +24,25 @@ interface IPersonal {
 }
 
 
-export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
-
-
-
+export default function ContactInfo({ setStep, formData, setFormData }: IPersonal) {
 
 
   const router = useRouter();
 
   const contactInfoSchema = z.object({
-    linkedProfile: z
+    linkedin_profile_url: z
       .string()
       .url({ message: "LinkedIn profile must be a valid URL" }),
 
-    portfolio: z
+    personal_website_url: z
       .string()
       .url({ message: "Portfolio must be a valid URL" })
       .optional()
       .or(z.literal("")), // allow empty string
 
-    socialMedia: z.string().min(1, { message: "Please select a platform" }),
+    other_social_media: z.string().min(1, { message: "Please select a platform" }),
 
-    socialMediaLink: z
+    other_social_media_url: z
       .string()
       .url({ message: "Social media URL must be a valid URL" })
       .optional()
@@ -68,7 +65,7 @@ export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
   const onSubmit = (data: any) => {
     console.log(data, "Got the personal info");
     setStep(6)
-       setFormData(data)
+    setFormData(data)
     // router.push("/jobseekeruser/aimagic");
   };
 
@@ -87,10 +84,10 @@ export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
               label="LinkedIn Profile"
               type="text"
               placeholder="Enter your LinkedIn profile URL"
-              {...register("linkedProfile", { required: true })}
+              {...register("linkedin_profile_url", { required: true })}
             />
-            {errors.linkedProfile && (
-              <p className="text-red-500 text-sm mt-1">{errors.linkedProfile.message}</p>
+            {errors.linkedin_profile_url && (
+              <p className="text-red-500 text-sm mt-1">{errors.linkedin_profile_url.message}</p>
             )}
 
           </div>
@@ -101,10 +98,10 @@ export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
               label="Personal Website/Portfolio"
               type="text"
               placeholder="Enter your personal website or portfolio URL"
-              {...register("portfolio")}
+              {...register("personal_website_url")}
             />
-               {errors.portfolio && (
-              <p className="text-red-500 text-sm mt-1">{errors.portfolio.message}</p>
+            {errors.personal_website_url && (
+              <p className="text-red-500 text-sm mt-1">{errors.personal_website_url.message}</p>
             )}
           </div>
 
@@ -115,7 +112,7 @@ export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
                 Other Social Media
               </label>
               <select
-                {...register("socialMedia", { required: true })}
+                {...register("other_social_media", { required: true })}
                 className="w-full bg-gray-50 py-4 px-4 border border-[#c2c2c2] rounded"
               >
                 <option value="" disabled hidden>
@@ -131,11 +128,11 @@ export default function ContactInfo({setStep,formData,setFormData}: IPersonal) {
                 label="Social Media URL"
                 type="text"
                 placeholder="Enter other social media profile URL"
-                {...register("socialMediaLink")}
+                {...register("other_social_media_url")}
               />
-                 {errors.socialMediaLink && (
-              <p className="text-red-500 text-sm mt-1">{errors.socialMediaLink.message}</p>
-            )}
+              {errors.other_social_media_url && (
+                <p className="text-red-500 text-sm mt-1">{errors.other_social_media_url.message}</p>
+              )}
             </div>
           </div>
 
