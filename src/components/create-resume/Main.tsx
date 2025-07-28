@@ -10,6 +10,7 @@ import ContactInfo from "./ContactInfo";
 import GenerateResume from "./GenerateResume";
 import MyResume from "./MyResume";
 import Education from "./EducationCertificate";
+import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 
 const MainComponents = () => {
@@ -45,6 +46,8 @@ const MainComponents = () => {
     personalWebsiteUrl: "",
     otherSocialMedia: "",
     otherSocialMediaUrl: "",
+    education: [], // e.g. [{ degree: "BSc", institution: "XYZ University", startDate: "2020-01-01", endDate: "2024-01-01" }]
+    experiences: [] // e.g. [{ jobTitle: "Software Engineer", companyName:
   });
 
   const achievementRef = useRef<HTMLInputElement>(null);
@@ -85,6 +88,8 @@ const MainComponents = () => {
     degree: formData.degree,
     institutionName: formData.institutionName,
     major: formData.major,
+    education: formData.education || [], // e.g. [{ degree: "BSc", institution: "XYZ University", startDate: "2020-01-01", endDate: "2024-01-01" }]
+    experiences: formData.experiences || [], // e.g. [{ jobTitle: "Software Engineer", companyName: "ABC Corp", startDate: "2020-01-01", endDate: "2024-01-01", jobDescription: "Developed web applications." }]
     graduationStartDate: formData.graduationStartDate,
     graduationEndDate: formData.graduationEndDate,
     certificateTitle: formData.certificateTitle,
@@ -100,38 +105,40 @@ const MainComponents = () => {
 
 
   const onSubmit = async () => {
-    try {
-      const sendForm = new FormData();
+    console.log("profileData", profileData);
+    
+    // try {
+    //   const sendForm = new FormData();
 
-      // 🔄 Append dynamic profile data
-      sendForm.append("data", JSON.stringify(profileData));
+    //   // 🔄 Append dynamic profile data
+    //   sendForm.append("data", JSON.stringify(profileData));
 
-      // 📄 Append achievement file if selected
-      if (achievementRef.current?.files?.[0]) {
-        sendForm.append("achievementFiles", achievementRef.current.files[0]);
-      }
+    //   // 📄 Append achievement file if selected
+    //   if (achievementRef.current?.files?.[0]) {
+    //     sendForm.append("achievementFiles", achievementRef.current.files[0]);
+    //   }
 
-      // 📄 Append graduation certificate file if selected
-      if (certificateRef.current?.files?.[0]) {
-        sendForm.append("graduationCertificateFiles", certificateRef.current.files[0]);
-      }
+    //   // 📄 Append graduation certificate file if selected
+    //   if (certificateRef.current?.files?.[0]) {
+    //     sendForm.append("graduationCertificateFiles", certificateRef.current.files[0]);
+    //   }
 
-      // 🚀 Send request
-      const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
-        method: "POST",
-        body: sendForm,
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${Cookies.get("accessToken")}`,
-        } // if using HttpOnly cookie
-      });
+    //   // 🚀 Send request
+    //   const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
+    //     method: "POST",
+    //     body: sendForm,
+    //     // credentials: "include",
+    //     headers: {
+    //       Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
+    //     } // if using HttpOnly cookie
+    //   });
 
-      const result = await res.json();
-      console.log("Profile created successfully!", result);
+    //   const result = await res.json();
+    //   console.log("Profile created successfully!", result);
 
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    // } catch (error) {
+    //   console.error("Error:", error);
+    // }
   };
 
   return (
