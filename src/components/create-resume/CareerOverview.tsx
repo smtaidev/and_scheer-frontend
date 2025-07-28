@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { addInfo } from "@/redux/features/resume/resumeSlice";
+
 // Adjust path if different
 
 interface CareerFormData {
@@ -32,7 +32,6 @@ const dispatch=useDispatch()
   // console.log(data)
   const onSubmit = (data: CareerFormData): void => {
     console.log(data, " Tour career here");
-    dispatch(addInfo(data))
     setStep(3);
     setFormData(data)
 

@@ -38,6 +38,7 @@ export const FilterSidebar = () => {
   }, [allCompany, showAllCompanies]);
   const hasMoreCompanies = Array.isArray(allCompany) && allCompany.length > 5;
 
+  console.log(allCompany)
   // Handlers for checkbox changes
   const handleWorkModeChange = (jobType: string) => {
     setSelectedWorkModes((prev) =>

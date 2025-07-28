@@ -27,7 +27,7 @@ export default function CategoryCard({ category }: CType) {
 
 
     return (
-        <div className='p-[20px] flex gap-2 md:gap-4 border border-gray-300 rounded-md shadow-md cursor-pointer hover:border-primary hover:shadow-md'>
+        <div className='p-3 md:p-[20px] flex gap-2 md:gap-4 border border-gray-300 rounded-md shadow-md cursor-pointer hover:border-primary hover:shadow-md'>
             <div className={`${randomColor} p-1 md:p-[9px] rounded-full `}>
                 {/* <Image
                     src={category.icon}
@@ -38,7 +38,7 @@ export default function CategoryCard({ category }: CType) {
                 {category.icon}
             </div>
             <div className='flex justify-center items-center '>
-                <p className='text-lg text-scheer-primary-dark flex '>{category.name}<IoIosArrowForward className='my-auto' /></p>
+                <p className='text-xs md:text-lg text-scheer-primary-dark flex '>{category.name}<IoIosArrowForward className='my-auto' /></p>
 
             </div>
         </div>

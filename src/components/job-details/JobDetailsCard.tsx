@@ -17,7 +17,8 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
             <header className="flex justify-between items-center mb- 4">
-                <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3"><Image src={company?.logo || "/default-logo.png"} alt='' height={97} width={97} className='rounded-full bg-primary' />
+                <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
+                    {/* <Image src={company?.logo || "/default-logo.png"} alt='' height={97} width={97} className='rounded-full bg-primary' /> */}
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
                 <button className="bg-green-500 text-xs  font-medium px-2 md:px-4 py-2 rounded hover:bg-green-600 transition text-white cursor-pointer" >
                     Apply Now

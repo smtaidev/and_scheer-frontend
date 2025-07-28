@@ -20,7 +20,7 @@ export default function SuccessAccount() {
             </p>
 
             <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
-                Go to Dashboard →
+                Check Your Email to Acccess Your Dashboard
             </button>
         </div>
     );
