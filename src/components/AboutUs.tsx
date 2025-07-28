@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
+import Link from "next/link";
 
 export default function AboutUs() {
   return (
@@ -71,11 +72,14 @@ export default function AboutUs() {
                 </ul>
               </div>
 
+
               {/* Button */}
+              <Link href={"#pricing"}>
               <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
                 Join Us Today{" "}
                 <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
               </button>
+              </Link>
             </div>
           </div>
         </div>
