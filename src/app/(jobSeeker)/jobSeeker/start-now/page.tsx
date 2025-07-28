@@ -35,7 +35,7 @@ export default function ResumeCreate() {
               you <br /> noticed by top employers.
             </p>
             <Link href={"/jobSeeker/create-resume"}>
-              <button className="px-18 py-4 bg-[#28C76F] text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-700">
+              <button className="px-18 py-4 bg-[#28C76F] text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 transition cursor-pointer">
                 Start Now
               </button>
             </Link>

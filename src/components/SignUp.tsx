@@ -10,6 +10,9 @@ import Logo from "./ui/MainLogo";
 import { toast } from "sonner";
 import { useSignUpMutation } from "@/redux/features/auth/auth";
 import LoadingButton from "./loading/LoadingButton";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 interface FormData {
   firstName?: string;
@@ -56,6 +59,38 @@ export default function SignUpForm() {
     }
   };
 
+  // google login
+
+  const handleSuccess = async (credentialResponse: any) => {
+    console.log("yesTonek= ", credentialResponse.credential);
+
+    try {
+      // Send the credential to your server
+      const response = await axios.post(
+        `http://172.252.13.71:5005/api/v1/auth/google-login`,
+        {
+          googleToken: credentialResponse.credential,
+        }
+      );
+
+      if (response?.data?.success) {
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
+        router.push("/");
+        toast.success("Login successful");
+      }
+
+      console.log("Login successful", response.data);
+      // Handle successful login (store tokens, redirect, etc.)
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleError = () => {
+    console.log("Login Failed");
+  };
+
   return (
     <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center md:px-4 ">
       <div className="flex flex-col lg:flex-row rounded-lg overflow-hidden ">
@@ -78,9 +113,8 @@ export default function SignUpForm() {
             <div className="mb-6">
               {/* <img src="/logo.svg" alt="Logo" className="h-10" /> */}
               <Link href={"/"}>
-              <Logo height={120} width={268}></Logo>
+                <Logo height={120} width={268}></Logo>
               </Link>
-              
             </div>
 
             {/* Welcome Message */}
@@ -89,8 +123,8 @@ export default function SignUpForm() {
               Create your account!
             </h2>
             <p className="text-sm text-gray-600 mb-6 text-center">
-              Welcome, Please enter the information requested to
-              create <br /> your account!
+              Welcome, Please enter the information requested to create <br />{" "}
+              your account!
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -155,10 +189,13 @@ export default function SignUpForm() {
           </div>
 
           {/* Continue with Google */}
-          <button className="w-full border  border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
-            <FcGoogle className="size-6" />
-            Login with Google
-          </button>
+          <div className="">
+            <GoogleLogin
+              size="large"
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
+          </div>
           <div className="flex justify-center items-center gap-2 text-gray-700   mt-3">
             <p className="text-center">
               If you don&apos;t have any account please
