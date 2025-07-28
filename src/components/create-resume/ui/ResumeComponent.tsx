@@ -42,7 +42,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
               <Image
-                src="/man.png"
+                src={profileData?.profile?.user.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
@@ -97,11 +97,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">SKILLS</h2>
             <ul className='flex justify-center items-start flex-col'>
-              {[
-                "UI/UX Design", "Figma", "Graphics Designer", "Adobe XD",
-                "Adobe Illustrator", "Adobe InDesign", "Adobe Photoshop",
-                "Adobe Premiere Pro", "Data Entry", "Typing Bangla & English Both Language"
-              ].map((skill) => (
+              {profileData?.profile?.skills.map((skill: string) => (
                 <li key={skill} className="flex items-center  space-x-2">
                   <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
                   <span className='text-[#374151]'>{skill}</span>
@@ -111,7 +107,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           </div>
 
           {/* Languages */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">LANGUAGES</h2>
             <ul>
               {["BANGLA", "ENGLISH"].map((lang) => (
@@ -121,10 +117,10 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Co-curricular Activities */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">CO-CURRICULAR ACTIVITIES</h2>
             <ul>
               {["BEE Member", "Travelling", "Cricket"].map((activity) => (
@@ -134,7 +130,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Column */}
@@ -154,15 +150,15 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
               {profileData?.profile?.education?.map((edu: any, idx: any) => (
                 <div key={idx} className='mb-3'>
                   <h3 className="font-semibold text-[#1F2937]">{edu.degree}</h3>
-                  <p className="text-sm text-[#374151]">{edu.school}</p>
-                  <p className="text-sm text-[#374151]">{edu.time}</p>
+                  <p className="text-sm text-[#374151]">{edu.institution_name}</p>
+                  <p className="text-sm text-[#374151]">{edu.major}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Training */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">TRAINING / CERTIFICATION</h2>
             <div className=''>
 
@@ -174,7 +170,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Work Experience */}
           <div className="mb-8">

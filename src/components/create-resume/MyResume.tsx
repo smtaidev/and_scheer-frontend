@@ -75,6 +75,14 @@ export default function MyResume({ userId }: { userId: string | null }) {
     fetchUserProfile();
 
   }, [storedUserId]);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-medium text-gray-600">Loading your resume...</p>
+      </div>
+    );
+    
+  }
   return (
     <div className="flex justify-center mt-12 h-full">
       <div className="p-6 w-full max-w-[1180px]">

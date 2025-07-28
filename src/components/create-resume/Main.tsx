@@ -29,10 +29,11 @@ const MainComponents = () => {
     jobTitle: "",
     jobDescription: "",
 
-    linkedInProfileUrl: "",
-    personalWebsiteUrl: "",
-    otherSocialMedia: "",
-    otherSocialMediaUrl: "",
+    linkedin_profile_url: "",
+    personal_website_url: "",
+    other_social_media: "",
+    other_social_media_url: "",
+    skills: [], // e.g. ["JavaScript", "React", "Node.js"]
 
     education: [], // e.g. [{ degree: "BSc", institution: "XYZ University", major: "",  startDate: "2020-01-01", endDate: "2024-01-01", achievements: [] }]
     experiences: [], // e.g. [{ jobTitle: "Software Engineer", companyName: "ABC Corp", startDate: "2020-01-01", endDate: "2024-01-01", jobDescription: "Developed web applications.", skills: ["JavaScript", "React"], achievements: [{}] }]
@@ -69,12 +70,14 @@ const MainComponents = () => {
     zip_code: formData.zip,
     recent_job_title: formData.jobTitle,
     job_explanation: formData.jobDescription,
+    // skills: formData.experiences.flatMap((exp: any) => exp.skills || []),
+
     education: formData.education.map((edu: any) => ({
       degree: edu.degree,
-      school: edu.institution,
+      institution_name: edu.institution,
       major: edu.major,
-      start_year: edu.startDate,
-      end_year: edu.endDate,
+      graduation_start_date: edu.startDate,
+      graduation_end_date: edu.endDate,
       achievements: edu.achievements || []
     })),
 
@@ -84,21 +87,23 @@ const MainComponents = () => {
       start_date: exp.startDate,
       end_date: exp.endDate,
       job_description: exp.jobDescription,
-      skills: exp.skills || [],
       achievements: exp.achievements || []
     })),
-    certificates: formData.certificates.map((cert: any) => ({
-      name: cert.certificateTitle,
-      issuingOrganization: cert.issuingOrganization,
-      year: cert.certificateIssuedDate,
-      certificateExpiryDate: cert.certificateExpiryDate || null
+    skills: formData.experiences.flatMap((ex: any) => ex.skills || []), // Flattens all skills into a single array
+
+    certifications: formData.certificates.map((cert: any) => ({
+      certification_title: cert.certificateTitle,
+      issuing_organization: cert.issuingOrganization,
+      certification_issue_date: cert.certificateIssuedDate,
+      certification_expiry_date: cert.certificateExpiryDate || null
     })),
-    linkedin_profile_url: formData.linkedInProfileUrl,
-    personal_website_url: formData.personalWebsiteUrl,
-    other_social_media: formData.otherSocialMedia || "",
-    other_social_media_url: formData.otherSocialMediaUrl || "",
+    linkedin_profile_url: formData.linkedin_profile_url,
+    personal_website_url: formData.personal_website_url,
+    other_social_media: formData.other_social_media || "",
+    other_social_media_url: formData.other_social_media_url || "",
 
   };
+  console.log("profileData in MainComponents:", profileData);
 
 
   const onSubmit = async () => {
