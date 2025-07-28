@@ -29,6 +29,7 @@ export default function JobDetailspage() {
     const { data: res, isLoading, refetch } = useGetAllCompaniesQuery();
 
     const { id } = useParams();
+    console.log("Job ID: ", id);
 
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
@@ -121,7 +122,7 @@ export default function JobDetailspage() {
                             className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
                         >
                             {allJobs.length > 0 ? (
-                                allJobs.map((company) => (
+                                allJobs?.map((company) => (
                                     <div
                                         key={company.companyId}
                                         className={`cursor-pointer transition-all duration-200 

@@ -1,4 +1,4 @@
-
+'use client'
 import { Job } from '@/types/AllTypes';
 import Image from 'next/image';
 import React from 'react';
@@ -6,6 +6,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
+import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
+import { useParams } from 'next/navigation';
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -13,7 +15,39 @@ type JobDetailsCardProps = {
 
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
-    console.log(currentCompany, "Current country")
+    console.log("Current Compamy: ", currentCompany?.id)
+    console.log("Company: ", company);
+
+    // const id = Number(currentCompany?.id);
+
+    const { id } = useParams();
+
+
+    const [applyJob, { isLoading }] = useApplyJobMutation();
+
+    // const handleApplyNow = () => {
+    //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
+    // }
+    const handleApplyJob = async () => {
+        try {
+            const jobId = currentCompany?.id;
+            console.log("Current Job IT: ", jobId);
+
+            // await applyJob(jobId);
+            const response = await applyJob(jobId).unwrap();
+            // cayomer672@ikanteri.com
+            // 123456789
+            console.log("Response: ", response);
+            // if (response.statusCode === 200) {
+            // console.log("Job applied successfully:", response);
+            // }
+            // console.log("Job Applied Successfully.")
+        } catch (error) {
+            console.error("Failed to apply:", error);
+        }
+    };
+
+
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
             <header className="flex justify-between items-center mb- 4">
@@ -61,36 +95,38 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Job Description</h3>
                 <p className=" ">
-                    {currentCompany?.features.find(p=>p.featureTitle=="Description")?.paragraph}
+                    {currentCompany?.features.find(p => p.featureTitle == "Description")?.paragraph}
                 </p>
             </section>
 
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Responsibilities</h3>
                 <ul className="list-disc list-inside  dark: space-y-1">
-               
-                  {currentCompany?.features?.find(p=>p.featureTitle=="Responsibilities")?.point?.map(p=><li>{p}</li>)}
-               
+
+                    {currentCompany?.features?.find(p => p.featureTitle == "Responsibilities")?.point?.map(p => <li>{p}</li>)}
+
                 </ul>
             </section>
 
             <section className="mt-6">
                 <h3 className="text-lg  font-semibold md:text-[28px] dark: mb-2">Requirements</h3>
                 <ul className="list-disc list-inside  dark: space-y-1">
-                     {currentCompany?.features?.find(p=>p.featureTitle=="Requirements:")?.point?.map(p=><li>{p}</li>)}
-                    
+                    {currentCompany?.features?.find(p => p.featureTitle == "Requirements:")?.point?.map(p => <li>{p}</li>)}
+
                 </ul>
             </section>
 
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Why Join Us?</h3>
                 <ul className="list-disc list-inside  dark: space-y-1">
-                    {currentCompany?.features?.find(p=>p.featureTitle=="Why Join SM Technology?:")?.point?.map(p=><li>{p}</li>)}
+                    {currentCompany?.features?.find(p => p.featureTitle == "Why Join SM Technology?:")?.point?.map(p => <li>{p}</li>)}
                 </ul>
             </section>
 
             <footer className="mt-6 flex gap-3">
-                <button className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                <button
+                    onClick={handleApplyJob}
+                    className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
                     Apply Now
                 </button>
                 <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
