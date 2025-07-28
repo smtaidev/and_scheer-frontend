@@ -1,6 +1,7 @@
 "use client";
-import PaymentForm from "@/components/payment/PaymentInfo";
-import CheckoutPage from "@/components/payment/stripePayment/Checkout";
+
+import PassPayment from "@/components/payment/stripePayment/Checkout";
+// import CheckoutPage from "@/components/payment/stripePayment/Checkout";
 import UserBillingInfo from "@/components/payment/UserBillingInfo";
 import Container from "@/components/ui/Container";
 import React, { useState } from "react";
@@ -67,8 +68,8 @@ export default function Billing() {
             userBillingInfo={userBillingInfo}
             setUserBillingInfo={setUserBillingInfo}
           />
-          <PaymentForm handlePayment={handlePayment} />
-          <CheckoutPage />
+
+          <PassPayment />
         </div>
       </Container>
     </div>
