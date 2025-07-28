@@ -3,6 +3,7 @@ import React from 'react';
 import { CgArrowsV } from 'react-icons/cg';
 import { MoreHorizontal } from 'lucide-react';
 import Container from '@/components/ui/Container';
+import { useGetAppliedJobsQuery } from '@/redux/features/job/jobSlice';
 
 const aiLogData = [
   {
@@ -26,7 +27,7 @@ const aiLogData = [
   {
     id: 3,
     timestamp: 'Jun 29, 2025 | 03:33 PM',
-    userName: 'Tanvir Hasan',
+    userName: 'Afsar Hossain',
     projectName: 'Bridge Point',
     action: 'Updated certificate via AI',
     status: 'Success',
@@ -54,6 +55,15 @@ const ActionButton = () => (
 );
 
 export default function AppliedJobList() {
+
+  const { data, isLoading, error } = useGetAppliedJobsQuery({});
+
+  const appliedJobs = data?.data || []; // Adjust based on your API response shape
+
+  if (isLoading) return <p>Loading applied jobs...</p>;
+  if (error) return <p>Failed to fetch applied jobs.</p>;
+
+
   return (
     <Container>
 
@@ -61,7 +71,6 @@ export default function AppliedJobList() {
         {/* Header */}
         <div className="py-4 border-gray-200">
           <h2 className="text-lg md:text-[32px] font-semibold text-gray-900">Applied Job List</h2>
-
         </div>
 
         {/* Table */}
