@@ -2,16 +2,78 @@ import { CreateJobRequest, Job, JobResponse, JobsListResponse, UpdateJobRequest 
 import { baseUrlApi } from "../../api/baseUrlApi";
 
 
+export interface JobFilterType {
+    companies?: string[];
+    departments?: string[];
+    educations?: string[];
+    experience?: number;
+    locations?: string[];
+    salaryRanges?: string[];
+    jobType?: string[];
+}
+
 const jobApi = baseUrlApi.injectEndpoints({
+    // tagTypes: ["allJobPosts"],
     endpoints: (builder) => ({
         getAllJobPosts: builder.query({
-            query: () => "/jobs/posts",
+            query: (filters: JobFilterType) => {
 
+                const params = new URLSearchParams();
+
+                if (filters.departments?.length) {
+                    filters.departments.forEach(dep => params.append('departments', dep));
+                }
+
+                if (filters.educations?.length) {
+                    filters.educations.forEach(edu => params.append('educations', edu));
+                }
+
+                if (filters.experience) {
+                    params.append('experience', filters.experience.toString());
+                }
+
+                if (filters.locations?.length) {
+                    filters.locations.forEach(loc => params.append('locations', loc));
+                }
+
+                if (filters.salaryRanges?.length) {
+                    filters.salaryRanges.forEach(salary => params.append('salaryRanges', salary));
+                }
+
+                if (filters.jobType?.length) {
+                    filters.jobType.forEach(mode => params.append('jobType', mode));
+                }
+
+                if (filters.companies?.length) {
+                    filters.companies.forEach(comp => params.append('companies', comp));
+                }
+
+                return {
+                    url: `/jobs/posts?${params.toString()}`,
+                    method: "GET"
+                };
+            },
+            // invalidatesTags: ["allJobPosts"],
         }),
 
         getMyJobPosts: builder.query({
             query: () => "/jobs/my-job-posts",
-           
+
+        }),
+        getAppliedJobs: builder.query({
+            // query: () => ({
+            //     url: "/apply/apply-job", // Your full endpoint is http://172.252.13.71:5005/api/v1/apply/apply-job
+            //     method: "GET"
+            // })
+            query: () => '/apply/apply-job'
+        }),
+        applyJob: builder.mutation({
+            query: (jobId) => ({
+                url: `/apply/apply-job`,
+                method: "POST",
+                body: jobId
+                // body: { jobId: "6885ed011027aafdb6a2eadc" }
+            })
         }),
         createJobPost: builder.mutation({
             query: (data) => ({
@@ -47,8 +109,11 @@ export const {
     useCreateJobPostMutation,
     useGetMyJobPostsQuery,
     useGetAllJobPostsQuery,
+    useLazyGetAllJobPostsQuery,
     useDeleteJobPostMutation,
     useUpdateJobPostMutation,
+    useApplyJobMutation,
+    useGetAppliedJobsQuery
     // ...existing hooks
 } = jobApi;
 
