@@ -111,6 +111,7 @@ const jobApi = baseUrlApi.injectEndpoints({
             query: () => "/jobs/my-job-posts",
 
         }),
+
         getAppliedJobs: builder.query({
             // query: () => ({
             //     url: "/apply/apply-job", // Your full endpoint is http://172.252.13.71:5005/api/v1/apply/apply-job
@@ -118,14 +119,19 @@ const jobApi = baseUrlApi.injectEndpoints({
             // })
             query: () => '/apply/apply-job'
         }),
+
+        recomandationJobs: builder.query({
+            query: (profileId) => `/jobs/recommended-jobs/${profileId}`
+        }),
+
         applyJob: builder.mutation({
             query: (jobId) => ({
                 url: `/apply/apply-job`,
                 method: "POST",
                 body: jobId
-                // body: { jobId: "6885ed011027aafdb6a2eadc" }
             })
         }),
+
         createJobPost: builder.mutation({
             query: (data) => ({
                 url: "/jobs/create-job-post",
@@ -164,7 +170,7 @@ export const {
     useDeleteJobPostMutation,
     useUpdateJobPostMutation,
     useApplyJobMutation,
-    useGetAppliedJobsQuery
-    // ...existing hooks
+    useGetAppliedJobsQuery,
+    useRecomandationJobsQuery,
 } = jobApi;
 

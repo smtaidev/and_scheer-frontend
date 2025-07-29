@@ -153,7 +153,8 @@ export default function SearchField() {
             </div>
           ))}
         </div>
-      ) : (<p className="text-red-500 "></p>)
+      ) : ""
+      // (<p className="text-red-500 mt-2">No jobs found matching your search.</p>)
       }
 
     </div>

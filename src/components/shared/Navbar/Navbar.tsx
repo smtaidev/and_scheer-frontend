@@ -42,6 +42,25 @@ export default function Navbar({ navItem }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
+  // detecting outside click 
+  const hiddenMenuByClick = useRef<HTMLDivElement>(null);
+  // 🔹 Click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        hiddenMenuByClick.current &&
+        !hiddenMenuByClick.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     const targetRoutes = ["/", "/jobSeeker/home", "/jobs"];
 
@@ -123,6 +142,7 @@ export default function Navbar({ navItem }: NavbarProps) {
       setUser(me?.data);
     }
 
+
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -171,17 +191,15 @@ export default function Navbar({ navItem }: NavbarProps) {
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
           <button
             onClick={() => handleSearch()}
-            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${
-              searchView ? "hidden" : ""
-            } `}
+            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${searchView ? "hidden" : ""
+              } `}
           >
             <FaSearch />
             Search
           </button>
           <span
-            className={`w-0.5 h-6 bg-gray-300   ${
-              searchView ? "hidden" : "inline-block"
-            }`}
+            className={`w-0.5 h-6 bg-gray-300   ${searchView ? "hidden" : "inline-block"
+              }`}
           ></span>
 
           {Array.isArray(navItem) &&
@@ -208,7 +226,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             className="rounded-full object-cover"
           /> */}
 
-          <div className="relative ">
+          <div className="relative">
             <button
               onClick={toggleMenu}
               className="flex items-center gap-2 cursor-pointer"
@@ -218,7 +236,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute top-12 right-0 bg-gray-200  rounded-md p-3 min-w-[120px] z-50">
+              <div className="absolute top-12 -right-2 min-w-[120px] z-50">
                 {isLogned ? (
                   // <button
                   //   onClick={() => setShowMenu(false)}
@@ -245,7 +263,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                   <Link
                     onClick={() => setShowMenu(false)}
                     href={"/signIn"}
-                    className="w-full text-left hover:text-main-green"
+                    className="w-full text-left hover:text-main-green bg-gray-200 rounded-md px-5 py-2 "
                   >
                     Sign In
                   </Link>
@@ -270,10 +288,9 @@ export default function Navbar({ navItem }: NavbarProps) {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          mobileMenuOpen ? "max-h-screen" : "max-h-0"
-        }`}
+      <div ref={hiddenMenuByClick}
+        className={`md:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"
+          }`}
       >
         <div className="bg-white border-t border-gray-100 px-4 py-4 space-y-3">
           {navItem.map((item) => (
@@ -292,7 +309,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </button>
 
             {showMenu && (
-              <div className="absolute -top-50 left- bg-gray-200/80 shadow-lg rounded-md p-3 min-w-[120px] z-50 scale-75 ">
+              <div className="absolute top-2 left-7 min-w-[120px] z-50 scale-75 ">
                 {isLogned ? (
                   // <Link
                   //   onClick={() => setShowMenu(false)}
@@ -321,8 +338,8 @@ export default function Navbar({ navItem }: NavbarProps) {
                 ) : (
                   <Link
                     onClick={() => setShowMenu(false)}
-                    href={"/login"}
-                    className="w-full text-left hover:text-main-green"
+                    href={"/signIn"}
+                    className="w-full text-left hover:text-main-green bg-gray-200/80 shadow-lg rounded-md px-5 py-2"
                   >
                     Sign In
                   </Link>
@@ -355,7 +372,7 @@ export default function Navbar({ navItem }: NavbarProps) {
       {showDeleteModal && (
         <div
           className="fixed inset-0 bg-black/20 bg-opacity-50 flex items-center justify-center z-50 p-4"
-          // onClick={handleBackdropClick}
+        // onClick={handleBackdropClick}
         >
           <div className="bg-white rounded-2xl shadow-xl max-w-[645px] w-full mx-4 relative">
             {/* Close button */}
@@ -502,3 +519,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     </nav>
   );
 }
+
+
+
+
