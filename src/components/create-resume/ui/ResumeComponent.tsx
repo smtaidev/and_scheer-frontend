@@ -42,7 +42,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
               <Image
-                src={profileData?.profile?.user.profilePic || "/man.png"} // Fallback image
+                src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-cover"
                 height={200}

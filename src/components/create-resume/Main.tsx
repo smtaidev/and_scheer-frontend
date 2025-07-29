@@ -91,7 +91,7 @@ const MainComponents = () => {
     })),
     skills: formData.experiences.flatMap((ex: any) => ex.skills || []), // Flattens all skills into a single array
 
-    certifications: formData.certificates.map((cert: any) => ({
+    certifications: formData.certificates?.map((cert: any) => ({
       certification_title: cert.certificateTitle,
       issuing_organization: cert.issuingOrganization,
       certification_issue_date: cert.certificateIssuedDate,

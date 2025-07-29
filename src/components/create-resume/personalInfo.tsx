@@ -21,6 +21,8 @@ export interface IPersonal {
   setStep: any;
   formData: any
   setFormData: any;
+   setCertificate?:any;
+   certificate?:any;
 }
 
 export default function PersonalInformation({ setStep, formData, setFormData }: IPersonal) {

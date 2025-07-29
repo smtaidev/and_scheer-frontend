@@ -1,7 +1,7 @@
 import React from "react";
 import { BiRightArrowAlt } from "react-icons/bi";
 
-export default function SuccessDetails() {
+export default function  SuccessDetails() {
   // const name = "Saiful Rahman";
   // const plan = "Premium Plan"
 
