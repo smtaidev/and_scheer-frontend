@@ -14,15 +14,10 @@ import {
 import { useGetMeQuery } from "@/redux/features/auth/auth";
 import Cookies from "js-cookie";
 import { X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi"; // For modern icons
 import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
-import { ConfirmationModal } from "../Confirmation-modal";
-import Cookies from "js-cookie";
-import { usePathname } from "next/navigation";
-import { useGetMeQuery } from "@/redux/features/auth/auth";
-import { X } from "lucide-react";
 
 type NavItem = {
   name: string;
