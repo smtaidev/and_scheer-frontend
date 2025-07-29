@@ -1,4 +1,5 @@
 "use client";
+import Cookies from 'js-cookie'; // Ensure you have js-cookie imported
 import React, { useEffect, useState } from "react";
 // import RecentJobCard from './RecentJobCard'
 
@@ -15,25 +16,65 @@ import "swiper/css/navigation";
 // import required modules
 import { FreeMode, Navigation } from "swiper/modules";
 import RecentJobCard from "./RecentJobCard";
-import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
+import { useGetAllJobPostsQuery, useRecomandationJobsQuery } from "@/redux/features/job/jobSlice";
 import { Job } from "@/types/AllTypes";
+import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
+import axios from "axios";
 
 interface JobTitle {
   title: string;
 }
 
- 
+
 export default function RecentJob({ title }: JobTitle) {
-         
-        const [allJobs,setAllJobs]=useState<Job[]>([])
-      const {data:jobs} = useGetAllJobPostsQuery({});
+
+  const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
+  const { data: jobs } = useGetAllJobPostsQuery({});
+  const { data: currentUser } = useGetMeQuery({});
+  const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
+  const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+
+  console.log("Current User: ", currentUser?.data?.id);
+  console.log("My Profile: ", myProfile?.data);
+  console.log("Profile ID: ", myProfile?.data?.profileId)
+
+  console.log("Recomandation Jobs: ", recomandationJobs)
+
+  useEffect(() => {
+
+    if (recomandationJobs?.data) {
+      setRecomandationAllJobs(recomandationJobs?.data?.data);
+    }
 
 
-      useEffect(()=>{
-          if(jobs?.data){
-            setAllJobs(jobs.data.data)
+    const fetchedRecomendationJobs = async () => {
+      // Get the access token from cookies
+      const token = Cookies.get("accessToken");
+
+      try {
+        const response = await axios.get(
+          `http://172.252.13.71:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "", // Add Authorization header if token exists
+            },
           }
-      },[jobs?.data])
+        );
+        console.log("Response: ", response.data.recommendations);
+      } catch (error) {
+        console.error("Error fetching recommended jobs:", error);
+      }
+    };
+
+
+
+    fetchedRecomendationJobs()
+
+    // if (jobs?.data) {
+    //   setRecomandationAllJobs(jobs.data.data)
+    // }
+    // }, [jobs?.data])
+  }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
 
   console.log(jobs);
@@ -68,11 +109,13 @@ export default function RecentJob({ title }: JobTitle) {
                 1280: { slidesPerView: 3.5 },
               }}
             >
-              {allJobs?.map((job, index) => (
-                <SwiperSlide key={index} className="pb-2">
-                  <RecentJobCard job={job} />
-                </SwiperSlide>
-              ))}
+              {
+                recomandationJobs && recomandationJobs?.data?.recommendations?.map((job: any, index: any) => (
+                  <SwiperSlide key={index} className="pb-2">
+                    <RecentJobCard job={job} />
+                  </SwiperSlide>
+                ))
+              }
             </Swiper>
           </div>
         </div>
