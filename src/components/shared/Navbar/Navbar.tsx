@@ -16,7 +16,7 @@ import { LuUser } from "react-icons/lu";
 import { toast } from "sonner";
 import { ConfirmationModal } from "../Confirmation-modal";
 import Cookies from "js-cookie";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
 import { X } from "lucide-react";
 
@@ -41,6 +41,7 @@ export default function Navbar({ navItem }: NavbarProps) {
 
   const [searchView, setSearchView] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const targetRoutes = ["/", "/jobSeeker/home", "/jobs"];
@@ -153,6 +154,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     setShowDeleteModal(false);
     setIsLogned(null);
     toast.success("Logged out successfully");
+    router.push("/");
   };
 
   return (
