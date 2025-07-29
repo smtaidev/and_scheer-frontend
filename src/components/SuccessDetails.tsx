@@ -9,14 +9,13 @@ export default function  SuccessDetails() {
     <div>
       <div>
         <div className=" mx-auto bg-white   rounded-md p-9 border border-gray-300 space-y-6 ">
-          <div className="text-center">
-            <h1 className="md:text-2xl ">Welcome aboard, Saifur Rahman!</h1>
-            <p className="md:text-2xl">
-              You’ve successfully subscribed to the Premium Plan.
-            </p>
-          </div>
-
           <div className=" border-gray-200 ">
+            <div className="text-center">
+              <h1 className="md:text-2xl ">Welcome aboard, Saifur Rahman!</h1>
+              <p className="md:text-2xl">
+                You’ve successfully subscribed to the Premium Plan.
+              </p>
+            </div>
             <h2 className="text-lg font-medium mb-3">Details Panel:</h2>
             <div className="space-y-2 text-sm text-gray-700">
               <div className="flex justify-between">
