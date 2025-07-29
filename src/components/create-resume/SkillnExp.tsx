@@ -1,6 +1,5 @@
-"use client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import Button from "../shared/button/Button";
@@ -17,17 +16,17 @@ type WorkForm = {
     jobDescription: string;
     achievements: FileList | null;
     skills: string[];
+    languages: string[]; // Added languages field
   }[];
 };
 
 interface IPersonal {
   setStep: any;
-  formData: any
+  formData: any;
   setFormData: any;
 }
 
-
-export default function SkillsExperience({setStep,formData,setFormData}: IPersonal) {
+export default function SkillsExperience({ setStep, formData, setFormData }: IPersonal) {
   const { control, register, handleSubmit } = useForm<WorkForm>({
     defaultValues: {
       experiences: [
@@ -38,11 +37,41 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
           endDate: "",
           jobDescription: "",
           achievements: null,
-          skills: [],
+          skills: [], // skills field is initialized as an empty array
+          languages: [], // languages field initialized as an empty array
         },
       ],
     },
   });
+
+  const [skills, setSkills] = useState(["Website Design", "Next.js", "CSS"]);
+  const [newSkill, setNewSkill] = useState("");
+  const [languages, setLanguages] = useState<string[]>(["English"]);
+  const [newLanguage, setNewLanguage] = useState("");
+
+  const addSkill = () => {
+    const skill = newSkill.trim();
+    if (skill && !skills.includes(skill)) {
+      setSkills([...skills, skill]);
+      setNewSkill("");
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    setSkills(skills.filter((skill) => skill !== skillToRemove));
+  };
+
+  const addLanguage = () => {
+    const language = newLanguage.trim();
+    if (language && !languages.includes(language)) {
+      setLanguages([...languages, language]);
+      setNewLanguage("");
+    }
+  };
+
+  const removeLanguage = (languageToRemove: string) => {
+    setLanguages(languages.filter((language) => language !== languageToRemove));
+  };
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -51,17 +80,24 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
 
   const router = useRouter();
 
-  
   const handleBack = (): void => {
-
     setStep(2);
-    console.log("Back")
+    console.log("Back");
   };
 
   const onSubmit = (data: WorkForm) => {
-    console.log("Got all skills data:", data);
+    // Merging skills and languages with form data
+    const updatedData = {
+      ...data,
+      experiences: data.experiences.map((experience, index) => ({
+        ...experience,
+        skills: skills, // Adding skills to each experience
+        languages: languages, // Adding languages to each experience
+      })),
+    };
+
     setStep(4);
-       setFormData(data)
+    setFormData(updatedData); // Updating form data to include skills and languages
     // router.push("/jobseekeruser/education");
   };
 
@@ -131,27 +167,99 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
                   type="file"
                   multiple
                   {...register(`experiences.${index}.achievements`)}
-                  className={`px-4 py-4 bg-gray-50 border border-[#c2c2c2]  rounded-md w-full`}
+                  className="px-4 py-4 bg-gray-50 border border-[#c2c2c2] rounded-md w-full"
                 />
               </div>
 
               {/* Skills */}
-              <div className="mb-8">
-                <label className="block text-xl font-medium text-gray-800 mb-2">
-                  Skills
-                </label>
-                <div className="w-full p-2 bg-gray-50 border border-[#c2c2c2] rounded-md flex flex-wrap gap-2 items-center">
-                  {["UI Designer", "UX Designer", "Figma"].map((skill) => (
-                    <label key={skill} className="cursor-pointer">
-                      <input
-                        type="checkbox"
-                        value={skill}
-                        {...register(`experiences.${index}.skills`)}
-                        className={`px-4 py-4 bg-gray-50 border border-[#c2c2c2]  rounded-md w-full`}
-                      />
+              <div>
+                <label className="block text-sm md:text-xl font-medium mb-2">Skills Needed</label>
+                <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md min-h-[50px] mb-3">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
                       {skill}
-                    </label>
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(skill)}
+                        className="ml-2 hover:text-red-500"
+                      >
+                        <svg
+                          className="h-3 w-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
                   ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addSkill()}
+                    placeholder="Type a skill and press Enter"
+                    className="flex-1 px-6 py-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={addSkill}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-green-700"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Languages */}
+              <div>
+                <label className="block text-sm md:text-xl font-medium mb-2">Languages</label>
+                <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md min-h-[50px] mb-3">
+                  {languages.map((language, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
+                      {language}
+                      <button
+                        type="button"
+                        onClick={() => removeLanguage(language)}
+                        className="ml-2 hover:text-red-500"
+                      >
+                        <svg
+                          className="h-3 w-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={newLanguage}
+                    onChange={(e) => setNewLanguage(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addLanguage()}
+                    placeholder="Type a language and press Enter"
+                    className="flex-1 px-6 py-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={addLanguage}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-green-700"
+                  >
+                    Add
+                  </button>
                 </div>
               </div>
 
@@ -162,8 +270,7 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
                     onClick={() => remove(index)}
                     className="text-red-500 text-sm mb-4 text-end flex cursor-pointer"
                   >
-                    <IoIosRemoveCircleOutline className="my-auto mr-1 " />{" "}
-                    Remove Experience
+                    <IoIosRemoveCircleOutline className="my-auto mr-1" /> Remove Experience
                   </button>
                 )}
               </div>
@@ -182,7 +289,8 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
                   endDate: "",
                   jobDescription: "",
                   achievements: null,
-                  skills: [],
+                  skills: [], // Adding skills to new experience
+                  languages: [], // Adding languages to new experience
                 })
               }
               className="text-[#28C76F] font-medium flex items-center cursor-pointer"
@@ -192,7 +300,11 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
           </div>
 
           <div className="flex justify-between">
-            <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+            <button
+              type="button"
+              onClick={() => handleBack()}
+              className="px-4 py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black"
+            >
               Back
             </button>
             <Button
@@ -202,7 +314,7 @@ export default function SkillsExperience({setStep,formData,setFormData}: IPerson
               action="submit"
               bgColor="#28C76F"
               name="Next"
-              className="px-4  py-2  rounded-md"
+              className="px-4 py-2 rounded-md"
             />
           </div>
         </form>
