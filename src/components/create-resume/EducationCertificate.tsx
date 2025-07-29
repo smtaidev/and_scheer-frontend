@@ -6,8 +6,6 @@ import SectionHeader from "../shared/SectionHeader";
 import EducationalBackground from "./EducationalBackground";
 import CertificationInformation from "./trash/CertificationInformation";
 
-
-
 // type EducationFormData = {
 //   degree: string;
 //   institution: string;
@@ -26,13 +24,11 @@ export default function Education({setStep,formData,setFormData}: IPersonal) {
     // const { register, handleSubmit } = useForm<EducationFormData>();
     const [certificate, setCertificate] = useState(true);
 
-   
-
     return (
         <Container>
             <div className="min-h-screen px-4">
                 <div className="flex justify-center mt-12">
-                    <div className="md:px-6 w-full max-w-[1180px]">
+                    <div className="md:px-6 w-full max-w-[1180px] relative">
                         <div className="flex justify-between">
                             {
                                 certificate ? <SectionHeader
@@ -44,13 +40,13 @@ export default function Education({setStep,formData,setFormData}: IPersonal) {
                                 />
                             }
 
-                            <button onClick={() => setCertificate(!certificate)} type="button" className=" bg-secondary rounded-lg h-full px-3 py-2 md:px-6 md:py-3 text-white roulg">{certificate ? "Certifications" : "Education"}</button>
+                            {/* <button onClick={() => setCertificate(!certificate)} type="button" className=" bg-secondary rounded-lg h-full px-3 py-2 md:px-6 md:py-3 text-white roulg">{certificate ? "Certifications" : "Education"}</button> */}
 
                         </div>
 
                         <div>
                             {
-                                certificate ? <EducationalBackground setStep={setStep}  formData={formData} setFormData={setFormData}/> : <CertificationInformation setStep={setStep}  formData={formData} setFormData={setFormData}/>
+                                certificate ? <EducationalBackground certificate={certificate}  setCertificate={ setCertificate} setStep={setStep}  formData={formData} setFormData={setFormData}/> : <CertificationInformation certificate={certificate}  setCertificate={ setCertificate}  setStep={setStep}  formData={formData} setFormData={setFormData}/>
                             }
                         </div>
 

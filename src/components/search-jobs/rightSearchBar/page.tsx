@@ -2,40 +2,20 @@
 import PopularCompanyCard from '@/components/seeker-home/popularCompany/PopularCompanyCard'
 import CourseCard from '@/components/Suggested/CourseCard'
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
-import { Company } from '@/types/AllTypes'
+import { useGetRecommandedCourseQuery } from '@/redux/features/course/courseSlice'
+import { Company, Course } from '@/types/AllTypes'
 import React, { useEffect, useState } from 'react'
 // import PopularCompanyCard from '../../jobSeekerHome/popularCompany/PopularCompanyCard'
 // import CourseCard from '@/app/alloveruser/Suggested/CourseCard'
 
 
 export default function SerachRightSideBar() {
-  const courses = [
-    {
-      image: "/graphics.jpg",
-      title: "Graphics Design",
-      instructor: "Saiful Islam"
 
-    },
-    {
-      image: "/graphics.jpg",
-      title: "Graphics Design",
-      instructor: "Saiful Islam"
-
-    },
-    {
-      image: "/graphics.jpg",
-      title: "Graphics Design",
-      instructor: "Saiful Islam"
-
-    },
-    {
-      image: "/graphics.jpg",
-      title: "Graphics Design",
-      instructor: "Saiful Islam"
-
-    },
-
-  ]
+    
+    const {data:course} = useGetRecommandedCourseQuery({limit: 10});
+  
+    
+  
 
   const [companies, setCompanies] = useState<Company[]>([])
   const { data: res, isLoading } = useGetAllCompaniesQuery();
@@ -98,13 +78,11 @@ export default function SerachRightSideBar() {
           <h2 className="text-lg font-semibold mb-4">Suggested Course</h2>
 
           <div className='space-y-4'>
-            {
-              courses.map((course, index) => (
-                <div className='flex justify-center' key={index}>
-                  <CourseCard key={index} course={course}></CourseCard>
-
-                </div>))
-            }
+           {course?.data?.courses?.slice(0,2).map((course:Course, index:any) => (
+                   <div className="flex justify-center" key={index}>
+                     <CourseCard key={index} course={course}></CourseCard>
+                   </div>
+                 ))}
           </div>
 
 

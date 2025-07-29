@@ -3,6 +3,8 @@ import React from 'react';
 import { CgArrowsV } from 'react-icons/cg';
 import { MoreHorizontal } from 'lucide-react';
 import Container from '@/components/ui/Container';
+import { useGetAppliedJobsQuery } from '@/redux/features/job/jobSlice';
+import Link from 'next/link';
 
 const aiLogData = [
   {
@@ -26,7 +28,7 @@ const aiLogData = [
   {
     id: 3,
     timestamp: 'Jun 29, 2025 | 03:33 PM',
-    userName: 'Tanvir Hasan',
+    userName: 'Afsar Hossain',
     projectName: 'Bridge Point',
     action: 'Updated certificate via AI',
     status: 'Success',
@@ -53,7 +55,25 @@ const ActionButton = () => (
   </button>
 );
 
+// Change Time Format
+const changeTimeFormat = (timeStr: string) => {
+  // const timeStr = "2025-07-29T03:50:11.596Z";
+  const date = new Date(timeStr);
+  const formattedDate = date.toISOString().split('T')[0];
+  return formattedDate
+}
+
 export default function AppliedJobList() {
+
+  const { data, isLoading, error } = useGetAppliedJobsQuery({});
+
+  const appliedJobs = data?.data || []; // Adjust based on your API response shape
+  console.log("Applied Jobs: ", appliedJobs);
+
+  if (isLoading) return <p>Loading applied jobs...</p>;
+  if (error) return <p>Failed to fetch applied jobs.</p>;
+
+
   return (
     <Container>
 
@@ -61,7 +81,6 @@ export default function AppliedJobList() {
         {/* Header */}
         <div className="py-4 border-gray-200">
           <h2 className="text-lg md:text-[32px] font-semibold text-gray-900">Applied Job List</h2>
-
         </div>
 
         {/* Table */}
@@ -82,16 +101,18 @@ export default function AppliedJobList() {
 
             {/* Table Body */}
             <div className="divide-y divide-gray-200 text-sm md:text-base">
-              {aiLogData.map((row) => (
+              {appliedJobs?.map((row: any) => (
                 <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
                   <div className="grid grid-cols-7 gap-4 items-center text-gray-700">
-                    <div className="col-span-1">{row.timestamp}</div>
-                    <div className="col-span-1">{row.userName}</div>
-                    <div className="col-span-1">{row.userName}</div>
-                    <div className="col-span-1">{row.userName}</div>
-                    <div className="col-span-1">{row.userName}</div>
+                    <div className="col-span-1">{changeTimeFormat(row?.appliedAt)}</div>
+                    <div className="col-span-1">{row?.job?.company?.companyName}</div>
+                    <div className="col-span-1">{row?.job?.company?.phoneNumber}</div>
+                    <div className="col-span-1">{row?.job?.salaryRange}</div>
+                    <div className="col-span-1">{row?.job?.title}</div>
                     <div className="col-span-1"><StatusBadge status={row.status} /></div>
-                    <div className="col-span-1 underline text-primary hover:text-green-700 cursor-pointer ">View Details</div>
+                    <Link href={`/jobSeeker/job-details/${row?.jobId}`}>
+                      <div className="col-span-1 underline text-primary hover:text-green-700 cursor-pointer">View Details</div>
+                    </Link>
                   </div>
                 </div>
               ))}

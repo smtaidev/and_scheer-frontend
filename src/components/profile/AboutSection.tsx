@@ -7,13 +7,12 @@ interface FormData {
   jobTitle: string;
   professionalSummary: string;
 }
-const AboutSection: React.FC = () => {
+const AboutSection: React.FC = ({ profileData }: any) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { register, handleSubmit, reset, formState } = useForm<FormData>({
     defaultValues: {
-      jobTitle: "Senior Marketing Specialist",
-      professionalSummary:
-        "Lorem ipsum dolor sit amet consectetur adipiscing elit. Doloremque magnam tempore doloribus amet. Cum voluptates veritatistotam, distinctio excepturi at adipisci? Nam nostrum cum laboriosam sequi quia vel nobis explicabo? deome",
+      jobTitle: profileData?.JobTitle || "",
+      professionalSummary: profileData?.aboutMe || "",
     },
   });
 
@@ -58,7 +57,7 @@ const AboutSection: React.FC = () => {
             <p className="text-xl font-semibold text-secondary mb-2">
               Job Title:
             </p>
-            <p className="text-sm text-gray-400">Senior Marketing Specialist</p>
+            <p className="text-sm text-gray-400">{profileData}</p>
           </div>
 
           {/* Professional Summary */}

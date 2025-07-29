@@ -3,7 +3,9 @@ import AboutModal from "./modal/HeadAboutModal";
 import HeadAboutModal from "./modal/HeadAboutModal";
 import { useState } from "react";
 
-const ProfileHeade = () => {
+const ProfileHeade = ({profileData}:any) => {
+  console.log("profileData in ProfileHeader", profileData);
+  
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleAboutMode = () => {
     setIsModalOpen(true);
@@ -23,14 +25,14 @@ const ProfileHeade = () => {
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-xl font-bold">SAIFUR RAHMAN</h2>
-            <p className="text-gray-600 text-sm">UI/UX Designer.</p>
+            <h2 className="text-xl font-bold">{profileData?.firstName} {profileData?.lastName}</h2>
+            <p className="text-gray-600 text-sm line-clamp-1">{profileData?.JobTitle}</p>
           </div>
           <button
             onClick={handleAboutMode}
             className="bg-gray-800 text-white px-4 py-1 text-sm rounded-md hover:bg-gray-700"
           >
-            <Edit2 size={14} className="inline-block mr-1" />
+            <Edit2 size={14} className="inline-block mr-1 cursor-pointer" />
             Edit
           </button>
         </div>
@@ -45,7 +47,7 @@ const ProfileHeade = () => {
               <span className="font-medium">Phone:</span>
             </div>
 
-            <span className="ml-1 block text-gray-600">+880 1567-808747</span>
+            <span className="ml-1 block text-gray-600">{profileData?.phoneNumber}</span>
           </div>
           {/* Phone */}
           <div className=" sm:pb-0 sm:pr-4">
@@ -54,8 +56,8 @@ const ProfileHeade = () => {
               <span className="font-medium">Email:</span>
             </div>
 
-            <span className="ml-1 block text-gray-600">
-              ux.saifur.info@gmail.com
+            <span className="ml-1 block text-gray-600 line-clamp-1">
+              {profileData?.email || profileData?.user?.email}
             </span>
           </div>
 
@@ -66,13 +68,14 @@ const ProfileHeade = () => {
               <span className="font-medium">Location:</span>
             </div>
 
-            <span className="ml-1 block text-gray-600">Dhaka, Bangladesh</span>
+            <span className="ml-1 block text-gray-600 line-clamp-1">{profileData?.city}, {profileData?.state}, {profileData?.countryRegion}</span>
           </div>
         </div>
       </div>
       <HeadAboutModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        profileData={profileData}
       />
     </div>
   );

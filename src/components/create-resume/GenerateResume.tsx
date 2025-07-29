@@ -35,7 +35,6 @@ export default function GenerateResume({
         setStep(7);
         // router.push("/jobseekeruser/aigeneratedresume");
       }
-      console.log("Progress:",);
 
     }, 150);
   };

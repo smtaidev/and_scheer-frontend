@@ -1,10 +1,11 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import JobCard from '../jobCard/JobCard';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { Job } from '@/types/AllTypes';
 
 
-export default function JobList() {
+export default function JobList({ filtersData }: any) {
 
     // const jobs = [
     //     {
@@ -139,32 +140,38 @@ export default function JobList() {
     //     },
     // ];
 
+    console.log("Filters Data From the Job List Page: ", filtersData);
+
     const [jobs, setJobs] = useState([])
 
-    const { data: info } = useGetAllJobPostsQuery({});
+    const { data: info, isLoading, error } = useGetAllJobPostsQuery({});
 
     const allJob = info?.data;
     console.log(allJob?.data)
 
     useEffect(() => {
-        if (allJob?.data) {
+        if (filtersData?.length > 0) {
+            setJobs(filtersData);
+        } else {
             setJobs(allJob?.data)
         }
+        // if (allJob?.data) {
+        //     setJobs(allJob?.data)
+        // }
 
-    }, [allJob?.data])
+    }, [allJob?.data, filtersData])
+
+    if (isLoading) return <p>All Job Posts Loading.....</p>
 
     console.log(jobs);
     return (
 
         <div>
             <div className=" w-full  ">
-                {jobs?.map((job:Job, index) => (
+                {jobs?.map((job: Job, index) => (
                     <JobCard key={index} job={job} />
                 ))}
-
-
             </div>
-
         </div>
 
     );

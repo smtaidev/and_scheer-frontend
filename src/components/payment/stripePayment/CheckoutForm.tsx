@@ -1,213 +1,184 @@
-// // components/CheckoutForm.tsx
-// import { useForm } from "react-hook-form";
-// import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-// import { useState } from "react";
-// import FormInput from "@/components/ui/FormInput";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-// type FormData = {
-//   name: string;
-//   country: string;
-//   postalCode: string;
-// };
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
+import { toast } from "sonner";
 
-// export default function CheckoutForm() {
-//   const { register, handleSubmit } = useForm<FormData>();
-//   const stripe = useStripe();
-//   const elements = useElements();
-//   const [loading, setLoading] = useState(false);
+import { useState } from "react";
 
-//   const onSubmit = async (data: FormData) => {
-//     if (!stripe || !elements) return;
-//     setLoading(true);
+import axios from "axios";
+import { constructNow } from "date-fns";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
-//     // 1. Get clientSecret from backend
-//     const res = await fetch("/api/create-payment-intent", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ amount: 999 }), // $9.99
-//     });
+interface FormData {
+  phone: string;
+  email: string;
+  country: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  additionalInfo: string;
+}
 
-//     const { clientSecret } = await res.json();
+function PaymentForm() {
+  const router = useRouter();
 
-//     // 2. Confirm the card payment
-//     const result = await stripe.confirmCardPayment(clientSecret, {
-//       payment_method: {
-//         card: elements.getElement(CardElement)!,
-//         billing_details: {
-//           name: data.name,
-//           address: {
-//             country: data.country,
-//             postal_code: data.postalCode,
-//           },
-//         },
-//       },
-//     });
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
-//     if (result.error) {
-//       alert(`❌ Payment Failed: ${result.error.message}`);
-//     } else {
-//       if (result.paymentIntent.status === "succeeded") {
-//         alert("✅ Payment Successful!");
-//       }
-//     }
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
 
-//     setLoading(false);
-//   };
+  const {
+    register,
+    handleSubmit,
+    control,
 
-//   return (
-//     <>
-//       <form
-//         onSubmit={handleSubmit(onSubmit)}
-//         className="p-6 border rounded-md max-w-md mx-auto"
-//       >
-//         <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
 
-//         <label className="block mb-2">Card Information</label>
-//         <CardElement className="p-2 border rounded mb-4" />
+  const subData: any = useSelector(
+    (state: RootState) => state.subscriptionData.subscription
+  );
 
-//         <label className="block mb-2">Name on Card</label>
-//         <input
-//           {...register("name", { required: true })}
-//           placeholder="John Doe"
-//           className="w-full p-2 border rounded mb-4"
-//         />
+  const clientSecretId = subData?.clientSecret;
+  const paymentIntentId = subData?.paymentIntentId;
+  console.log(clientSecretId, paymentIntentId);
 
-//         <label className="block mb-2">Country</label>
-//         <select
-//           {...register("country", { required: true })}
-//           className="w-full p-2 border rounded mb-4"
-//         >
-//           <option value="">Select a country</option>
-//           <option value="US">United States</option>
-//           <option value="BD">Bangladesh</option>
-//           <option value="IN">India</option>
-//           <option value="DE">Germany</option>
-//         </select>
+  const onSubmit = async (data: FormData) => {
+    if (!stripe || !elements) {
+      // Stripe.js hasn't yet loaded.
+      return;
+    }
 
-//         <label className="block mb-2">Postal Code</label>
-//         <input
-//           {...register("postalCode", { required: true })}
-//           placeholder="12345"
-//           className="w-full p-2 border rounded mb-4"
-//         />
+    setPaymentProcessing(true);
 
-//         <button
-//           disabled={loading}
-//           type="submit"
-//           className="bg-green-500 text-white py-2 px-4 rounded w-full"
-//         >
-//           {loading ? "Processing..." : "Pay now 9.99"}
-//         </button>
-//       </form>
-//        <div className="md:max-w-[818px]">
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         {/* Input Fields */}
-//         <div className="space-y-4 mb-8">
-//           <div className="flex flex-col md:flex-row gap-4">
-//             <div className="flex-1">
-//               <FormInput
-//                 label="First Name"
-//                 type="text"
-//                 placeholder="John"
-//                 {...register("firstName", { required: true })}
-//                 onChange={(e) => handleInputChange("firstName", e.target.value)}
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <FormInput
-//                 label="Last Name"
-//                 type="text"
-//                 placeholder="Doe"
-//                 {...register("lastName", { required: true })}
-//                 onChange={(e) => handleInputChange("lastName", e.target.value)}
-//               />
-//             </div>
-//           </div>
+    try {
+      // Create payment method using Stripe Elements
+      const paymentElement = elements.getElement(PaymentElement);
+      if (!paymentElement) {
+        setPaymentError(
+          "Payment element not found. Please refresh and try again."
+        );
+        return;
+      }
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setPaymentError(submitError.message || "Payment validation failed.");
+        return;
+      }
+      const { paymentMethod, error: stripeError } =
+        await stripe.createPaymentMethod({
+          // type: "card",
+          elements,
+          params: {
+            billing_details: {
+              name: data.firstName,
+              email: data.email,
+              phone: data.phone,
+              address: {
+                country: "US",
+              },
+            },
+          },
+        });
 
-//           <div className="flex flex-col md:flex-row gap-4">
-//             <div className="flex-1">
-//               <FormInput
-//                 label="Phone"
-//                 type="text"
-//                 placeholder="+1 (555) 123-4567"
-//                 {...register("phone", { required: true })}
-//                 onChange={(e) => handleInputChange("phone", e.target.value)}
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <FormInput
-//                 label="Email Address"
-//                 type="email"
-//                 placeholder="you@example.com"
-//                 {...register("email", { required: true })}
-//                 onChange={(e) => handleInputChange("email", e.target.value)}
-//               />
-//             </div>
-//           </div>
+      const { id }: any = paymentMethod;
+      console.log("pm ==", id);
 
-//           {/*
-//           <SelectField
-//             label="Country/Region"
-//             name="country"
-//             options={roleOptions}
-//             register={register("country", { required: true })} // ✅ FIXED
-//             onChange={(value) => handleInputChange('country', value)}
-//           /> */}
+      if (stripeError) {
+        toast.error(stripeError.message || "Payment failed");
+        setPaymentProcessing(false);
+        return;
+      }
 
-//           <FormInput
-//             label="Address"
-//             type="text"
-//             placeholder="Provide your address"
-//             {...register("address", { required: true })}
-//             onChange={(e) => handleInputChange("address", e.target.value)}
-//           />
+      //  Confirm payment
+      const confirmRes = await axios.post(
+        `https://api.stripe.com/v1/payment_intents/${paymentIntentId}/confirm`,
+        {
+          payment_method: id,
+          client_secret: clientSecretId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
 
-//           <div className="flex flex-col md:flex-row gap-4">
-//             <div className="flex-1">
-//               <FormInput
-//                 placeholder="City"
-//                 {...register("city", { required: true })}
-//                 onChange={(e) => handleInputChange("city", e.target.value)}
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <FormInput
-//                 placeholder="State"
-//                 {...register("state", { required: true })}
-//                 onChange={(e) => handleInputChange("state", e.target.value)}
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <FormInput
-//                 placeholder="ZIP Code"
-//                 {...register("zipcode", { required: true })}
-//                 onChange={(e) => handleInputChange("zipcode", e.target.value)}
-//               />
-//             </div>
-//           </div>
+      console.log("Payment Confirmed:", confirmRes.data);
 
-//           <div>
-//             <label
-//               htmlFor="additionalInfo"
-//               className="text-[#333333] font-medium"
-//             >
-//               Additional Information
-//             </label>
-//             <textarea
-//               id="additionalInfo"
-//               rows={7}
-//               className="p-2 border border-gray-300 rounded-md w-full"
-//               placeholder="Enter additional information here..."
-//               {...register("additionalInfo")}
-//               onChange={(e) =>
-//                 handleInputChange("additionalInfo", e.target.value)
-//               }
-//             />
-//           </div>
-//           <p>Your billing information is securely stored and encrypted.</p>
-//         </div>
-//       </form>
-//     </div>
-//     </>
-//   );
-// }
+      toast.success("Payment successful!");
+      reset();
+      setPaymentProcessing(false);
+      router.push("/success");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to process payment. Please try again.");
+      setPaymentProcessing(false);
+    }
+  };
+
+  return (
+    <div className="p-6 ">
+      <div className="w-[550px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          {/* Right Column - Payment Method */}
+          <div className="bg-white p-6 rounded-lg shadow-sm h-fit">
+            <h2 className="text-xl lg:text-3xl font-semibold text-gray-900 mb-6">
+              Payment Method
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Card Information
+                </label>
+              </div>
+
+              <PaymentElement
+                options={{
+                  layout: "tabs",
+                  fields: {
+                    billingDetails: {
+                      address: {
+                        country: "never",
+                      },
+                    },
+                  },
+                }}
+              />
+              {/* </Elements> */}
+              <button
+                type="submit"
+                disabled={!stripe || paymentProcessing}
+                className="w-full bg-green-500 cursor-pointer hover:bg-green-8 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 mt-6"
+              >
+                {paymentProcessing ? "Processing..." : `Pay`}
+              </button>
+              {paymentError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-red-600 text-sm">{paymentError}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default PaymentForm;
