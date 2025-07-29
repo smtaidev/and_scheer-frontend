@@ -12,7 +12,7 @@ interface RecentJobCardProps {
 
 export default function RecentJobCard({ job }: RecentJobCardProps) {
   const pathname = usePathname()
-  console.log(job)
+
 
   return (
     <div className='w-full md:max-w-[457px]  border border-gray-100 rounded-lg shadow-md p-4 bg-white '>

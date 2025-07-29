@@ -28,6 +28,7 @@ interface JobTitle {
 
 export default function RecentJob({ title }: JobTitle) {
 
+
   const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
   const { data: jobs } = useGetAllJobPostsQuery({});
   const { data: currentUser } = useGetMeQuery({});
@@ -68,9 +69,11 @@ export default function RecentJob({ title }: JobTitle) {
 
     // fetchedRecomendationJobs()
 
+
     // if (jobs?.data) {
     //   setRecomandationAllJobs(jobs.data.data)
     // }
+
 
     if (jobs?.data?.data) {
       setJobDataLoading(false);
@@ -81,6 +84,7 @@ export default function RecentJob({ title }: JobTitle) {
 
 
   console.log("Recent Jobs: ", jobs?.data?.data);
+
 
   return (
     <div className="bg-card ">
