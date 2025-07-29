@@ -13,6 +13,38 @@ import jsPDF from "jspdf";
 export default function MyResume() {
   const printRef = useRef<HTMLDivElement>(null);
 
+  // Main Code
+  // const downloadResume = async () => {
+  //   const element = printRef.current;
+  //   if (!element) {
+  //     return;
+  //   }
+
+  //   console.log(element);
+
+  //   const canvas = await html2canvas(element, {
+  //     scale: 2,
+  //   });
+  //   const data = canvas.toDataURL("image/png");
+
+  //   const pdf = new jsPDF({
+  //     orientation: "portrait",
+  //     unit: "px",
+  //     format: "a4",
+  //   });
+
+  //   const imgProperties = pdf.getImageProperties(data);
+
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+  //   // const pdfWidth = 595.28;  // A4 width in points
+  //   // const pdfHeight = 841.89; // A4 height in points
+
+  //   pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+  //   pdf.save("my_resume.pdf");
+  // };
+
   const downloadResume = async () => {
     const element = printRef.current;
     if (!element) {
@@ -20,7 +52,7 @@ export default function MyResume() {
     }
 
     console.log(element);
-
+    // Capture the content as a canvas
     const canvas = await html2canvas(element, {
       scale: 2,
     });
@@ -32,14 +64,25 @@ export default function MyResume() {
       format: "a4",
     });
 
+    // Get the image properties (width and height)
     const imgProperties = pdf.getImageProperties(data);
+
+    // A4 size in points
     const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    // Calculate the scaling factor to fit the content to the A4 page
+    const scaleFactor = Math.min(pdfWidth / imgProperties.width, pdfHeight / imgProperties.height);
+    const scaledWidth = imgProperties.width * scaleFactor;
+    const scaledHeight = imgProperties.height * scaleFactor;
 
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+    // Add the image to the PDF
+    pdf.addImage(data, "PNG", 0, 0, scaledWidth, scaledHeight);
+
+    // Save the PDF
     pdf.save("my_resume.pdf");
   };
+
 
   return (
     <div className="flex justify-center mt-12 h-full">
@@ -48,7 +91,9 @@ export default function MyResume() {
           title="Review Your AI-Generated Resume"
           description="Take a moment to review your resume. You can make changes and regenerate if needed. When you’re ready, download it and start applying!"
         ></SectionHeader>
-        <ResumeComponent downloadResume={downloadResume} printRef={printRef} />
+        <div className="overflow-x-scroll md:overflow-hidden">
+          <ResumeComponent downloadResume={downloadResume} printRef={printRef} />
+        </div>
         <div className="flex gap-12 py-16 ">
           <button
             onClick={downloadResume}
