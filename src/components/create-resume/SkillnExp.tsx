@@ -16,6 +16,7 @@ type WorkForm = {
     jobDescription: string;
     achievements: FileList | null;
     skills: string[];
+    languages: string[]; // Added languages field
   }[];
 };
 
@@ -37,6 +38,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
           jobDescription: "",
           achievements: null,
           skills: [], // skills field is initialized as an empty array
+          languages: [], // languages field initialized as an empty array
         },
       ],
     },
@@ -44,6 +46,8 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
 
   const [skills, setSkills] = useState(["Website Design", "Next.js", "CSS"]);
   const [newSkill, setNewSkill] = useState("");
+  const [languages, setLanguages] = useState<string[]>(["English"]);
+  const [newLanguage, setNewLanguage] = useState("");
 
   const addSkill = () => {
     const skill = newSkill.trim();
@@ -55,6 +59,18 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
+  };
+
+  const addLanguage = () => {
+    const language = newLanguage.trim();
+    if (language && !languages.includes(language)) {
+      setLanguages([...languages, language]);
+      setNewLanguage("");
+    }
+  };
+
+  const removeLanguage = (languageToRemove: string) => {
+    setLanguages(languages.filter((language) => language !== languageToRemove));
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -70,18 +86,19 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
   };
 
   const onSubmit = (data: WorkForm) => {
-    // Merging skills state with form data
+    // Merging skills and languages with form data
     const updatedData = {
       ...data,
       experiences: data.experiences.map((experience, index) => ({
         ...experience,
         skills: skills, // Adding skills to each experience
+        languages: languages, // Adding languages to each experience
       })),
     };
 
-    console.log("Got all skills data:", updatedData);
+    console.log("Got all skills and languages data:", updatedData);
     setStep(4);
-    setFormData(updatedData); // Updating form data to include skills
+    setFormData(updatedData); // Updating form data to include skills and languages
     // router.push("/jobseekeruser/education");
   };
 
@@ -132,7 +149,9 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
 
               {/* Job Description */}
               <div className="mb-4">
-                <label className="block text-xl font-medium text-gray-800">Job Description</label>
+                <label className="block text-xl font-medium text-gray-800">
+                  Job Description
+                </label>
                 <textarea
                   className="w-full h-[224px] bg-gray-50 py-5 px-4 border border-[#c2c2c2] rounded-md"
                   placeholder="An experienced marketing professional..."
@@ -142,7 +161,9 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
 
               {/* Achievements File Input */}
               <div className="mb-4">
-                <label className="block text-xl font-medium text-gray-800 mb-2">Achievements</label>
+                <label className="block text-xl font-medium text-gray-800 mb-2">
+                  Achievements
+                </label>
                 <input
                   type="file"
                   multiple
@@ -197,6 +218,52 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                 </div>
               </div>
 
+              {/* Languages */}
+              <div>
+                <label className="block text-sm md:text-xl font-medium mb-2">Languages</label>
+                <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md min-h-[50px] mb-3">
+                  {languages.map((language, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
+                      {language}
+                      <button
+                        type="button"
+                        onClick={() => removeLanguage(language)}
+                        className="ml-2 hover:text-red-500"
+                      >
+                        <svg
+                          className="h-3 w-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={newLanguage}
+                    onChange={(e) => setNewLanguage(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addLanguage()}
+                    placeholder="Type a language and press Enter"
+                    className="flex-1 px-6 py-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={addLanguage}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-green-700"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
               <div className="flex justify-end">
                 {fields.length > 1 && (
                   <button
@@ -224,6 +291,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                   jobDescription: "",
                   achievements: null,
                   skills: [], // Adding skills to new experience
+                  languages: [], // Adding languages to new experience
                 })
               }
               className="text-[#28C76F] font-medium flex items-center cursor-pointer"
