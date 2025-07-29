@@ -34,7 +34,7 @@ const MainComponents = () => {
     other_social_media: "",
     other_social_media_url: "",
     skills: [], // e.g. ["JavaScript", "React", "Node.js"]
-    languages: [], // e.g. ["English", "Spanish"]
+    // languages: [], // e.g. ["English", "Spanish"]
 
     education: [], // e.g. [{ degree: "BSc", institution: "XYZ University", major: "",  startDate: "2020-01-01", endDate: "2024-01-01", achievements: [] }]
     experiences: [], // e.g. [{ jobTitle: "Software Engineer", companyName: "ABC Corp", startDate: "2020-01-01", endDate: "2024-01-01", jobDescription: "Developed web applications.", skills: ["JavaScript", "React"], achievements: [{}] }]
@@ -98,18 +98,18 @@ const MainComponents = () => {
           })
       ).values()
     ),
-    languages: Array.from(
-      new Map(
-        formData.experiences
-          .flatMap((ex: any) => ex.languages || [])
-          .filter((s: string) => typeof s === "string" && s.trim() !== "")
-          .map((language: string) => {
-            const original = language.trim();
-            const normalized = original.toLowerCase().replace(/\s+/g, "");
-            return [normalized, original]; // key: normalized, value: original
-          })
-      ).values()
-    ),
+    // languages: Array.from(
+    //   new Map(
+    //     formData.experiences
+    //       .flatMap((ex: any) => ex.languages || [])
+    //       .filter((s: string) => typeof s === "string" && s.trim() !== "")
+    //       .map((language: string) => {
+    //         const original = language.trim();
+    //         const normalized = original.toLowerCase().replace(/\s+/g, "");
+    //         return [normalized, original]; // key: normalized, value: original
+    //       })
+    //   ).values()
+    // ),
 
     certifications: formData.certificates?.map((cert: any) => ({
       certification_title: cert.certificateTitle,
