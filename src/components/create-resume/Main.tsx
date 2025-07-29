@@ -90,7 +90,30 @@ const MainComponents = () => {
       skills: exp.skills || [],
       achievements: exp.achievements || []
     })),
-    skills: formData.experiences.flatMap((ex: any) => ex.skills || []), // Flattens all skills into a single array
+    skills: Array.from(
+      new Map(
+        formData.experiences
+          .flatMap((ex: any) => ex.skills || [])
+          .filter((s: string) => typeof s === "string" && s.trim() !== "")
+          .map((skill: string) => {
+            const original = skill.trim();
+            const normalized = original.toLowerCase().replace(/\s+/g, "");
+            return [normalized, original]; // key: normalized, value: original
+          })
+      ).values()
+    ),
+    languages: Array.from(
+      new Map(
+        formData.experiences
+          .flatMap((ex: any) => ex.languages || [])
+          .filter((s: string) => typeof s === "string" && s.trim() !== "")
+          .map((language: string) => {
+            const original = language.trim();
+            const normalized = original.toLowerCase().replace(/\s+/g, "");
+            return [normalized, original]; // key: normalized, value: original
+          })
+      ).values()
+    ),
 
     certifications: formData.certificates?.map((cert: any) => ({
       certification_title: cert.certificateTitle,
