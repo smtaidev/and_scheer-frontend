@@ -29,11 +29,12 @@ interface JobTitle {
 
 export default function RecomandationJob({ title }: JobTitle) {
 
-    const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
-    const { data: jobs } = useGetAllJobPostsQuery({});
+    // const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
+    // const { data: jobs } = useGetAllJobPostsQuery({});
     const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
     const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+    const [jobLoading, setJobLoading] = useState(true);
 
     // console.log("Current User: ", currentUser?.data?.id);
     // console.log("My Profile: ", myProfile?.data);
@@ -78,7 +79,13 @@ export default function RecomandationJob({ title }: JobTitle) {
     // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
 
-    console.log(jobs);
+    // console.log(jobs);
+
+    useEffect(() => {
+        if (recomandationJobs?.data?.recommendations) {
+            setJobLoading(false);
+        }
+    }, [recomandationJobs?.data?.recommendations])
 
     return (
         <div className="bg-card ">
@@ -88,37 +95,45 @@ export default function RecomandationJob({ title }: JobTitle) {
                         {title || "Recent Job"}{" "}
                     </h1>
 
-                    <div className="relative">
-                        {/* Custom arrows */}
-                        <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
-                        <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+                    {
+                        jobLoading && <p>Recomandation Job Posts Loading.....</p>
+                    }
 
-                        <Swiper
-                            spaceBetween={30}
-                            freeMode={true}
-                            navigation={{
-                                nextEl: ".swiper-button-next-custom",
-                                prevEl: ".swiper-button-prev-custom",
-                            }}
-                            modules={[FreeMode, Navigation]}
-                            className="mySwiper"
-                            breakpoints={{
-                                320: { slidesPerView: 1 },
-                                640: { slidesPerView: 2 },
-                                768: { slidesPerView: 2.5 },
-                                1024: { slidesPerView: 3 },
-                                1280: { slidesPerView: 3.5 },
-                            }}
-                        >
-                            {
-                                recomandationJobs && recomandationJobs?.data?.recommendations?.map((job: any, index: any) => (
-                                    <SwiperSlide key={index} className="pb-2">
-                                        <RecomandationJobCard job={job} />
-                                    </SwiperSlide>
-                                ))
-                            }
-                        </Swiper>
-                    </div>
+                    {
+                        !jobLoading && <div className="relative">
+                            {/* Custom arrows */}
+                            <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
+                            <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+
+                            <Swiper
+                                spaceBetween={30}
+                                freeMode={true}
+                                navigation={{
+                                    nextEl: ".swiper-button-next-custom",
+                                    prevEl: ".swiper-button-prev-custom",
+                                }}
+                                modules={[FreeMode, Navigation]}
+                                className="mySwiper"
+                                breakpoints={{
+                                    320: { slidesPerView: 1 },
+                                    640: { slidesPerView: 2 },
+                                    768: { slidesPerView: 2.5 },
+                                    1024: { slidesPerView: 3 },
+                                    1280: { slidesPerView: 3.5 },
+                                }}
+                            >
+                                {
+                                    recomandationJobs && recomandationJobs?.data?.recommendations?.map((job: any, index: any) => (
+                                        <SwiperSlide key={index} className="pb-2">
+                                            <RecomandationJobCard job={job} />
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
+                        </div>
+                    }
+
+
                 </div>
             </div>
         </div>

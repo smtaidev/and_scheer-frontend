@@ -32,20 +32,20 @@ export default function RecentJob({ title }: JobTitle) {
   const { data: jobs } = useGetAllJobPostsQuery({});
   const { data: currentUser } = useGetMeQuery({});
   const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
-  const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+  const [jobDataLoading, setJobDataLoading] = useState(true);
+  // const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
 
-  console.log("Current User: ", currentUser?.data?.id);
-  console.log("My Profile: ", myProfile?.data);
-  console.log("Profile ID: ", myProfile?.data?.profileId)
+  // console.log("Current User: ", currentUser?.data?.id);
+  // console.log("My Profile: ", myProfile?.data);
+  // console.log("Profile ID: ", myProfile?.data?.profileId)
 
-  console.log("Recomandation Jobs: ", recomandationJobs)
+  // console.log("Recomandation Jobs: ", recomandationJobs)
 
   useEffect(() => {
 
-    if (recomandationJobs?.data) {
-      setRecomandationAllJobs(recomandationJobs?.data?.data);
-    }
-
+    // if (recomandationJobs?.data) {
+    //   setRecomandationAllJobs(recomandationJobs?.data?.data);
+    // }
 
     const fetchedRecomendationJobs = async () => {
       // Get the access token from cookies
@@ -66,18 +66,21 @@ export default function RecentJob({ title }: JobTitle) {
       }
     };
 
-
-
-    fetchedRecomendationJobs()
+    // fetchedRecomendationJobs()
 
     // if (jobs?.data) {
     //   setRecomandationAllJobs(jobs.data.data)
     // }
-    // }, [jobs?.data])
-  }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
+
+    if (jobs?.data?.data) {
+      setJobDataLoading(false);
+    }
+
+  }, [jobs?.data?.data])
+  // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
 
-  console.log(jobs);
+  console.log("Recent Jobs: ", jobs?.data?.data);
 
   return (
     <div className="bg-card ">
@@ -87,37 +90,44 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          <div className="relative">
-            {/* Custom arrows */}
-            <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
-            <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+          {
+            jobDataLoading && <p>Job Posts Loading.....</p>
+          }
 
-            <Swiper
-              spaceBetween={30}
-              freeMode={true}
-              navigation={{
-                nextEl: ".swiper-button-next-custom",
-                prevEl: ".swiper-button-prev-custom",
-              }}
-              modules={[FreeMode, Navigation]}
-              className="mySwiper"
-              breakpoints={{
-                320: { slidesPerView: 1 },
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 2.5 },
-                1024: { slidesPerView: 3 },
-                1280: { slidesPerView: 3.5 },
-              }}
-            >
-              {
-                recomandationJobs && recomandationJobs?.data?.recommendations?.map((job: any, index: any) => (
-                  <SwiperSlide key={index} className="pb-2">
-                    <RecentJobCard job={job} />
-                  </SwiperSlide>
-                ))
-              }
-            </Swiper>
-          </div>
+          {
+            !jobDataLoading && <div className="relative">
+              {/* Custom arrows */}
+              <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
+              <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+
+              <Swiper
+                spaceBetween={30}
+                freeMode={true}
+                navigation={{
+                  nextEl: ".swiper-button-next-custom",
+                  prevEl: ".swiper-button-prev-custom",
+                }}
+                modules={[FreeMode, Navigation]}
+                className="mySwiper"
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  640: { slidesPerView: 2 },
+                  768: { slidesPerView: 2.5 },
+                  1024: { slidesPerView: 3 },
+                  1280: { slidesPerView: 3.5 },
+                }}
+              >
+                {
+                  // jobs && jobs?.data?.recommendations?.map((job: any, index: any) => (
+                  jobs?.data?.data && jobs?.data?.data?.map((job: any, index: any) => (
+                    <SwiperSlide key={index} className="pb-2">
+                      <RecentJobCard job={job} />
+                    </SwiperSlide>
+                  ))
+                }
+              </Swiper>
+            </div>
+          }
         </div>
       </div>
     </div>

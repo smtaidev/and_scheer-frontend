@@ -48,6 +48,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
 
   const [profileData, setProfileData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const downloadResume = async () => {
     const element = printRef.current;
     if (!element) {
@@ -86,6 +87,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
     // Save the PDF
     pdf.save("my_resume.pdf");
   };
+
   const storedUserId = localStorage.getItem("userId");
 
 
@@ -95,7 +97,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
       if (!userId && !storedUserId) return;
       const idToUse = userId || storedUserId;
       try {
-        const response = await fetch(`http://localhost:5005/api/v1/profiles/resume/${idToUse}`, {
+        const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${idToUse}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
