@@ -5,23 +5,26 @@ import { Department, WorkMode } from '@/types/categoryType/Category';
 import React, { useMemo, useState } from 'react';
 
 const allLocation = [
-  { name: 'Dhaka', count: '(2706)' },
-  { name: 'Chattogram', count: '(567)' },
-  { name: 'Cumilla', count: '(234)' },
-  { name: 'Jashore', count: '(187)' },
-  { name: 'Barishal', count: '(156)' },
-  { name: 'Rangpur', count: '(98)' },
-  { name: 'Sylhet', count: '(87)' },
+  { name: 'Erdmannhausen', count: '(2706)' },
+  { name: 'München', count: '(567)' },
+  { name: 'Wembach', count: '(234)' },
+  { name: 'Malgersdorf', count: '(187)' },
+  { name: 'Neustetten', count: '(156)' },
+  { name: 'The Black Forest', count: '(156)' },
+  { name: 'Cologne Cathedral', count: '(156)' },
+
+  // { name: 'In velit eu est co', count: '(98)' },
+  // { name: 'Exercitation sapient', count: '(87)' },
 ]
 
 const salaryRanges = [
-  { range: '1tk - 20k', count: '(1760)' },
-  { range: '20k - 40k', count: '(876)' },
-  { range: '40k - 60k', count: '(567)' },
-  { range: '60k - 80k', count: '(345)' },
-  { range: '80k - 1lakh', count: '(234)' },
-  { range: '1lakh - 2lakh', count: '(123)' },
-  { range: 'Negotiable', count: '(89)' },
+  { range: '$1000-$2000', count: '(1760)' },
+  { range: '$2000 - $5000', count: '(567)' },
+  { range: '$1000-$7000', count: '(876)' },
+  { range: '$9,000 - $12,000', count: '(345)' },
+  // { range: '80k - 1lakh', count: '(234)' },
+  // { range: '1lakh - 2lakh', count: '(123)' },
+  // { range: 'Negotiable', count: '(89)' },
 ];
 
 const educationQualifications = [
@@ -55,12 +58,12 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
 
   // Filter store data
   const filters: JobFilterType = {
-    companies: [],
-    departments: [],
+    companyName: [],
+    title: [],
     educations: [],
     experience: 0,
     locations: [],
-    salaryRanges: [],
+    salaryRange: [],
     jobType: []
   };
 
@@ -145,12 +148,12 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   const handleApply = async () => {
     const formData = {
       jobType: selectedWorkModes,
-      experience: experience,
-      departments: selectedDepartments,
+      experience: experience > 0 && `${experience === 1 ? `${experience}-year` : `${experience}-years`}`,
+      title: selectedDepartments,
       locations: selectedLocations,
-      salaryRanges: selectedSalaries,
+      salaryRange: selectedSalaries,
       educations: selectedEducations,
-      companies: selectedCompanies,
+      companyName: selectedCompanies,
     };
     console.log('Form Data printed:', formData);
 
@@ -208,13 +211,13 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
               {experience}
             </div>
           </div>
-          <span className="text-sm">25 Yr</span>
+          <span className="text-sm">10 Yr</span>
         </div>
       </div>
 
-      {/* Department Filter */}
+      {/* Position Filter */}
       <div className="mb-6">
-        <h3 className="font-medium mb-3">Department</h3>
+        <h3 className="font-medium mb-3">Position</h3>
         <div className="space-y-2">
           {displayedDepartments.map((dept: Department, index: number) => (
             <label key={index} className="flex items-center space-x-2">
@@ -294,7 +297,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
       </div>
 
       {/* Education Qualification Filter */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="font-medium mb-3">Education Qualification</h3>
         <div className="space-y-2">
           {(showAllEducations ? educationQualifications : educationQualifications.slice(0, 4)).map((edu, index) => (
@@ -318,7 +321,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
             {showAllEducations ? "Show Less" : "View More"}
           </button>
         )}
-      </div>
+      </div> */}
 
       {/* Companies Filter */}
       <div className="mb-6">
