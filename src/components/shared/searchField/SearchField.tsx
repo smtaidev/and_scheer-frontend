@@ -46,15 +46,15 @@ export default function SearchField() {
     return showAllCompanies ? sorted : sorted.slice(0, 6);
   }, [allCompany, showAllCompanies]);
 
-  const [showAllCompanies, setShowAllCompanies] = useState(false);
-  const { data: comName } = useGetCompanyNamesQuery({});
-  const allCompany = comName?.data;
+  // const [showAllCompanies, setShowAllCompanies] = useState(false);
+  // const { data: comName } = useGetCompanyNamesQuery({});
+  // const allCompany = comName?.data;
 
-  const displayedCompanies = useMemo(() => {
-    if (!Array.isArray(allCompany)) return [];
-    const sorted = [...allCompany].sort((a, b) => b.length - a.length);
-    return showAllCompanies ? sorted : sorted.slice(0, 6);
-  }, [allCompany, showAllCompanies]);
+  // const displayedCompanies = useMemo(() => {
+  //   if (!Array.isArray(allCompany)) return [];
+  //   const sorted = [...allCompany].sort((a, b) => b.length - a.length);
+  //   return showAllCompanies ? sorted : sorted.slice(0, 6);
+  // }, [allCompany, showAllCompanies]);
 
   const onSubmit = (data: SearchFormInputs) => {
     // console.log("Check the data here: ", data);
@@ -153,7 +153,8 @@ export default function SearchField() {
             </div>
           ))}
         </div>
-      ) : (<p className="text-red-500 mt-2">No jobs found matching your search.</p>)
+      ) : ""
+      // (<p className="text-red-500 mt-2">No jobs found matching your search.</p>)
       }
 
     </div>
