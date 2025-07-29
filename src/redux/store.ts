@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseUrlApi } from "./api/baseUrlApi";
 import subscriptionDataReducer from "./features/Subscription/subscriptionDataSlice";
-import resumeReducer from "@/redux/features/resume/resumeSlice"
+
 
 // const persistMiddleware = (store) => (next) => (action) => {
 //   const result = next(action);
@@ -23,7 +23,6 @@ export const makeStore = () => {
     reducer: {
       subscriptionData: subscriptionDataReducer,
       [baseUrlApi.reducerPath]: baseUrlApi.reducer,
-      allResumeData: resumeReducer
     },
 
     middleware: (getDefaultMiddleware) =>

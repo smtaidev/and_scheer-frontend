@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
         data-new-gr-c-s-check-loaded="14.1244.0"
         data-gr-ext-installed=""

@@ -4,14 +4,25 @@ import JobList from "@/components/search-jobs/jobList/page";
 import SerachRightSideBar from "@/components/search-jobs/rightSearchBar/page";
 import JobSeekerNavbar from "@/components/seeker-home/SeekerNavbar";
 import AllCategory from "@/components/seeker-home/TopCategory/AllCategory";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function SearchJobPage() {
 
 
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(true);
-    console.log(isFilterSidebarVisible)
+
+    const [filtersData, setFiltersData] = useState([]);
+    // console.log(isFilterSidebarVisible)
+
+    // console.log("Filter Data: ", filtersData);
+    console.log("Filter Data: ", filtersData?.length);
+
+    useEffect(() => {
+        console.log(filtersData)
+        console.log("Filter Data Updated: ", filtersData?.length);
+    }, [filtersData])
+
 
     return (
         <div>
@@ -42,12 +53,12 @@ export default function SearchJobPage() {
     lg:block
   `}
                 >
-                    <FilterSidebar />
+                    <FilterSidebar setFiltersData={setFiltersData} />
                 </div>
 
 
                 <div className="flex-1 gap-5 px-4 md:px-6 lg:px-8 md:flex">
-                    <JobList />
+                    <JobList filtersData={filtersData} />
                     <SerachRightSideBar />
                 </div>
             </div>
