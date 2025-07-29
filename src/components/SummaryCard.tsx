@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import { useDispatch } from "react-redux";
 import { setSubscriptionData } from "@/redux/features/Subscription/subscriptionDataSlice";
+import Cookies from "js-cookie";
 
 // components/PlanSummaryCard.tsx
 interface PlanSummaryProps {
@@ -39,7 +40,8 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
     return <Loading />;
   }
 
-  const accessToken: string | null = localStorage.getItem("accessToken");
+  const accessToken = Cookies.get("accessToken");
+  console.log(accessToken);
 
   console.log("aaa== ", accessToken);
   const planDetails = data?.data;
@@ -62,7 +64,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
       }
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error?.data.message);
     }
   };
 

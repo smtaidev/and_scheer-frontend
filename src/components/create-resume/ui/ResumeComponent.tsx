@@ -1,67 +1,93 @@
 import React from 'react';
-// import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
 import { CgMail } from 'react-icons/cg';
-import { FiExternalLink } from 'react-icons/fi';
-import { HiExternalLink } from 'react-icons/hi';
+import { FaDribbble } from "react-icons/fa6";
+import { FaLinkedin } from "react-icons/fa6";
 import Image from 'next/image';
 import { PiPhone } from 'react-icons/pi';
 import { TbMapPinCode } from 'react-icons/tb';
+import { RefObject } from 'react';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
-const ResumeComponent = () => {
+interface ResumeComponentProps {
+  downloadResume: () => void;
+  printRef: RefObject<HTMLDivElement | null>;
+  profileData: any; // Adjust type as needed
+}
+
+const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef, profileData }) => {
+  function getDuration(start: string, end: string): string {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const totalMonths =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      (endDate.getMonth() - startDate.getMonth());
+
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+
+    let duration = "";
+    if (years) duration += `${years} year${years > 1 ? "s" : ""}`;
+    if (months) duration += `${years ? " " : ""}${months} month${months > 1 ? "s" : ""}`;
+
+    return duration || "Less than a month";
+  }
+
+
   return (
-    <div className="  border mx-auto bg-white  overflow-hidden">
+    <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8">
-        <div className="flex items-center space-x-6">
-          <div className="relative">
-            <div className="w-32 h-32 rounded-full border-4 border-blue-200 overflow-hidden">
-              <Image  
-                src="/man.png" 
-                alt="Saifur Rahman" 
-                className="w-full h-full object-cover"
+      <div className="p-8">
+        <div className='p-8 flex gap-20'>
+          <div className="pr-28">
+            <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
+              <Image
+                src={profileData?.profile?.user.profilePic || "/man.png"} // Fallback image
+                alt="Saifur Rahman"
+                className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
                 width={200}
               />
             </div>
           </div>
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">SAIFUR RAHMAN</h1>
-            <p className="text-xl text-gray-600 mb-4">UX/UI Designer</p>
-            <div className="flex flex-col space-y-2 text-gray-600">
+          <div className="">
+            <h1 className="text-5xl font-bold text-[#323B4C] mb-2">{profileData.profile?.firstName} {profileData.profile?.lastName}</h1>
+            <p className="text-xl text-[#323B4C] mb-4">{profileData.profile?.jobTitle}</p>
+            <div className="flex flex-row gap-16 justify-start items-center space-y-2 text-[#323B4C]">
               <div className="flex items-center space-x-2">
                 <PiPhone className="w-4 h-4" />
-                <span>+880 1632254789</span>
+                <span>{profileData?.profile.phoneNumber}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CgMail className="w-4 h-4" />
-                <span>saifurrahman@gmail.com</span>
+                <span>{profileData?.profile.email}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <TbMapPinCode className="w-4 h-4" />
-                <span>House-7810, Bagan-01, Block-C, Section-06, Mirpur, Dhaka Bangladesh</span>
-              </div>
+            </div>
+            <div className="flex items-center space-x-2 text-[#323B4C]">
+              <TbMapPinCode className="w-4 h-4" />
+              <span>{profileData.profile?.address},{profileData.profile?.city},{profileData.profile?.state},{profileData.profile?.countryRegion},</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex">
+      <div className='p-8 flex gap-20'>
         {/* Left Column */}
-        <div className="w-1/3 bg-gray-50 p-6">
+        <div className='border-r-[1px] border-[#a2d2f0] pr-16'>
           {/* Portfolio */}
           <div className="mb-8">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">PORTFOLIO</h2>
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-blue pb-2">PORTFOLIO</h2>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <FiExternalLink className="w-4 h-4 text-blue-500" />
-                <a href="#" className="text-blue-600 hover:underline text-sm">
-                  Dribbble.com/ux_saifur_info
+                <FaExternalLinkAlt className="w-4 h-4 text-[#ff46b8]" />
+                <a href={`${profileData?.profile?.socialMedia?.personal_website_url}`} className="text-[#2563EB] hover:underline text-sm">
+                  Portfolio
                 </a>
               </div>
               <div className="flex items-center space-x-2">
-                <HiExternalLink className="w-4 h-4 text-blue-500" />
-                <a href="#" className="text-blue-600 hover:underline text-sm">
-                  linkedin.com/ux_saifur_info
+                <FaLinkedin className="w-4 h-4 text-[#3B82F6]" />
+                <a href={`${profileData.profile?.socialMedia?.linkedin_profile_url}`} className="text-[#2563EB] hover:underline text-sm">
+                  LinkedIn
                 </a>
               </div>
             </div>
@@ -69,162 +95,108 @@ const ResumeComponent = () => {
 
           {/* Skills */}
           <div className="mb-8">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">SKILLS</h2>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>UI/UX Design</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Figma</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Graphics Designer</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Adobe XD</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Adobe Illustrator</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Adobe InDesign</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Adobe Photoshop</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Adobe Premiere Pro</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Data Entry</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Typing Bangla & English Both Language</span>
-              </li>
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">SKILLS</h2>
+            <ul className='flex justify-center items-start flex-col'>
+              {profileData?.profile?.skills.map((skill: string) => (
+                <li key={skill} className="flex items-center  space-x-2">
+                  <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
+                  <span className='text-[#374151]'>{skill}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Languages */}
-          <div className="mb-8">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">LANGUAGES</h2>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>BANGLA</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>ENGLISH</span>
-              </li>
+          {/* <div className="mb-8">
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">LANGUAGES</h2>
+            <ul>
+              {["BANGLA", "ENGLISH"].map((lang) => (
+                <li key={lang} className="flex items-center space-x-2">
+                  <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
+                  <span className='text-[#374151]'>{lang}</span>
+                </li>
+              ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Co-curricular Activities */}
-          <div>
-            <h2 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">CO-CURRICULAR ACTIVITIES</h2>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>BEE Member</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Travelling</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Cricket</span>
-              </li>
+          {/* <div className="mb-8">
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">CO-CURRICULAR ACTIVITIES</h2>
+            <ul>
+              {["BEE Member", "Travelling", "Cricket"].map((activity) => (
+                <li key={activity} className="flex items-center space-x-2">
+                  <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
+                  <span className='text-[#374151]'>{activity}</span>
+                </li>
+              ))}
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Column */}
-        <div className="w-2/3 p-6">
+        <div className="w-2/3">
           {/* About Me */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">ABOUT ME</h2>
-            <p className="text-gray-700 text-sm leading-relaxed">
-              Hello! I am a Professional UI/UX Designer & Graphics Designer with a keen eye for detail and a drive for creativity. My expertise extends to proficiency in UI/UX designing, allowing me to create visually stunning graphics.
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">ABOUT ME</h2>
+            <p className="text-[#374151]">
+              {profileData.resume?.data?.sections[1]?.content[0]}
             </p>
           </div>
 
-          {/* Education Qualification */}
+          {/* Education */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">EDUCATION QUALIFICATION</h2>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-gray-800">B. Sc. in Electronics and Communication Engineering</h3>
-                <p className="text-sm text-gray-600">Institute of Science Trade & Technology (ISTT)</p>
-                <p className="text-sm text-gray-500">2020 - Till Now</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-800">Higher Secondary in Science</h3>
-                <p className="text-sm text-gray-600">Voikunthapur Govt. College</p>
-                <p className="text-sm text-gray-500">2018 - 2020</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-800">SSC in Science</h3>
-                <p className="text-sm text-gray-600">Voikunthapur Islamiah Madrasah</p>
-                <p className="text-sm text-gray-500">2016 - 2018</p>
-              </div>
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">EDUCATION QUALIFICATION</h2>
+            <div>
+              {profileData?.profile?.education?.map((edu: any, idx: any) => (
+                <div key={idx} className='mb-3'>
+                  <h3 className="font-semibold text-[#1F2937]">{edu.degree}</h3>
+                  <p className="text-sm text-[#374151]">{edu.institution_name}</p>
+                  <p className="text-sm text-[#374151]">{edu.major}</p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Training/Certification */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">TRAINING/CERTIFICATION</h2>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-gray-800 mb-2">Course Name: - Certified UI/UX Design</h3>
-              <p className="text-sm text-gray-600 mb-1">Training Institute: - Bohubrihi of Sohojoware Limited</p>
-              <p className="text-sm text-gray-600 mb-1">Duration: - 01/01/2023 – 24/07/2024 (1.5 Months)</p>
-              <p className="text-sm text-gray-600 mb-1">Topic: - User Experience, Website of Software design, Mobile Application Design, User Interface Design etc.</p>
+          {/* Training */}
+          {/* <div className="mb-8">
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">TRAINING / CERTIFICATION</h2>
+            <div className=''>
+
+              {profileData?.profile?.certifications?.map((certificate: any, idx: any) => (
+                <div key={idx} className='mb-3'>
+                  <h3 className="font-semibold text-[#1F2937]">{certificate?.certification_name}</h3>
+                  <p className="text-sm text-[#374151]">{certificate?.issuing_organization}</p>
+
+                </div>
+              ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Work Experience */}
-          <div>
-            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">WORK EXPERIENCE</h2>
-            <div className="space-y-6">
-              <div className="border-l-4 border-blue-500 pl-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-800">UI/UX Designer</h3>
-                  <span className="text-sm text-gray-500">01/01/2025 - Till Now</span>
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">WORK EXPERIENCE</h2>
+            <div>
+              {profileData?.profile?.jobExperience?.map((job: any, idx: any) => (
+                <div key={idx} className='space-y-6 mb-5'>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-sm text-[#1F2937]">{job?.job_title}</h3>
+                    <span className="text-sm text-[#6B7280]">
+                      {getDuration(job?.start_date, job?.end_date)}
+                    </span>
+                  </div>
+                  <p className='font-semibold text-[#1F2937] mb-2'>{job?.company_name}</p>
+                  <p className='text-[#6B7280]'>
+                    {job?.job_description}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-600 font-medium mb-2">RioCarting.lf Ltd</p>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  I am very happy to get the opportunity for UI/UX designer expert. I drive to bring beauty designs and make user experiences for every project I take on with I approach every project with...
-                </p>
-              </div>
-              
-              <div className="border-l-4 border-blue-500 pl-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-800">UI/UX Designer Intern</h3>
-                  <span className="text-sm text-gray-500">01/04/2024 - 30/07/2024</span>
-                </div>
-                <p className="text-sm text-gray-600 font-medium mb-2">RioCarting.lf Ltd</p>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  I am very happy to get the opportunity for UI/UX designer expert. I drive to bring beauty designs and make user experiences for every project I take on with I approach every project with...
-                </p>
-              </div>
+              ))}
+
             </div>
           </div>
         </div>
       </div>
-
-
     </div>
   );
 };
 
-export default ResumeComponent; 
+export default ResumeComponent;

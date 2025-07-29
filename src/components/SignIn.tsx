@@ -8,12 +8,16 @@ import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "./ui/MainLogo";
 import Input from "./ui/Input";
-import { useSignInMutation, useSignUpMutation } from "@/redux/features/auth/auth";
+import {
+  useSignInMutation,
+  useSignUpMutation,
+} from "@/redux/features/auth/auth";
 import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
-import Cookies from 'js-cookie';
-import { getSession, signIn, useSession } from "next-auth/react";
+import Cookies from "js-cookie";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 interface FormData {
   email: string;
@@ -25,31 +29,6 @@ export default function SignInForm() {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const [sigInUser, { isLoading }] = useSignInMutation();
-    const [createAcount, ] = useSignUpMutation();
-  const { data: session, status } = useSession();
-
-    useEffect(() => {
-    if (status === 'authenticated' && session?.user) {
-      console.log("User authenticated:", session.user);
-      const res = createAcount(session.user);
-      // if(res.success){
-      //     toast.success("Success");
-      //   router.push("/")
-      // }
-    }
-  }, [session, status]);
-
-  const handleGoogle = async () => { 
-    console.log("Starting Google login") 
-    try { 
-      // This will redirect, but useEffect will handle the success
-      await signIn("google");
-    } catch (error) { 
-      console.error("Login error:", error); 
-      toast.error("Login failed!"); 
-    } 
-  }; 
-
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -57,7 +36,7 @@ export default function SignInForm() {
       console.log(response);
       if (response?.success) {
         // localStorage.setItem("accessToken", response?.data?.accessToken);
-        Cookies.set('accessToken', response?.data?.accessToken)
+        Cookies.set("accessToken", response?.data?.accessToken);
         toast.success(response?.message);
         router.push("/");
         reset();
@@ -66,6 +45,40 @@ export default function SignInForm() {
       console.log(error);
       toast.error(error.data.message);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    console.log("yes");
+  };
+
+  const handleSuccess = async (credentialResponse: any) => {
+    console.log("yesTonek= ", credentialResponse.credential);
+
+    try {
+      // Send the credential to your server
+      const response = await axios.post(
+        `http://172.252.13.71:5005/api/v1/auth/google-login`,
+        {
+          googleToken: credentialResponse.credential,
+        }
+      );
+
+      if (response?.data?.success) {
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
+        router.push("/");
+        toast.success("Login successful");
+      }
+
+      console.log("Login successful", response.data);
+      // Handle successful login (store tokens, redirect, etc.)
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleError = () => {
+    console.log("Login Failed");
   };
 
   return (
@@ -81,7 +94,7 @@ export default function SignInForm() {
             width={588}
             layout="intrinsic"
           />
-        </div>
+        </div> 
 
         {/* Right: Form Section */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
@@ -91,7 +104,6 @@ export default function SignInForm() {
               <Link href={"/"}>
                 <Logo height={120} width={268}></Logo>
               </Link>
-
             </div>
 
             {/* Welcome Message */}
@@ -147,10 +159,21 @@ export default function SignInForm() {
           </div>
 
           {/* Continue with Google */}
-          <button onClick={() => handleGoogle()} className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+          {/* <button
+            id="google"
+            onClick={handleGoogleLogin}
+            className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+          >
             <FcGoogle className="size-6" />
             Login with Google
-          </button>
+          </button> */}
+          <div className="">
+            <GoogleLogin
+              size="large"
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
+          </div>
           <div className="flex justify-center gap-2 text-gray-700  mt-3">
             <p className="text-center">If you dont have any account please</p>
             <Link

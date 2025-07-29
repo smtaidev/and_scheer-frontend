@@ -11,6 +11,9 @@ const jobStatsApi = baseUrlApi.injectEndpoints({
     getCompanyNames: builder.query({
       query: () => "/companies/names",
     }),
+    getLocations: builder.query({
+      query: () => "/locations/names",
+    }),
   }),
 });
 
@@ -20,4 +23,5 @@ export const {
   useGetWorkModesQuery,
   useGetDepartmentsQuery,
   useGetCompanyNamesQuery,
+  useGetLocationsQuery
 } = jobStatsApi;

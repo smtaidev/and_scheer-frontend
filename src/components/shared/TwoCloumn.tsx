@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 
 interface InfoSectionProps {
@@ -49,13 +50,25 @@ export default function InfoSection({
           <p className="para-main">{description}</p>
         </div>
 
-        <button
-          onClick={onButtonClick}
-          className="px-6 py-3  text-white font-semibold rounded bg-secondary  flex hover:bg-black cursor-pointer transition-all duration-300"
-        >
-          {buttonText}
-          <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
-        </button>
+        {title =="Looking for"? <Link href={`/create-account`}>
+          <button
+            onClick={onButtonClick}
+            className="px-6 py-3  text-white font-semibold rounded bg-secondary  flex hover:bg-black cursor-pointer transition-all duration-300"
+          >
+            {buttonText}
+            <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
+          </button>
+        </Link> : <Link href={`/jobSeeker/start-now`}>
+          <button
+            onClick={onButtonClick}
+            className="px-6 py-3  text-white font-semibold rounded bg-secondary  flex hover:bg-black cursor-pointer transition-all duration-300"
+          >
+            {buttonText}
+            <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
+          </button>
+        </Link> }
+
+       
       </div>
     </div>
   );

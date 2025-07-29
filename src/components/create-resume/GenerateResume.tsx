@@ -4,18 +4,21 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
+import { useForm } from "react-hook-form";
 
 export default function GenerateResume({
   setStep,
+  onSubmit
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  onSubmit: (data: any) => void;
 }) {
   const router = useRouter();
+  const { register, handleSubmit } = useForm();
 
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  
   const handleBack = (): void => {
     setStep(5);
     console.log("Back")
@@ -32,6 +35,7 @@ export default function GenerateResume({
         setStep(7);
         // router.push("/jobseekeruser/aigeneratedresume");
       }
+
     }, 150);
   };
 
@@ -66,24 +70,26 @@ export default function GenerateResume({
             //   bgColor="#28C76F"
             // />
           )}
+          <form onSubmit={handleSubmit(onSubmit)}>
 
-          <div className="flex justify-between">
-            <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
-              Back
-            </button>
-            <button  onClick={() => simulateLoading()}>
-              {" "}
-              <Button
-                type="submit"
-                text="Generate"
-                icon="arrow-right"
-                action="submit"
-                bgColor="#28C76F"
-                name="Next"
-                 className="px-4  py-2  rounded-md"
-              />
-            </button>
-          </div>
+            <div className="flex justify-between">
+              <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+                Back
+              </button>
+              <button onClick={() => simulateLoading()}>
+
+                <Button
+                  type="submit"
+                  text="Generate"
+                  icon="arrow-right"
+                  action="submit"
+                  bgColor="#28C76F"
+                  name="Next"
+                  className="px-4  py-2  rounded-md"
+                />
+              </button>
+            </div>
+          </form>
 
         </div>
       </div>

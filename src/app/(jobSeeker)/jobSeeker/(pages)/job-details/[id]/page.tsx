@@ -26,24 +26,27 @@ export default function JobDetailspage() {
     const [showCompanies, setShowCompanies] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
     const [companies, setCompanies] = useState<Company[]>([])
-    const { data: res, isLoading } = useGetAllCompaniesQuery();
+    const { data: res, isLoading, refetch } = useGetAllCompaniesQuery();
 
-    const {id }=useParams();
+    const { id } = useParams();
+    console.log("Job ID: ", id);
 
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
 
 
     useEffect(() => {
+
         if (jobs?.data) {
-            setAllJobs(jobs.data.data)
-            setCurrentCompany(jobs.data.data[0])
+            setAllJobs(jobs?.data.data)
+            setCurrentCompany(jobs?.data.data[0])
         }
-        if(allJobs){
-            const nowJob=jobs?.data.data.find((p:any)=>p.id ==id)
+        if (id != "jobs") {
+            const nowJob = jobs?.data.data.find((p: any) => p.id == id);
             setCurrentCompany(nowJob)
         }
-       
+        refetch()
+
     }, [jobs?.data])
 
 
@@ -119,11 +122,11 @@ export default function JobDetailspage() {
                             className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
                         >
                             {allJobs.length > 0 ? (
-                                allJobs.map((company) => (
+                                allJobs?.map((company) => (
                                     <div
                                         key={company.companyId}
                                         className={`cursor-pointer transition-all duration-200 
-                                            ${currentCompany?.id === company.id? "border border-primary rounded-lg shadow-sm shadow-primary/20": "hover:shadow-md"}`}
+                                            ${currentCompany?.id === company.id ? "border border-primary rounded-lg shadow-sm shadow-primary/20" : "hover:shadow-md"}`}
                                         onClick={() => handleCompanySelect(company)}
                                     >
                                         <RecentJobCard job={company} />
