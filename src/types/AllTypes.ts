@@ -211,3 +211,24 @@ export interface ProfileData {
 //   submitError: string | null;
 // }
 
+// types.ts (or anywhere you store types in your project)
+export interface Course {
+  id: number;
+  title: string;
+  instructor: string;
+  description: string;
+  image: string;
+  rating: number;
+  num_reviews: number;
+  num_lectures: number;
+  price_detail: {
+    price_string: string;
+    amount: number;
+    currency: string;
+  };
+  is_paid: boolean;
+  visible_instructors:{
+    url:string
+    name:string
+  }[]
+}

@@ -94,7 +94,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   `}
     >
       {label === "Applied Job" ? (
-        <Link className="flex gap-3" href="/jobSeeker/my-applications">
+        <Link className="flex gap-3 " href="/jobSeeker/my-applications">
           <div className="text-xl">{icon}</div>
           <span>{label}</span>
         </Link>
