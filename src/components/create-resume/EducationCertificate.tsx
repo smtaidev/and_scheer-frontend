@@ -6,8 +6,6 @@ import SectionHeader from "../shared/SectionHeader";
 import EducationalBackground from "./EducationalBackground";
 import CertificationInformation from "./trash/CertificationInformation";
 
-
-
 // type EducationFormData = {
 //   degree: string;
 //   institution: string;
@@ -25,9 +23,6 @@ interface IPersonal {
 export default function Education({setStep,formData,setFormData}: IPersonal) {
     // const { register, handleSubmit } = useForm<EducationFormData>();
     const [certificate, setCertificate] = useState(true);
-
-
-   
 
     return (
         <Container>

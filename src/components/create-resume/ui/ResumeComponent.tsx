@@ -35,7 +35,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
 
 
   return (
-    <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
+    <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white min-h-screen overflow-hidden flex flex-col">
       {/* Header Section */}
       <div className="p-8">
         <div className='p-8 flex gap-20'>
@@ -71,7 +71,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
         </div>
       </div>
 
-      <div className='p-8 flex gap-20'>
+      <div className='p-8 flex gap-20 flex-1'>
         {/* Left Column */}
         <div className='border-r-[1px] border-[#a2d2f0] pr-16'>
           {/* Portfolio */}
