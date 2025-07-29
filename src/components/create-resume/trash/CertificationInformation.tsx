@@ -1,33 +1,28 @@
-"use client";
 import Button from "@/components/shared/button/Button";
 import FormInput from "@/components/ui/FormInput";
-// import Container from "@/components/Container";
-// import ProgressBar from "@/components/progressBar";
-// import SectionHeader from "@/components/Shared/SectionHeader";
-// import { useRouter } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IPersonal } from "../personalInfo";
 
 // ✅ Corrected type
 type WorkForm = {
-  certificate: {
+  certificates: {
     certificateTitle: string;
     issuingOrganization: string;
-    issueDate: string;
-    expiryDate: string;
+    certificateIssuedDate: string;
+    certificateExpiryDate: string;
   }[];
 };
 
-export default function CertificationInformation({setStep,formData,setFormData}: IPersonal) {
-  const { control, register, handleSubmit } = useForm<WorkForm>({
+export default function CertificationInformation({ setStep, formData, setFormData, setCertificate, certificate }: IPersonal) {
+  const { control, register, handleSubmit, getValues } = useForm<WorkForm>({
     defaultValues: {
-      certificate: [
+      certificates: [
         {
           certificateTitle: "",
           issuingOrganization: "",
-          issueDate: "",
-          expiryDate: "",
+          certificateIssuedDate: "",
+          certificateExpiryDate: "",
         },
       ],
     },
@@ -35,75 +30,79 @@ export default function CertificationInformation({setStep,formData,setFormData}:
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "certificate",
+    name: "certificates",
   });
 
-  //   const router = useRouter();
+  // Handle switching between sections
+  const handleSwitch = (data: WorkForm) => {
+    // Capture the current form data when switching between sections
+    setFormData({
+      ...formData,
+      certificates: data.certificates ? <data value="" className="certificates"></data> : [], // Preserve the certificate data
+    });
+    setCertificate(!certificate); // Toggle between Education and Certification sections
+  };
 
   const handleBack = (): void => {
     setStep(3);
-    console.log("Back")
+    console.log("Back");
   };
 
-  const onSubmit = (data:WorkForm) => {
-    console.log("Educational Data Submitted:", data);
-    setStep(5)
-     setFormData(data)
-    // router.push("/jobseekeruser/contactInfo");
+  // On form submission, update the form data
+  const onSubmit = (data: WorkForm) => {
+    console.log("Certification Data Submitted:", data);
+
+    // Update the formData with the current certificate data and any other existing data
+    setFormData({
+      ...formData,
+      certificates: data.certificates, // Add certification data to formData
+    });
+
+    setStep(5); // Move to the next step
   };
 
   return (
-    <div className="min-h-screen ">
-      {/* <ProgressBar currentStep={4} totalSteps={7} />   */}
-      <div className="flex justify-center ">
+    <div className="min-h-screen">
+      <div className="flex justify-center">
         <div className="w-full max-w-[1180px] h-auto">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <SectionHeader
-                title="Your Certifications"
-                description="Provide any relevant certifications you've earned."
-              /> */}
-
             {fields.map((field, index) => (
               <div key={field.id} className="mb-8">
+                {/* Certification Title */}
                 <div className="mb-4">
                   <FormInput
                     label="Certification Title"
                     type="text"
                     placeholder="e.g., AWS Certified Developer"
-                    {...register(
-                      `certificate.${index}.certificateTitle` as const,
-                      { required: true }
-                    )}
+                    {...register(`certificates.${index}.certificateTitle`, { required: true })}
                   />
                 </div>
 
+                {/* Issuing Organization */}
                 <div className="mb-4 w-1/2">
                   <FormInput
                     label="Issuing Organization"
                     type="text"
                     placeholder="e.g., Amazon Web Services"
-                    {...register(
-                      `certificate.${index}.issuingOrganization` as const,
-                      { required: true }
-                    )}
+                    {...register(`certificates.${index}.issuingOrganization`, { required: true })}
                   />
                 </div>
 
+                {/* Issue Date and Expiry Date */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <FormInput
                     label="Issue Date"
                     type="date"
-                    {...register(`certificate.${index}.issueDate` as const, {
-                      required: true,
-                    })}
+                    {...register(`certificates.${index}.certificateIssuedDate`, { required: true })}
                   />
                   <FormInput
                     label="Expiry Date"
                     type="date"
-                    {...register(`certificate.${index}.expiryDate` as const)}
+                    {...register(`certificates.${index}.certificateExpiryDate`)}
                   />
                 </div>
 
+                {/* Remove Certification Button */}
                 <div className="flex justify-end">
                   {fields.length > 1 && (
                     <button
@@ -111,14 +110,14 @@ export default function CertificationInformation({setStep,formData,setFormData}:
                       onClick={() => remove(index)}
                       className="text-red-500 text-sm flex items-center"
                     >
-                      <IoIosRemoveCircleOutline className="mr-1" /> Remove
-                      Certification
+                      <IoIosRemoveCircleOutline className="mr-1" /> Remove Certification
                     </button>
                   )}
                 </div>
               </div>
             ))}
 
+            {/* Add Another Certification Button */}
             <div className="mb-12">
               <button
                 type="button"
@@ -126,8 +125,8 @@ export default function CertificationInformation({setStep,formData,setFormData}:
                   append({
                     certificateTitle: "",
                     issuingOrganization: "",
-                    issueDate: "",
-                    expiryDate: "",
+                    certificateIssuedDate: "",
+                    certificateExpiryDate: "",
                   })
                 }
                 className="text-[#28C76F] font-medium flex items-center"
@@ -137,7 +136,11 @@ export default function CertificationInformation({setStep,formData,setFormData}:
             </div>
 
             <div className="flex justify-between">
-              <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+              <button
+                type="button"
+                onClick={() => handleBack()}
+                className="px-4 py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black"
+              >
                 Back
               </button>
               <Button
@@ -147,12 +150,21 @@ export default function CertificationInformation({setStep,formData,setFormData}:
                 action="submit"
                 bgColor="#28C76F"
                 name="Next"
-                className="px-4  py-2  rounded-md"
+                className="px-4 py-2 rounded-md"
               />
             </div>
           </form>
         </div>
       </div>
+
+      {/* Switch between sections button */}
+      <button
+        onClick={() => handleSwitch(getValues())} // Call handleSwitch with the current form data
+        type="button"
+        className="bg-secondary absolute top-0 right-0 rounded-lg px-3 py-2 md:px-6 md:py-3 text-white"
+      >
+        {certificate ? "Certifications" : "Education"}
+      </button>
     </div>
   );
 }
