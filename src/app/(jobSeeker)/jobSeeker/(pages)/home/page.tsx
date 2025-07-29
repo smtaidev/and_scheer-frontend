@@ -8,20 +8,22 @@ import TopCategory from '@/components/seeker-home/TopCategory/page'
 import SuggestedCourses from '@/components/Suggested/SuggestedCourses'
 import React from 'react'
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice'
+import RecomandationJob from '@/components/recomandation-job/RecomandationJob'
 
 
 
 export default function JobSeekerHomePage() {
-  const title="Recommend for you"
+  const title = "Recommend for you"
 
   return (
     <div>
-        <SeekerBanner/>
-        <RecentJob title={title}></RecentJob>
-        <TopCategory/>
-        <RecentUpload/>
-        <PopularCompany/>
-        <SuggestedCourses/>
+      <SeekerBanner />
+      {/* <RecentJob title={title}></RecentJob> */}
+      <RecomandationJob title={title}></RecomandationJob>
+      <TopCategory />
+      <RecentUpload />
+      <PopularCompany />
+      <SuggestedCourses />
 
     </div>
   )

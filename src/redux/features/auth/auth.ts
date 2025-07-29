@@ -8,6 +8,11 @@ const authApi = baseUrlApi.injectEndpoints({
         method: "GET"
       }),
     }),
+
+    getMyProfile: build.query({
+      query: (userId) => `/profiles/get-my-profile/${userId}`
+    }),
+
     signUp: build.mutation({
       query: (userData) => ({
         url: "/users/register",
@@ -50,5 +55,6 @@ export const {
   useSignInMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
-  useGetMeQuery
+  useGetMeQuery,
+  useGetMyProfileQuery
 } = authApi;

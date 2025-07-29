@@ -8,6 +8,7 @@ import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
 import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -34,7 +35,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             console.log("Current Job IT: ", jobId);
 
             // await applyJob(jobId);
-            const response = await applyJob(jobId).unwrap();
+            const response = await applyJob({ jobId }).unwrap();
             // cayomer672@ikanteri.com
             // 123456789
             console.log("Response: ", response);
@@ -54,9 +55,9 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
                     {/* <Image src={company?.logo || "/default-logo.png"} alt='' height={97} width={97} className='rounded-full bg-primary' /> */}
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
-                <button className="bg-green-500 text-xs  font-medium px-2 md:px-4 py-2 rounded hover:bg-green-600 transition text-white cursor-pointer" >
+                {/* <button className="bg-green-500 text-xs  font-medium px-2 md:px-4 py-2 rounded hover:bg-green-600 transition text-white cursor-pointer" >
                     Apply Now
-                </button>
+                </button> */}
             </header>
 
             <h2 className="text-xl md:text-3xl xl:text-[42px]  md:mt-8 dark:">{currentCompany?.title || "UI/UX Designer (Onsite)"} <span className='text-primary text-2xl'>({currentCompany?.jobType})</span></h2>
@@ -74,7 +75,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             <p className="text-sm  dark: mt-2 flex  md:items-center md:mb-3 gap-2">
                 <strong className="  mt-0.5 md:mt-0">Skills:</strong>
                 <div className='flex gap-1 flex-wrap text-subtitle'>
-                    {currentCompany?.skills.map(skill => <div className='flex items-center'>{skill} <LuDot className='size-6' /></div>)}
+                    {currentCompany?.skills?.map(skill => <div className='flex items-center'>{skill} <LuDot className='size-6' /></div>)}
                 </div>
             </p>
 
@@ -129,9 +130,11 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                     className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
                     Apply Now
                 </button>
-                <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
-                    Back to Listing
-                </button>
+                <Link href={'/'}>
+                    <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
+                        Back to Listing
+                    </button>
+                </Link>
             </footer>
         </section>
     );
