@@ -53,14 +53,14 @@ export default function RecentJob({ title }: JobTitle) {
 
       try {
         const response = await axios.get(
-          `http://172.252.13.71:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
+          `http://localhost:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "", // Add Authorization header if token exists
             },
           }
         );
-        console.log("Response: ", response.data.recommendations);
+        console.log("Response: ", response.data);
       } catch (error) {
         console.error("Error fetching recommended jobs:", error);
       }

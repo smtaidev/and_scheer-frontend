@@ -43,13 +43,16 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
         <div className='p-8 flex gap-20'>
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
-              <Image
+              {/* <Image
                 src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-center"
                 height={200}
                 width={200}
-              />
+              /> */}
+              <div className='h-[200px] w-[200px] bg-gray-200  flex items-center justify-center'>
+
+              </div>
             </div>
           </div>
           <div className="">

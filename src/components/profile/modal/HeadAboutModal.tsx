@@ -1,10 +1,12 @@
+"use client";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface FormData {
-  name: string;
-  title: string;
-  phone: string;
+  firstName: string;
+  lastName: string;
+  JobTitle: string;
+  phoneNumber: string;
   email: string;
   location: string;
   image: File | null;
@@ -13,20 +15,27 @@ interface FormData {
 interface HeadModal {
   isModalOpen: boolean;
   setIsModalOpen: any;
+  profileData: any;
 }
 
 const HeadAboutModal: React.FC<HeadModal> = ({
   isModalOpen,
-  setIsModalOpen,
+  setIsModalOpen, profileData
 }) => {
+  if (!profileData) {
+
+    return <div>Loading...</div>;
+  }
+
   const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
-      name: "Saifur Rahman",
-      title: "UI/UX Designer",
-      phone: "+880 1567-808747",
-      email: "ux.saifur.info@gmail.com",
-      location: "Dhaka, Bangladesh",
-      image: null,
+      firstName: profileData?.firstName,
+      lastName: profileData?.lastName,
+      JobTitle: profileData?.JobTitle || "",
+      phoneNumber: profileData?.phoneNumber || "",
+      email: profileData?.email || profileData?.user?.email || "",
+      location: `${profileData?.city}, ${profileData?.state}, ${profileData?.countryRegion}` || "",
+      image: profileData?.user?.profilePic || null, // Assuming profilePic is the field for the image
     },
   });
 
@@ -53,25 +62,32 @@ const HeadAboutModal: React.FC<HeadModal> = ({
             <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-gray-700">Name</label>
+                <label className="block text-gray-700">First Name</label>
                 <input
-                  {...register("name")}
+                  {...register("firstName")}
                   className="w-full border-b border-gray-300 focus:outline-none"
-                  placeholder="Name"
+                  placeholder="First Name"
+                />
+              </div>  <div>
+                <label className="block text-gray-700">Last Name</label>
+                <input
+                  {...register("lastName")}
+                  className="w-full border-b border-gray-300 focus:outline-none"
+                  placeholder="Last Name"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Title</label>
+                <label className="block text-gray-700">Job Title</label>
                 <input
-                  {...register("title")}
+                  {...register("JobTitle")}
                   className="w-full border-b border-gray-300 focus:outline-none"
                   placeholder="Title"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Phone</label>
+                <label className="block text-gray-700">Phone Number</label>
                 <input
-                  {...register("phone")}
+                  {...register("phoneNumber")}
                   className="w-full border-b border-gray-300 focus:outline-none"
                   placeholder="Phone"
                 />

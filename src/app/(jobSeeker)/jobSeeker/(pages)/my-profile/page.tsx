@@ -19,7 +19,7 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:5005/api/v1/auth/me", {
+        const response = await fetch("http://localhost:5005/api/v1/profiles/get-my-profile", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
@@ -33,6 +33,9 @@ const ProfilePage: React.FC = () => {
         const data = await response.json();
 
         console.log("Fetched Profile Data:", data);
+        if (!data || !data.data) {
+          throw new Error("Invalid profile data format");
+        }
 
         setProfileData(data.data);
       } catch (error) {
@@ -48,7 +51,6 @@ const ProfilePage: React.FC = () => {
   const updateProfileData = async (data: any) => {
     console.log(data);
 
-    const formData = new FormData();
   };
 
   return (
@@ -56,10 +58,10 @@ const ProfilePage: React.FC = () => {
     <div>
       <Container>
         <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
-          <ProfileHeader  />
+          <ProfileHeader profileData={profileData} />
 
           <div className="space-y-12 mt-8">
-            <AboutSection />
+            {/* <AboutSection profileData={profileData} /> */}
 
             <ExperienceSection experiences={[]} />
 
