@@ -4,6 +4,8 @@ import ComponentHeader from "../shared/ComponentHeader";
 import Container from "../ui/Container";
 
 export default function SuggestedCourses() {
+
+
   return (
     <div>
       <Container>
