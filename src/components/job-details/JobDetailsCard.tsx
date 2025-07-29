@@ -34,7 +34,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             console.log("Current Job IT: ", jobId);
 
             // await applyJob(jobId);
-            const response = await applyJob(jobId).unwrap();
+            const response = await applyJob({ jobId }).unwrap();
             // cayomer672@ikanteri.com
             // 123456789
             console.log("Response: ", response);
@@ -74,7 +74,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             <p className="text-sm  dark: mt-2 flex  md:items-center md:mb-3 gap-2">
                 <strong className="  mt-0.5 md:mt-0">Skills:</strong>
                 <div className='flex gap-1 flex-wrap text-subtitle'>
-                    {currentCompany?.skills.map(skill => <div className='flex items-center'>{skill} <LuDot className='size-6' /></div>)}
+                    {currentCompany?.skills?.map(skill => <div className='flex items-center'>{skill} <LuDot className='size-6' /></div>)}
                 </div>
             </p>
 
