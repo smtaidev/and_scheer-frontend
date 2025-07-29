@@ -1,4 +1,5 @@
 "use client";
+import Cookies from 'js-cookie'; // Ensure you have js-cookie imported
 import React, { useEffect, useState } from "react";
 // import RecentJobCard from './RecentJobCard'
 
@@ -15,8 +16,10 @@ import "swiper/css/navigation";
 // import required modules
 import { FreeMode, Navigation } from "swiper/modules";
 import RecentJobCard from "./RecentJobCard";
-import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
+import { useGetAllJobPostsQuery, useRecomandationJobsQuery } from "@/redux/features/job/jobSlice";
 import { Job } from "@/types/AllTypes";
+import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
+import axios from "axios";
 
 interface JobTitle {
   title: string;
@@ -25,21 +28,62 @@ interface JobTitle {
 
 export default function RecentJob({ title }: JobTitle) {
 
-  const [allJobs, setAllJobs] = useState<Job[]>([])
-  const { data: jobs } = useGetAllJobPostsQuery({});
 
+  const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
+  const { data: jobs } = useGetAllJobPostsQuery({});
+  const { data: currentUser } = useGetMeQuery({});
+  const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
+  const [jobDataLoading, setJobDataLoading] = useState(true);
+  // const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+
+  // console.log("Current User: ", currentUser?.data?.id);
+  // console.log("My Profile: ", myProfile?.data);
+  // console.log("Profile ID: ", myProfile?.data?.profileId)
+
+  // console.log("Recomandation Jobs: ", recomandationJobs)
 
   useEffect(() => {
-    if (jobs?.data) {
-      // Create a new array and sort the jobs by 'createdAt' field in descending order to show the most recent jobs first
-      const sortedJobs = [...jobs.data.data].sort((a: Job, b: Job) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      setAllJobs(sortedJobs);
+
+    // if (recomandationJobs?.data) {
+    //   setRecomandationAllJobs(recomandationJobs?.data?.data);
+    // }
+
+    const fetchedRecomendationJobs = async () => {
+      // Get the access token from cookies
+      const token = Cookies.get("accessToken");
+
+      try {
+        const response = await axios.get(
+          `http://172.252.13.71:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "", // Add Authorization header if token exists
+            },
+          }
+        );
+        console.log("Response: ", response.data.recommendations);
+      } catch (error) {
+        console.error("Error fetching recommended jobs:", error);
+      }
+    };
+
+    // fetchedRecomendationJobs()
+
+
+    // if (jobs?.data) {
+    //   setRecomandationAllJobs(jobs.data.data)
+    // }
+
+
+    if (jobs?.data?.data) {
+      setJobDataLoading(false);
     }
-  }, [jobs?.data]);
+
+  }, [jobs?.data?.data])
+  // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
 
+  console.log("Recent Jobs: ", jobs?.data?.data);
 
 
   return (
@@ -50,35 +94,44 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          <div className="relative">
-            {/* Custom arrows */}
-            <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
-            <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+          {
+            jobDataLoading && <p>Job Posts Loading.....</p>
+          }
 
-            <Swiper
-              spaceBetween={30}
-              freeMode={true}
-              navigation={{
-                nextEl: ".swiper-button-next-custom",
-                prevEl: ".swiper-button-prev-custom",
-              }}
-              modules={[FreeMode, Navigation]}
-              className="mySwiper"
-              breakpoints={{
-                320: { slidesPerView: 1 },
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 2.5 },
-                1024: { slidesPerView: 3 },
-                1280: { slidesPerView: 3.5 },
-              }}
-            >
-              {allJobs?.map((job, index) => (
-                <SwiperSlide key={index} className="pb-2">
-                  <RecentJobCard job={job} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+          {
+            !jobDataLoading && <div className="relative">
+              {/* Custom arrows */}
+              <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
+              <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+
+              <Swiper
+                spaceBetween={30}
+                freeMode={true}
+                navigation={{
+                  nextEl: ".swiper-button-next-custom",
+                  prevEl: ".swiper-button-prev-custom",
+                }}
+                modules={[FreeMode, Navigation]}
+                className="mySwiper"
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  640: { slidesPerView: 2 },
+                  768: { slidesPerView: 2.5 },
+                  1024: { slidesPerView: 3 },
+                  1280: { slidesPerView: 3.5 },
+                }}
+              >
+                {
+                  // jobs && jobs?.data?.recommendations?.map((job: any, index: any) => (
+                  jobs?.data?.data && jobs?.data?.data?.map((job: any, index: any) => (
+                    <SwiperSlide key={index} className="pb-2">
+                      <RecentJobCard job={job} />
+                    </SwiperSlide>
+                  ))
+                }
+              </Swiper>
+            </div>
+          }
         </div>
       </div>
     </div>

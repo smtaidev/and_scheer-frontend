@@ -6,54 +6,57 @@ import AllfinterCard from './AllfinterCard'
 
 export default function AllFilterSection() {
 
-   
 
-    const filters=[
+
+    const filters = [
         {
 
-            name:"All Filter",
-            
+            name: "All Filter",
+
         },
         {
 
-            name:"Work Mode",
-       
+            name: "Work Mode",
+
         },
         {
 
-            name:"Experience",
-           
+            name: "Experience",
+
         },
         {
 
-            name:"Department",
-               
+            name: "Department",
+
         },
         {
 
-            name:"Location ",
-               
+            name: "Location ",
+
         },
         {
 
-            name:"Salary",
-               
+            name: "Salary",
+
         },
         {
 
-            name:"Education Qualification",
-               
+            name: "Education Qualification",
+
         },
 
     ]
-     const [currentFilter, setCurrentFilter]=useState(filters[0].name)
+    const [currentFilter, setCurrentFilter] = useState(filters[0].name)
 
-    
-  return (
-    <div className='flex gap-2 md:gap-8 justify-center flex-wrap' >
-        {
-            filters.map(filter => <div onClick={()=>setCurrentFilter(filter.name)} className={`${currentFilter===filter.name? "bg-scheer-primary rounded-lg":""}`}><AllfinterCard  key={filter.name} name={filter.name} /></div> )
-        }
+
+    return (
+        <div className='flex gap-2 md:gap-8 justify-center flex-wrap' >
+            {
+                filters?.map((filter) =>
+                    <div key={filter.name} onClick={() => setCurrentFilter(filter.name)} className={`${currentFilter === filter.name ? "bg-scheer-primary rounded-lg" : ""}`}>
+                        <AllfinterCard key={filter.name} name={filter.name} />
+                    </div>)
+            }
         </div>
-  )
+    )
 }

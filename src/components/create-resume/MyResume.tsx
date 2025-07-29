@@ -13,14 +13,50 @@ import Cookies from "js-cookie";
 
 export default function MyResume({ userId }: { userId: string | null }) {
   const printRef = useRef<HTMLDivElement>(null);
+
+  // Main Code
+  // const downloadResume = async () => {
+  //   const element = printRef.current;
+  //   if (!element) {
+  //     return;
+  //   }
+
+  //   console.log(element);
+
+  //   const canvas = await html2canvas(element, {
+  //     scale: 2,
+  //   });
+  //   const data = canvas.toDataURL("image/png");
+
+  //   const pdf = new jsPDF({
+  //     orientation: "portrait",
+  //     unit: "px",
+  //     format: "a4",
+  //   });
+
+  //   const imgProperties = pdf.getImageProperties(data);
+
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+  //   // const pdfWidth = 595.28;  // A4 width in points
+  //   // const pdfHeight = 841.89; // A4 height in points
+
+  //   pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+  //   pdf.save("my_resume.pdf");
+  // };
+
   const [profileData, setProfileData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const downloadResume = async () => {
     const element = printRef.current;
     if (!element) {
       return;
     }
 
+    console.log(element);
+    // Capture the content as a canvas
 
     const canvas = await html2canvas(element, {
       scale: 2,
@@ -33,15 +69,27 @@ export default function MyResume({ userId }: { userId: string | null }) {
       format: "a4",
     });
 
+    // Get the image properties (width and height)
     const imgProperties = pdf.getImageProperties(data);
+
+    // A4 size in points
     const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    // Calculate the scaling factor to fit the content to the A4 page
+    const scaleFactor = Math.min(pdfWidth / imgProperties.width, pdfHeight / imgProperties.height);
+    const scaledWidth = imgProperties.width * scaleFactor;
+    const scaledHeight = imgProperties.height * scaleFactor;
 
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+    // Add the image to the PDF
+    pdf.addImage(data, "PNG", 0, 0, scaledWidth, scaledHeight);
+
+    // Save the PDF
     pdf.save("my_resume.pdf");
   };
+
   const storedUserId = localStorage.getItem("userId");
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -49,7 +97,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
       if (!userId && !storedUserId) return;
       const idToUse = userId || storedUserId;
       try {
-        const response = await fetch(`http://localhost:5005/api/v1/profiles/resume/${idToUse}`, {
+        const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${idToUse}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
@@ -90,7 +138,10 @@ export default function MyResume({ userId }: { userId: string | null }) {
           title="Review Your AI-Generated Resume"
           description="Take a moment to review your resume. You can make changes and regenerate if needed. When you’re ready, download it and start applying!"
         ></SectionHeader>
-        {profileData && <ResumeComponent downloadResume={downloadResume} printRef={printRef} profileData={profileData} />}
+        <div className="overflow-x-scroll md:overflow-hidden">
+          {/* <ResumeComponent downloadResume={downloadResume} printRef={printRef} /> */}
+          {profileData && <ResumeComponent downloadResume={downloadResume} printRef={printRef} profileData={profileData} />}
+        </div>
         <div className="flex gap-12 py-16 ">
           <button
             onClick={downloadResume}
