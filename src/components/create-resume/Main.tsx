@@ -116,7 +116,7 @@ const MainComponents = () => {
 
 
       // 🚀 Send request
-      const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
+      const res = await fetch("http://172.252.13.71:5005/api/v1/profiles/create", {
         method: "POST",
         body: sendForm,
         // credentials: "include",
