@@ -19,12 +19,15 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:5005/api/v1/profiles/get-my-profile", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
-          }, // if using HttpOnly cookie
-        });
+        const response = await fetch(
+          "http://172.252.13.71:5005/api/v1/profiles/get-my-profile",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
+            }, // if using HttpOnly cookie
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch profile data");
@@ -50,11 +53,9 @@ const ProfilePage: React.FC = () => {
 
   const updateProfileData = async (data: any) => {
     console.log(data);
-
   };
 
   return (
-
     <div>
       <Container>
         <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
@@ -76,7 +77,6 @@ const ProfilePage: React.FC = () => {
         </div>
       </Container>
     </div>
-
   );
 };
 

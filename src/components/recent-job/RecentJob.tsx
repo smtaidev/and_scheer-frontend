@@ -1,5 +1,5 @@
 "use client";
-import Cookies from 'js-cookie'; // Ensure you have js-cookie imported
+import Cookies from "js-cookie"; // Ensure you have js-cookie imported
 import React, { useEffect, useState } from "react";
 // import RecentJobCard from './RecentJobCard'
 
@@ -16,20 +16,23 @@ import "swiper/css/navigation";
 // import required modules
 import { FreeMode, Navigation } from "swiper/modules";
 import RecentJobCard from "./RecentJobCard";
-import { useGetAllJobPostsQuery, useRecomandationJobsQuery } from "@/redux/features/job/jobSlice";
+import {
+  useGetAllJobPostsQuery,
+  useRecomandationJobsQuery,
+} from "@/redux/features/job/jobSlice";
 import { Job } from "@/types/AllTypes";
-import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
+import {
+  useGetMeQuery,
+  useGetMyProfileQuery,
+} from "@/redux/features/auth/auth";
 import axios from "axios";
 
 interface JobTitle {
   title: string;
 }
 
-
 export default function RecentJob({ title }: JobTitle) {
-
-
-  const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
+  const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([]);
   const { data: jobs } = useGetAllJobPostsQuery({});
   const { data: currentUser } = useGetMeQuery({});
   const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
@@ -43,7 +46,6 @@ export default function RecentJob({ title }: JobTitle) {
   // console.log("Recomandation Jobs: ", recomandationJobs)
 
   useEffect(() => {
-
     // if (recomandationJobs?.data) {
     //   setRecomandationAllJobs(recomandationJobs?.data?.data);
     // }
@@ -54,7 +56,7 @@ export default function RecentJob({ title }: JobTitle) {
 
       try {
         const response = await axios.get(
-          `http://localhost:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
+          `http://172.252.13.71:5005/api/v1/jobs/recommended-jobs/${myProfile?.data?.profileId}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "", // Add Authorization header if token exists
@@ -69,22 +71,17 @@ export default function RecentJob({ title }: JobTitle) {
 
     // fetchedRecomendationJobs()
 
-
     // if (jobs?.data) {
     //   setRecomandationAllJobs(jobs.data.data)
     // }
 
-
     if (jobs?.data?.data) {
       setJobDataLoading(false);
     }
-
-  }, [jobs?.data?.data])
+  }, [jobs?.data?.data]);
   // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
-
   console.log("Recent Jobs: ", jobs?.data?.data);
-
 
   return (
     <div className="bg-card ">
@@ -94,12 +91,10 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          {
-            jobDataLoading && <p>Job Posts Loading.....</p>
-          }
+          {jobDataLoading && <p>Job Posts Loading.....</p>}
 
-          {
-            !jobDataLoading && <div className="relative">
+          {!jobDataLoading && (
+            <div className="relative">
               {/* Custom arrows */}
               <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
               <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
@@ -123,15 +118,16 @@ export default function RecentJob({ title }: JobTitle) {
               >
                 {
                   // jobs && jobs?.data?.recommendations?.map((job: any, index: any) => (
-                  jobs?.data?.data && jobs?.data?.data?.map((job: any, index: any) => (
-                    <SwiperSlide key={index} className="pb-2">
-                      <RecentJobCard job={job} />
-                    </SwiperSlide>
-                  ))
+                  jobs?.data?.data &&
+                    jobs?.data?.data?.map((job: any, index: any) => (
+                      <SwiperSlide key={index} className="pb-2">
+                        <RecentJobCard job={job} />
+                      </SwiperSlide>
+                    ))
                 }
               </Swiper>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>
