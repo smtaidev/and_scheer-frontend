@@ -5,6 +5,7 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 import Button from "../shared/button/Button";
 import FormInput from "../ui/FormInput";
 import { IPersonal } from "./personalInfo";
+import { useState } from "react";
 
 type EducationFormData = {
   education: {
@@ -16,8 +17,13 @@ type EducationFormData = {
   }[];
 };
 
-export default function EducationalBackground({setStep,formData,setFormData}: IPersonal) {
-  const { register, control, handleSubmit } = useForm<EducationFormData>({
+export default function EducationalBackground({ setStep, formData, setFormData, setCertificate, certificate }: IPersonal) {
+
+
+
+
+
+  const { register, control, handleSubmit, getValues } = useForm<EducationFormData>({
     defaultValues: {
       education: [
         {
@@ -37,21 +43,34 @@ export default function EducationalBackground({setStep,formData,setFormData}: IP
   });
   const router = useRouter();
 
-  
+  const handleSwitch = (data: EducationFormData) => {
+    // Capture the current form data when switching between sections
+    setFormData({
+      ...formData,
+      education: data.education ? data.education : [], // Ensure education data is included
+    });
+    setCertificate(!certificate); // Toggle between Education and Certification sections
+  };
+
   const handleBack = (): void => {
     setStep(3);
     console.log("Back")
   };
 
+
+
   const onSubmit = (data: EducationFormData) => {
     console.log("Educational Data Submitted:", data);
     setStep(5)
-     setFormData(data);
+    setFormData(data);
     // router.push("/jobseekeruser/contactInfo");
   };
 
   return (
     <div className="min-h-screen">
+
+
+
       <div className="flex justify-center">
         <div className="w-full max-w-[1180px]">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -206,6 +225,14 @@ export default function EducationalBackground({setStep,formData,setFormData}: IP
                 className="px-4  py-2  rounded-md"
               />
             </div>
+            <button
+              onClick={() => handleSwitch(getValues())}  // Call handleSwitch with the current form data
+              type="button"
+              className="bg-secondary absolute top-0 right-0 rounded-lg px-3 py-2 md:px-6 md:py-3 text-white"
+            >
+              {certificate ? "Certifications" : "Education"}
+            </button>
+
           </form>
         </div>
       </div>

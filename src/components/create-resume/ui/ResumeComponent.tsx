@@ -1,6 +1,5 @@
 import React from 'react';
 import { CgMail } from 'react-icons/cg';
-import { FaDribbble } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa6";
 import Image from 'next/image';
 import { PiPhone } from 'react-icons/pi';
@@ -15,23 +14,24 @@ interface ResumeComponentProps {
 }
 
 const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef, profileData }) => {
-  function getDuration(start: string, end: string): string {
+  function formatDateRangeWithTillNow(start: string, end?: string): string {
     const startDate = new Date(start);
-    const endDate = new Date(end);
+    const endDate = end ? new Date(end) : null;
 
-    const totalMonths =
-      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-      (endDate.getMonth() - startDate.getMonth());
+    if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
+      return "Invalid date";
+    }
 
-    const years = Math.floor(totalMonths / 12);
-    const months = totalMonths % 12;
+    const format = (date: Date) =>
+      date.toLocaleDateString("en-GB").split("/").map((part) => part.padStart(2, "0")).join("/");
 
-    let duration = "";
-    if (years) duration += `${years} year${years > 1 ? "s" : ""}`;
-    if (months) duration += `${years ? " " : ""}${months} month${months > 1 ? "s" : ""}`;
+    const startFormatted = format(startDate);
+    const endFormatted = endDate ? format(endDate) : "Till Now";
 
-    return duration || "Less than a month";
+    return `${startFormatted} - ${endFormatted}`;
   }
+
+
 
 
   return (
@@ -42,7 +42,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
               <Image
-                src={profileData?.profile?.user.profilePic || "/man.png"} // Fallback image
+                src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
@@ -107,17 +107,17 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           </div>
 
           {/* Languages */}
-          {/* <div className="mb-8">
+          {profileData?.profile?.languages && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">LANGUAGES</h2>
             <ul>
-              {["BANGLA", "ENGLISH"].map((lang) => (
-                <li key={lang} className="flex items-center space-x-2">
+              {profileData?.profile?.languages.map((lang: string, index: number | string) => (
+                <li key={index} className="flex items-center space-x-2">
                   <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
                   <span className='text-[#374151]'>{lang}</span>
                 </li>
               ))}
             </ul>
-          </div> */}
+          </div>}
 
           {/* Co-curricular Activities */}
           {/* <div className="mb-8">
@@ -144,7 +144,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           </div>
 
           {/* Education */}
-          <div className="mb-8">
+          {profileData?.profile?.education && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">EDUCATION QUALIFICATION</h2>
             <div>
               {profileData?.profile?.education?.map((edu: any, idx: any) => (
@@ -155,10 +155,10 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
 
           {/* Training */}
-          {/* <div className="mb-8">
+          {profileData?.profile?.certifications && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">TRAINING / CERTIFICATION</h2>
             <div className=''>
 
@@ -166,14 +166,16 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 <div key={idx} className='mb-3'>
                   <h3 className="font-semibold text-[#1F2937]">{certificate?.certification_name}</h3>
                   <p className="text-sm text-[#374151]">{certificate?.issuing_organization}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.issue_date}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.expiry_date}</p>
 
                 </div>
               ))}
             </div>
-          </div> */}
+          </div>}
 
           {/* Work Experience */}
-          <div className="mb-8">
+          {profileData?.profile?.jobExperience && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">WORK EXPERIENCE</h2>
             <div>
               {profileData?.profile?.jobExperience?.map((job: any, idx: any) => (
@@ -181,7 +183,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-sm text-[#1F2937]">{job?.job_title}</h3>
                     <span className="text-sm text-[#6B7280]">
-                      {getDuration(job?.start_date, job?.end_date)}
+                      {formatDateRangeWithTillNow(job?.start_date, job?.end_date)}
                     </span>
                   </div>
                   <p className='font-semibold text-[#1F2937] mb-2'>{job?.company_name}</p>
@@ -192,7 +194,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
               ))}
 
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../ui/Container";
 import ProgressBar from "../ui/progressBar";
 import CareerOverview from "./CareerOverview";
@@ -34,6 +34,7 @@ const MainComponents = () => {
     other_social_media: "",
     other_social_media_url: "",
     skills: [], // e.g. ["JavaScript", "React", "Node.js"]
+    languages: [], // e.g. ["English", "Spanish"]
 
     education: [], // e.g. [{ degree: "BSc", institution: "XYZ University", major: "",  startDate: "2020-01-01", endDate: "2024-01-01", achievements: [] }]
     experiences: [], // e.g. [{ jobTitle: "Software Engineer", companyName: "ABC Corp", startDate: "2020-01-01", endDate: "2024-01-01", jobDescription: "Developed web applications.", skills: ["JavaScript", "React"], achievements: [{}] }]
@@ -41,8 +42,7 @@ const MainComponents = () => {
 
   });
 
-  const achievementRef = useRef<HTMLInputElement>(null);
-  const certificateRef = useRef<HTMLInputElement>(null);
+
   const setFormData = (newData: any) => {
     setNewForm((prevFormData) => ({
       ...prevFormData,
@@ -76,8 +76,8 @@ const MainComponents = () => {
       degree: edu.degree,
       institution_name: edu.institution,
       major: edu.major,
-      graduation_start_date: edu.startDate,
-      graduation_end_date: edu.endDate,
+      graduation_start_date: edu.graduationStart,
+      graduation_end_date: edu.graduationEnd,
       achievements: edu.achievements || []
     })),
 
@@ -87,15 +87,39 @@ const MainComponents = () => {
       start_date: exp.startDate,
       end_date: exp.endDate,
       job_description: exp.jobDescription,
+      skills: exp.skills || [],
       achievements: exp.achievements || []
     })),
-    skills: formData.experiences.flatMap((ex: any) => ex.skills || []), // Flattens all skills into a single array
+    skills: Array.from(
+      new Map(
+        formData.experiences
+          .flatMap((ex: any) => ex.skills || [])
+          .filter((s: string) => typeof s === "string" && s.trim() !== "")
+          .map((skill: string) => {
+            const original = skill.trim();
+            const normalized = original.toLowerCase().replace(/\s+/g, "");
+            return [normalized, original]; // key: normalized, value: original
+          })
+      ).values()
+    ),
+    languages: Array.from(
+      new Map(
+        formData.experiences
+          .flatMap((ex: any) => ex.languages || [])
+          .filter((s: string) => typeof s === "string" && s.trim() !== "")
+          .map((language: string) => {
+            const original = language.trim();
+            const normalized = original.toLowerCase().replace(/\s+/g, "");
+            return [normalized, original]; // key: normalized, value: original
+          })
+      ).values()
+    ),
 
-    certifications: formData.certificates.map((cert: any) => ({
+    certifications: formData.certificates?.map((cert: any) => ({
       certification_title: cert.certificateTitle,
       issuing_organization: cert.issuingOrganization,
-      certification_issue_date: cert.certificateIssuedDate,
-      certification_expiry_date: cert.certificateExpiryDate || null
+      certification_issue_date: cert.issueDate,
+      certification_expiry_date: cert.expiryDate || null
     })),
     linkedin_profile_url: formData.linkedin_profile_url,
     personal_website_url: formData.personal_website_url,
@@ -103,8 +127,6 @@ const MainComponents = () => {
     other_social_media_url: formData.other_social_media_url || "",
 
   };
-  console.log("profileData in MainComponents:", profileData);
-
 
   const onSubmit = async () => {
 
@@ -116,7 +138,7 @@ const MainComponents = () => {
 
 
       // 🚀 Send request
-      const res = await fetch("http://172.252.13.71:5005/api/v1/profiles/create", {
+      const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
         method: "POST",
         body: sendForm,
         // credentials: "include",
