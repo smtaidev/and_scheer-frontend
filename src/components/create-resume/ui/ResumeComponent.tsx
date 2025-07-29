@@ -14,23 +14,24 @@ interface ResumeComponentProps {
 }
 
 const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef, profileData }) => {
-  function getDuration(start: string, end: string): string {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
+function formatDateRangeWithTillNow(start: string, end?: string): string {
+  const startDate = new Date(start);
+  const endDate = end ? new Date(end) : null;
 
-    const totalMonths =
-      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-      (endDate.getMonth() - startDate.getMonth());
-
-    const years = Math.floor(totalMonths / 12);
-    const months = totalMonths % 12;
-
-    let duration = "";
-    if (years) duration += `${years} year${years > 1 ? "s" : ""}`;
-    if (months) duration += `${years ? " " : ""}${months} month${months > 1 ? "s" : ""}`;
-
-    return duration || "Less than a month";
+  if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
+    return "Invalid date";
   }
+
+  const format = (date: Date) =>
+    date.toLocaleDateString("en-GB").split("/").map((part) => part.padStart(2, "0")).join("/");
+
+  const startFormatted = format(startDate);
+  const endFormatted = endDate ? format(endDate) : "Till Now";
+
+  return `${startFormatted} - ${endFormatted}`;
+}
+
+
 
 
   return (
@@ -182,7 +183,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-sm text-[#1F2937]">{job?.job_title}</h3>
                     <span className="text-sm text-[#6B7280]">
-                      {getDuration(job?.start_date, job?.end_date)}
+                      {formatDateRangeWithTillNow(job?.start_date, job?.end_date)}
                     </span>
                   </div>
                   <p className='font-semibold text-[#1F2937] mb-2'>{job?.company_name}</p>
