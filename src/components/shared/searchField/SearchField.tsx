@@ -97,9 +97,9 @@ export default function SearchField() {
             <FaBriefcase className="text-gray-500" />
             <input
               type="text"
-              placeholder="Frontend "
+              placeholder="Frontend"
               className="flex-1 w-[100px] bg-transparent focus:outline-none"
-              {...register("jobName", { required: true })}
+              {...register("jobName")}
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function SearchField() {
               type="text"
               placeholder="Location"
               className="flex-1 w-[100px] bg-transparent focus:outline-none"
-              {...register("location", { required: true })}
+              {...register("location")}
             />
           </div>
 

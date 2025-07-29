@@ -1,18 +1,39 @@
 import React from 'react';
 import { CgMail } from 'react-icons/cg';
-import { FaDribbble } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa6";
 import Image from 'next/image';
 import { PiPhone } from 'react-icons/pi';
 import { TbMapPinCode } from 'react-icons/tb';
 import { RefObject } from 'react';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 interface ResumeComponentProps {
   downloadResume: () => void;
   printRef: RefObject<HTMLDivElement | null>;
+  profileData: any; // Adjust type as needed
 }
 
-const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef }) => {
+const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef, profileData }) => {
+  function formatDateRangeWithTillNow(start: string, end?: string): string {
+    const startDate = new Date(start);
+    const endDate = end ? new Date(end) : null;
+
+    if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
+      return "Invalid date";
+    }
+
+    const format = (date: Date) =>
+      date.toLocaleDateString("en-GB").split("/").map((part) => part.padStart(2, "0")).join("/");
+
+    const startFormatted = format(startDate);
+    const endFormatted = endDate ? format(endDate) : "Till Now";
+
+    return `${startFormatted} - ${endFormatted}`;
+  }
+
+
+
+
   return (
     // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
     <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
@@ -22,7 +43,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
               <Image
-                src="/man.png"
+                src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-center"
                 height={200}
@@ -31,21 +52,21 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
             </div>
           </div>
           <div className="">
-            <h1 className="text-5xl font-bold text-[#323B4C] mb-2">SAIFUR RAHMAN</h1>
-            <p className="text-xl text-[#323B4C] mb-4">UX / UI Designer</p>
+            <h1 className="text-5xl font-bold text-[#323B4C] mb-2">{profileData.profile?.firstName} {profileData.profile?.lastName}</h1>
+            <p className="text-xl text-[#323B4C] mb-4">{profileData.profile?.jobTitle}</p>
             <div className="flex flex-row gap-16 justify-start items-center space-y-2 text-[#323B4C]">
               <div className="flex items-center space-x-2">
                 <PiPhone className="w-4 h-4" />
-                <span>+880 1632254789</span>
+                <span>{profileData?.profile.phoneNumber}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CgMail className="w-4 h-4" />
-                <span>saifurrahman@gmail.com</span>
+                <span>{profileData?.profile.email}</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 text-[#323B4C]">
               <TbMapPinCode className="w-4 h-4" />
-              <span>House-7810, Bagan-01, Block-C, Section-06, Mirpur, Dhaka Bangladesh</span>
+              <span>{profileData.profile?.address},{profileData.profile?.city},{profileData.profile?.state},{profileData.profile?.countryRegion},</span>
             </div>
           </div>
         </div>
@@ -59,15 +80,15 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-blue pb-2">PORTFOLIO</h2>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <FaDribbble className="w-4 h-4 text-[#ff46b8]" />
-                <a href="#" className="text-[#2563EB] hover:underline text-sm">
-                  Dribbble.com/ux_saifur_info
+                <FaExternalLinkAlt className="w-4 h-4 text-[#ff46b8]" />
+                <a href={`${profileData?.profile?.socialMedia?.personal_website_url}`} className="text-[#2563EB] hover:underline text-sm">
+                  Portfolio
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <FaLinkedin className="w-4 h-4 text-[#3B82F6]" />
-                <a href="#" className="text-[#2563EB] hover:underline text-sm">
-                  linkedin.com/ux_saifur_info
+                <a href={`${profileData.profile?.socialMedia?.linkedin_profile_url}`} className="text-[#2563EB] hover:underline text-sm">
+                  LinkedIn
                 </a>
               </div>
             </div>
@@ -77,11 +98,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">SKILLS</h2>
             <ul className='flex justify-center items-start flex-col'>
-              {[
-                "UI/UX Design", "Figma", "Graphics Designer", "Adobe XD",
-                "Adobe Illustrator", "Adobe InDesign", "Adobe Photoshop",
-                "Adobe Premiere Pro", "Data Entry", "Typing Bangla & English Both Language"
-              ].map((skill) => (
+              {profileData?.profile?.skills.map((skill: string) => (
                 <li key={skill} className="flex items-center  space-x-2">
                   <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
                   <span className='text-[#374151]'>{skill}</span>
@@ -91,20 +108,20 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           </div>
 
           {/* Languages */}
-          <div className="mb-8">
+          {profileData?.profile?.languages && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">LANGUAGES</h2>
             <ul>
-              {["BANGLA", "ENGLISH"].map((lang) => (
-                <li key={lang} className="flex items-center space-x-2">
+              {profileData?.profile?.languages.map((lang: string, index: number | string) => (
+                <li key={index} className="flex items-center space-x-2">
                   <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
                   <span className='text-[#374151]'>{lang}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </div>}
 
           {/* Co-curricular Activities */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">CO-CURRICULAR ACTIVITIES</h2>
             <ul>
               {["BEE Member", "Travelling", "Cricket"].map((activity) => (
@@ -114,7 +131,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Column */}
@@ -123,73 +140,62 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">ABOUT ME</h2>
             <p className="text-[#374151]">
-              Hello! I am a Professional UI/UX Designer & Graphics Designer with a keen eye for detail and a drive for creativity. My expertise extends to proficiency in UI/UX designing, allowing me to create visually stunning graphics.
+              {profileData.resume?.data?.sections[1]?.content[0]}
             </p>
           </div>
 
           {/* Education */}
-          <div className="mb-8">
+          {profileData?.profile?.education && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">EDUCATION QUALIFICATION</h2>
             <div>
-              {[{
-                degree: "B. Sc. in Electronics and Communication Engineering",
-                school: "Institute of Science Trade & Technology (ISTT)",
-                time: "2020 - Till Now"
-              }, {
-                degree: "Higher Secondary in Science",
-                school: "Voikunthapur Govt. College",
-                time: "2018 - 2020"
-              }, {
-                degree: "SSC in Science",
-                school: "Voikunthapur Islamiah Madrasah",
-                time: "2016 - 2018"
-              }].map((edu, idx) => (
+              {profileData?.profile?.education?.map((edu: any, idx: any) => (
                 <div key={idx} className='mb-3'>
                   <h3 className="font-semibold text-[#1F2937]">{edu.degree}</h3>
-                  <p className="text-sm text-[#374151]">{edu.school}</p>
-                  <p className="text-sm text-[#374151]">{edu.time}</p>
+                  <p className="text-sm text-[#374151]">{edu.institution_name}</p>
+                  <p className="text-sm text-[#374151]">{edu.major}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
 
           {/* Training */}
-          <div className="mb-8">
+          {profileData?.profile?.certifications && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">TRAINING / CERTIFICATION</h2>
             <div className=''>
-              <h3><span className='text-sm'>Course Name:-</span> - Certified UI/UX Design</h3>
-              <p><span className='text-sm'>Training Institute:-</span> - Bohubrihi of Sohojoware Limited</p>
-              <p><span className='text-sm'>Duration:-</span> 01/01/2023 – 24/07/2024 (1.5 Months)</p>
-              <p><span className='text-sm'>Topic:-</span> User Experience, Website of Software design, Mobile Application Design, User Interface Design etc.</p>
+
+              {profileData?.profile?.certifications?.map((certificate: any, idx: any) => (
+                <div key={idx} className='mb-3'>
+                  <h3 className="font-semibold text-[#1F2937]">{certificate?.certification_name}</h3>
+                  <p className="text-sm text-[#374151]">{certificate?.issuing_organization}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.issue_date}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.expiry_date}</p>
+
+                </div>
+              ))}
             </div>
-          </div>
+          </div>}
 
           {/* Work Experience */}
-          <div className="mb-8">
+          {profileData?.profile?.jobExperience && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">WORK EXPERIENCE</h2>
             <div>
-              {[{
-                title: "UI/UX Designer",
-                company: "RioCarting.lf Ltd",
-                duration: "01/01/2025 - Till Now"
-              }, {
-                title: "UI/UX Designer Intern",
-                company: "RioCarting.lf Ltd",
-                duration: "01/04/2024 - 30/07/2024"
-              }].map((job, idx) => (
+              {profileData?.profile?.jobExperience?.map((job: any, idx: any) => (
                 <div key={idx} className='space-y-6 mb-5'>
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-sm text-[#1F2937]">{job.title}</h3>
-                    <span className="text-sm text-[#6B7280]">{job.duration}</span>
+                    <h3 className="text-sm text-[#1F2937]">{job?.job_title}</h3>
+                    <span className="text-sm text-[#6B7280]">
+                      {formatDateRangeWithTillNow(job?.start_date, job?.end_date)}
+                    </span>
                   </div>
-                  <p className='font-semibold text-[#1F2937] mb-2'>{job.company}</p>
+                  <p className='font-semibold text-[#1F2937] mb-2'>{job?.company_name}</p>
                   <p className='text-[#6B7280]'>
-                    I am very happy to get the opportunity for UI/UX designer expert...I am very happy to get the opportunity for UI/UX designer expert...I am very happy to get the opportunity for UI/UX designer expert...
+                    {job?.job_description}
                   </p>
                 </div>
               ))}
+
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

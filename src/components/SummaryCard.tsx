@@ -122,7 +122,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
 
             <button
               onClick={handlePayment}
-              className="w-full px-4 py-2 block bg-primary text-center text-white rounded-md hover:bg-primary transition"
+              className="w-full px-4 py-2 block bg-primary text-center text-white rounded-md hover:bg-primary transition cursor-pointer"
             >
               {btnLoading ? (
                 <>
