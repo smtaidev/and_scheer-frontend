@@ -35,20 +35,24 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
 
 
   return (
-    // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
+    // <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white min-h-screen overflow-hidden flex flex-col">
+    // // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
     <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
       {/* Header Section */}
       <div className="p-8">
         <div className='p-8 flex gap-20'>
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
-              <Image
+              {/* <Image
                 src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-center"
                 height={200}
                 width={200}
-              />
+              /> */}
+              <div className='h-[200px] w-[200px] bg-gray-200  flex items-center justify-center'>
+
+              </div>
             </div>
           </div>
           <div className="">
@@ -72,7 +76,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
         </div>
       </div>
 
-      <div className='p-8 flex gap-20'>
+      <div className='p-8 flex gap-20 flex-1'>
         {/* Left Column */}
         <div className='border-r-[1px] border-[#a2d2f0] pr-16'>
           {/* Portfolio */}
