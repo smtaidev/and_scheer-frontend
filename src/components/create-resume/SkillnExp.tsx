@@ -96,7 +96,6 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
       })),
     };
 
-    console.log("Got all skills and languages data:", updatedData);
     setStep(4);
     setFormData(updatedData); // Updating form data to include skills and languages
     // router.push("/jobseekeruser/education");

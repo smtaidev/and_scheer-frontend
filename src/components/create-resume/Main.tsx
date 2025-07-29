@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../ui/Container";
 import ProgressBar from "../ui/progressBar";
 import CareerOverview from "./CareerOverview";
@@ -34,6 +34,7 @@ const MainComponents = () => {
     other_social_media: "",
     other_social_media_url: "",
     skills: [], // e.g. ["JavaScript", "React", "Node.js"]
+    languages: [], // e.g. ["English", "Spanish"]
 
     education: [], // e.g. [{ degree: "BSc", institution: "XYZ University", major: "",  startDate: "2020-01-01", endDate: "2024-01-01", achievements: [] }]
     experiences: [], // e.g. [{ jobTitle: "Software Engineer", companyName: "ABC Corp", startDate: "2020-01-01", endDate: "2024-01-01", jobDescription: "Developed web applications.", skills: ["JavaScript", "React"], achievements: [{}] }]
@@ -41,8 +42,7 @@ const MainComponents = () => {
 
   });
 
-  const achievementRef = useRef<HTMLInputElement>(null);
-  const certificateRef = useRef<HTMLInputElement>(null);
+
   const setFormData = (newData: any) => {
     setNewForm((prevFormData) => ({
       ...prevFormData,
@@ -127,9 +127,6 @@ const MainComponents = () => {
     other_social_media_url: formData.other_social_media_url || "",
 
   };
-  console.log("profileData in MainComponents:", profileData);
-  console.log("form data:", formData);
-
 
   const onSubmit = async () => {
 
@@ -141,7 +138,7 @@ const MainComponents = () => {
 
 
       // 🚀 Send request
-      const res = await fetch("http://172.252.13.71:5005/api/v1/profiles/create", {
+      const res = await fetch("http://localhost:5005/api/v1/profiles/create", {
         method: "POST",
         body: sendForm,
         // credentials: "include",

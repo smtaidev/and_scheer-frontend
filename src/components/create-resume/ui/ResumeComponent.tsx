@@ -14,22 +14,22 @@ interface ResumeComponentProps {
 }
 
 const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, printRef, profileData }) => {
-function formatDateRangeWithTillNow(start: string, end?: string): string {
-  const startDate = new Date(start);
-  const endDate = end ? new Date(end) : null;
+  function formatDateRangeWithTillNow(start: string, end?: string): string {
+    const startDate = new Date(start);
+    const endDate = end ? new Date(end) : null;
 
-  if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
-    return "Invalid date";
+    if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
+      return "Invalid date";
+    }
+
+    const format = (date: Date) =>
+      date.toLocaleDateString("en-GB").split("/").map((part) => part.padStart(2, "0")).join("/");
+
+    const startFormatted = format(startDate);
+    const endFormatted = endDate ? format(endDate) : "Till Now";
+
+    return `${startFormatted} - ${endFormatted}`;
   }
-
-  const format = (date: Date) =>
-    date.toLocaleDateString("en-GB").split("/").map((part) => part.padStart(2, "0")).join("/");
-
-  const startFormatted = format(startDate);
-  const endFormatted = endDate ? format(endDate) : "Till Now";
-
-  return `${startFormatted} - ${endFormatted}`;
-}
 
 
 
@@ -107,17 +107,17 @@ function formatDateRangeWithTillNow(start: string, end?: string): string {
           </div>
 
           {/* Languages */}
-          {/* <div className="mb-8">
+          {profileData?.profile?.languages && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">LANGUAGES</h2>
             <ul>
-              {["BANGLA", "ENGLISH"].map((lang) => (
-                <li key={lang} className="flex items-center space-x-2">
+              {profileData?.profile?.languages.map((lang: string, index: number | string) => (
+                <li key={index} className="flex items-center space-x-2">
                   <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
                   <span className='text-[#374151]'>{lang}</span>
                 </li>
               ))}
             </ul>
-          </div> */}
+          </div>}
 
           {/* Co-curricular Activities */}
           {/* <div className="mb-8">
