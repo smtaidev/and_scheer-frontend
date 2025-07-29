@@ -1,6 +1,5 @@
 import React from 'react';
 import { CgMail } from 'react-icons/cg';
-import { FaDribbble } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa6";
 import Image from 'next/image';
 import { PiPhone } from 'react-icons/pi';
@@ -42,7 +41,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           <div className="pr-28">
             <div className="w-48 h-48 p-2 rounded-full border-4 border-[#7fbeeb] overflow-hidden">
               <Image
-                src={profileData?.profile?.user.profilePic || "/man.png"} // Fallback image
+                src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
                 alt="Saifur Rahman"
                 className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
@@ -144,7 +143,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
           </div>
 
           {/* Education */}
-          <div className="mb-8">
+          {profileData?.profile?.education && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">EDUCATION QUALIFICATION</h2>
             <div>
               {profileData?.profile?.education?.map((edu: any, idx: any) => (
@@ -155,10 +154,10 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
 
           {/* Training */}
-          {/* <div className="mb-8">
+          {profileData?.profile?.certifications && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">TRAINING / CERTIFICATION</h2>
             <div className=''>
 
@@ -166,14 +165,16 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 <div key={idx} className='mb-3'>
                   <h3 className="font-semibold text-[#1F2937]">{certificate?.certification_name}</h3>
                   <p className="text-sm text-[#374151]">{certificate?.issuing_organization}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.issue_date}</p>
+                  <p className="text-sm text-[#374151]">{certificate?.expiry_date}</p>
 
                 </div>
               ))}
             </div>
-          </div> */}
+          </div>}
 
           {/* Work Experience */}
-          <div className="mb-8">
+          {profileData?.profile?.jobExperience && <div className="mb-8">
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">WORK EXPERIENCE</h2>
             <div>
               {profileData?.profile?.jobExperience?.map((job: any, idx: any) => (
@@ -192,7 +193,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
               ))}
 
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

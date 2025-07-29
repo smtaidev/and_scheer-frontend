@@ -76,8 +76,8 @@ const MainComponents = () => {
       degree: edu.degree,
       institution_name: edu.institution,
       major: edu.major,
-      graduation_start_date: edu.startDate,
-      graduation_end_date: edu.endDate,
+      graduation_start_date: edu.graduationStart,
+      graduation_end_date: edu.graduationEnd,
       achievements: edu.achievements || []
     })),
 
@@ -87,6 +87,7 @@ const MainComponents = () => {
       start_date: exp.startDate,
       end_date: exp.endDate,
       job_description: exp.jobDescription,
+      skills: exp.skills || [],
       achievements: exp.achievements || []
     })),
     skills: formData.experiences.flatMap((ex: any) => ex.skills || []), // Flattens all skills into a single array
@@ -94,8 +95,8 @@ const MainComponents = () => {
     certifications: formData.certificates.map((cert: any) => ({
       certification_title: cert.certificateTitle,
       issuing_organization: cert.issuingOrganization,
-      certification_issue_date: cert.certificateIssuedDate,
-      certification_expiry_date: cert.certificateExpiryDate || null
+      certification_issue_date: cert.issueDate,
+      certification_expiry_date: cert.expiryDate || null
     })),
     linkedin_profile_url: formData.linkedin_profile_url,
     personal_website_url: formData.personal_website_url,
@@ -104,6 +105,7 @@ const MainComponents = () => {
 
   };
   console.log("profileData in MainComponents:", profileData);
+  console.log("form data:", formData);
 
 
   const onSubmit = async () => {
