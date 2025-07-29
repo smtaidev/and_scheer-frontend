@@ -22,21 +22,25 @@ interface JobTitle {
   title: string;
 }
 
- 
+
 export default function RecentJob({ title }: JobTitle) {
-         
-        const [allJobs,setAllJobs]=useState<Job[]>([])
-      const {data:jobs} = useGetAllJobPostsQuery({});
+
+  const [allJobs, setAllJobs] = useState<Job[]>([])
+  const { data: jobs } = useGetAllJobPostsQuery({});
 
 
-      useEffect(()=>{
-          if(jobs?.data){
-            setAllJobs(jobs.data.data)
-          }
-      },[jobs?.data])
+  useEffect(() => {
+    if (jobs?.data) {
+      // Create a new array and sort the jobs by 'createdAt' field in descending order to show the most recent jobs first
+      const sortedJobs = [...jobs.data.data].sort((a: Job, b: Job) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setAllJobs(sortedJobs);
+    }
+  }, [jobs?.data]);
 
 
-  console.log(jobs);
+
 
   return (
     <div className="bg-card ">

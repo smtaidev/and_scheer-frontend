@@ -39,7 +39,7 @@ export default function CourseCard({ course }:{course:Course}) {
       {/* Bottom Info & Button */}
       <div className="p-4 pt-2 flex justify-between items-center">
         <div>
-          <p className="text-sm text-gray-500">Instructor - <span className="font-semibold text-gray-700">{course.visible_instructors[0].name}</span></p>
+          <p className="text-sm text-gray-500">Instructor - <span className="font-semibold text-gray-700">{course?.visible_instructors[0].name || ""}</span></p>
         </div>
         <div className="flex flex-col items-end">
           {course.is_paid && (
