@@ -5,12 +5,6 @@ import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar';
 import Container from '@/components/ui/Container';
 import React, { useEffect, useState } from 'react'
 import RecentJobCard from '@/components/recent-job/RecentJobCard';
-// import companies from '@/data/companies.json'
-// import RecentJobCard from '@/app/alloveruser/recentJobs/RecentJobCard'
-// import JobSeekerNavbar from '../jobSeekerHome/SeekerNavbar'
-// import Container from '@/components/Container'
-// import JobDetailsCard from './JobDetailsCard'
-// import AllFilterSection from './AllfilterSection'
 import { ChevronLeft, List, Search, X } from "lucide-react"
 import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
