@@ -11,11 +11,7 @@ import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { useParams } from 'next/navigation';
  
- 
- 
 export default function JobDetailspage() {
- 
- 
     const [currentCompany, setCurrentCompany] = useState<Job | undefined>();
     const [showCompanies, setShowCompanies] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
@@ -27,7 +23,6 @@ export default function JobDetailspage() {
  
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
- 
  
     useEffect(() => {
  
@@ -42,8 +37,6 @@ export default function JobDetailspage() {
         refetch()
  
     }, [jobs?.data])
- 
- 
  
  
     // const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
