@@ -2,15 +2,25 @@ import { CreateJobRequest, Job, JobResponse, JobsListResponse, UpdateJobRequest 
 import { baseUrlApi } from "../../api/baseUrlApi";
 
 
-export interface JobFilterType {
-    companyName?: string[];
-    title?: string[];
-    educations?: string[];
-    experience?: number;
-    locations?: string[];
-    salaryRange?: string[];
-    jobType?: string[];
-}
+// export interface JobFilterType {
+//     companyName?: string[];
+//     title?: string[];
+//     educations?: string[];
+//     experience?: number;
+//     locations?: string[];
+//     salaryRange?: string[];
+//     jobType?: string[];
+// }
+export type JobFilterType = {
+  jobType: string[];
+  experience?: number;
+  title: string[];
+  locations: string[];
+  salaryRange: string[];
+  educations: string[];
+  companyName: string[];
+};
+
 
 const jobApi = baseUrlApi.injectEndpoints({
     // tagTypes: ["allJobPosts"],

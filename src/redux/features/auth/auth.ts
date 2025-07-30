@@ -10,7 +10,7 @@ const authApi = baseUrlApi.injectEndpoints({
     }),
 
     getMyProfile: build.query({
-      query: (userId) => `/profiles/get-my-profile/${userId}`
+      query: (userId) => `/profiles/get-my-profile`
     }),
 
     signUp: build.mutation({

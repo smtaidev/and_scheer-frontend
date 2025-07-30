@@ -50,7 +50,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 height={200}
                 width={200}
               /> */}
-              <div className='h-[200px] w-[200px] bg-gray-200  flex items-center justify-center'>
+              <div className='h-[150px] w-[150px] rounded-full bg-[#E5E7EB]  flex items-center justify-center'>
 
               </div>
             </div>
@@ -68,7 +68,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 <span>{profileData?.profile.email}</span>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-[#323B4C]">
+            <div className="flex items-center space-x-2 text-[#323B4C] line-clamp-1">
               <TbMapPinCode className="w-4 h-4" />
               <span>{profileData.profile?.address},{profileData.profile?.city},{profileData.profile?.state},{profileData.profile?.countryRegion},</span>
             </div>
