@@ -2,10 +2,10 @@
 import { FileText, Plus, X } from "lucide-react";
 import React, { useState } from "react";
 import { LuPencilLine } from "react-icons/lu";
-
 import { toast } from "sonner";
 import ExperienceAddModal from "./modal/ExperienceAddModal";
 import ExperienceEditModal from "./modal/ExperienceEditModal";
+import Cookies from "js-cookie";
 
 interface ExperienceSectionProps {
   experiences: Experience[];
@@ -20,11 +20,24 @@ interface Experience {
   ExperienceNumber: string;
 }
 
+// Change Time Format
+const changeTimeFormat = (timeStr: string) => {
+  // const timeStr = "2025-07-29T03:50:11.596Z";
+  const date = new Date(timeStr);
+  const formattedDate = date.toISOString().split('T')[0];
+  return formattedDate
+}
+
 const ExperienceSection = ({
-  experiences,
+  setProfileData,
+  profileData
 }: any) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
+  const [selectedExperience, setSelectedExperience] = useState<any>(null); // Track selected experience
+  const [selectedExperienceNumber, setSelectedExperienceNumber] = useState<any>(null)
+  // const 
+
   const experienceData = [
     {
       experienceNumber: "Experience 1",
@@ -56,6 +69,97 @@ const ExperienceSection = ({
     },
   ];
 
+  // Handle clicking the edit button
+  const handleEditClick = (experience: any, index: any) => {
+    setSelectedExperience(experience); // Set the selected experience
+    setSelectedExperienceNumber(index);
+    setIsModalOpenEdit(true); // Open the edit modal
+  };
+
+  // Handle the update of the experience
+  // const handleUpdateExperience = (updatedExperience: any) => {
+
+  //   console.log("Updated Data from Experience Page: ", updatedExperience)
+
+  //   // Update the jobExperience array in profileData
+  //   setProfileData((prevData: any) => ({
+  //     ...prevData,
+  //     jobExperience: prevData.jobExperience.map((exp: any, index: any) =>
+  //       index === selectedExperienceNumber
+  //         ? updatedExperience // Replace the updated experience
+  //         : exp // Keep other experiences unchanged
+  //     ),
+  //   }));
+
+
+  //   // Now that profileData is updated, send the full updated data to the backend
+  //   // updateProfileData(profileData);
+
+  //   const updatedProfile = {
+  //     ...prevData,
+  //     jobExperience: updatedJobExperience,
+  //   };
+
+  //   // Send the full updated profile data to the backend
+  //   updateProfileData(updatedProfile); // Pass the full updated profile to the backend
+
+  //   // });
+
+  //   console.log("Final full data after experiange updated: ", profileData);
+  //   return updatedProfile; // Return the updated profile data
+  // };
+
+  // Handle the update of the experience
+  const handleUpdateExperience = (updatedExperience: any) => {
+    // Update the jobExperience array in profileData
+    setProfileData((prevData: any) => {
+      const updatedJobExperience = prevData.jobExperience.map((exp: any, index: any) =>
+        index === selectedExperienceNumber
+          ? updatedExperience // Replace the updated experience
+          : exp // Keep other experiences unchanged
+      );
+
+      const updatedProfile = {
+        ...prevData,
+        jobExperience: updatedJobExperience,
+      };
+
+      // Send the full updated profile data to the backend
+      updateProfileData(updatedProfile); // Pass the full updated profile to the backend
+
+      return updatedProfile; // Return the updated profile data
+    });
+  };
+
+
+  // Send the full profile data to the backend API
+  const updateProfileData = async (updatedProfileData: any) => {
+    try {
+
+      const { id, userId, User, profileId, ...profileWithoutId } = updatedProfileData;
+
+      console.log("Profile Data Without id: ", profileWithoutId);
+
+      const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${updatedProfileData?.User?.id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profileWithoutId), // Send full profile data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile data");
+      }
+
+      const data = await response.json();
+      console.log("Profile updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
   return (
     <section>
       <div>
@@ -67,20 +171,20 @@ const ExperienceSection = ({
             className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300"
             onClick={() => setIsModalOpen(true)}
           >
-            <Plus className="w-4 h-4" />
-            <span className="text-sm">Add Experience</span>
+            {/* <Plus className="w-4 h-4" />
+            <span className="text-sm">Add Experience</span> */}
           </button>
         </div>
         <div className="  ">
-          {experienceData.map((exp, index) => (
+          {profileData?.jobExperience?.map((exp: any, index: any) => (
             <div key={index} className="space-y-2 mt-6">
               <div className="flex justify-between mb-2">
                 <h2 className="md:text-2xl text-xl font-bold text-secondary mb-2">
-                  {exp.experienceNumber}
+                  Experience-{index + 1}
                 </h2>{" "}
                 <button
-                  onClick={() => setIsModalOpenEdit(true)}
-                  className=" flex items-center gap-2 text-subtitle mb-2 cursor-pointer"
+                  onClick={() => handleEditClick(exp, index)} // Pass the experience to the edit function
+                  className="flex items-center gap-2 text-subtitle mb-2 cursor-pointer"
                 >
                   <LuPencilLine className="text-lg" /> Edit
                 </button>
@@ -88,15 +192,15 @@ const ExperienceSection = ({
               <div className="flex justify-between">
                 <div className="space-y-2">
                   <h3 className="md:text-lg text-base  font-semibold text-secondary">
-                    {exp.title}
+                    {exp?.job_title}
                   </h3>
                   <p className="text-gray-600 text-sm sm:text-base">
-                    {exp.company}
+                    {exp?.company_name}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm sm:text-base text-gray-500">
-                    {exp.date}
+                    {changeTimeFormat(exp?.start_date)} - {changeTimeFormat(exp?.end_date)}
                   </p>
                 </div>
               </div>
@@ -106,7 +210,7 @@ const ExperienceSection = ({
                   Experience Summary
                 </h3>
                 <p className="mt-1 text-gray-700 text-sm sm:text-base ">
-                  {exp.description}
+                  {exp?.job_description}
                 </p>
               </div>
             </div>
@@ -119,6 +223,10 @@ const ExperienceSection = ({
         <ExperienceEditModal
           isModalOpenEdit={isModalOpenEdit}
           setIsModalOpenEdit={setIsModalOpenEdit}
+          selectedExperience={selectedExperience} // Pass the selected experience to the modal
+          setProfileData={setProfileData}
+          profileData={profileData}
+          handleUpdateExperience={handleUpdateExperience} // Pass update handler
         />
       </div>
     </section>

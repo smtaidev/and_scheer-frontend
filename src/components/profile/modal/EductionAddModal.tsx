@@ -1,38 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface FormData {
-  title: string;
-  degree: string;
-  university: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  summary: string;
+  degree?: string;
+  institution_name?: string;
+  major?: string;
 }
 
 interface EductionAddModal {
   isModalOpen: boolean;
   setIsModalOpen: any;
+  onAddEducation: (education: any) => void;
 }
 
 const EductionAddModal: React.FC<EductionAddModal> = ({
   isModalOpen,
   setIsModalOpen,
+  onAddEducation
 }) => {
   const { register, handleSubmit, reset, formState } = useForm<FormData>({
     defaultValues: {
-      title: "",
       degree: "",
-      university: "",
-      location: "",
-      startDate: "",
-      endDate: "",
-      summary: "",
+      institution_name: "",
+      major: "",
     },
   });
 
+  // Reset form with selectedExperience data when modal is opened
+  useEffect(() => {
+    reset({
+      degree: "",
+      institution_name: "",
+      major: ""
+    });
+  }, [isModalOpen, reset]);
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
+
+    console.log("Education Name: ", data);
+
+    const newEducation = {
+      degree: data?.degree,
+      institution_name: data?.institution_name,
+      major: data?.major
+    };
+
+    onAddEducation(newEducation);
+
     console.log(data);
     setIsModalOpen(false); // Close modal after submission
     reset(data); // Update default values with submitted data
@@ -58,35 +72,36 @@ const EductionAddModal: React.FC<EductionAddModal> = ({
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-gray-700 font-semibold">
-                  Title
-                </label>
-                <input
-                  {...register("title")}
-                  className="w-full border-b border-gray-300 focus:outline-none"
-                  placeholder="Title"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold">
                   Degree
                 </label>
                 <input
                   {...register("degree")}
                   className="w-full border-b border-gray-300 focus:outline-none"
-                  placeholder="Degree"
+                  placeholder="enter degree name..."
                 />
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold">
-                  University
+                  Institution Name
                 </label>
                 <input
-                  {...register("university")}
+                  {...register("institution_name")}
                   className="w-full border-b border-gray-300 focus:outline-none"
-                  placeholder="University"
+                  placeholder="enter institution name...."
                 />
               </div>
               <div>
+                <label className="block text-gray-700 font-semibold">
+                  Major
+                </label>
+                <input
+                  {...register("major")}
+                  className="w-full border-b border-gray-300 focus:outline-none"
+                  placeholder="enter major here..."
+                />
+              </div>
+
+              {/* <div>
                 <label className="block text-gray-700 font-semibold">
                   Location
                 </label>
@@ -125,7 +140,8 @@ const EductionAddModal: React.FC<EductionAddModal> = ({
                   className="w-full border-b border-gray-300 focus:outline-none resize-none h-24"
                   placeholder="Summary"
                 />
-              </div>
+              </div> */}
+
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"

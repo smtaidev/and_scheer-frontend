@@ -5,23 +5,13 @@ import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar';
 import Container from '@/components/ui/Container';
 import React, { useEffect, useState } from 'react'
 import RecentJobCard from '@/components/recent-job/RecentJobCard';
-// import companies from '@/data/companies.json'
-// import RecentJobCard from '@/app/alloveruser/recentJobs/RecentJobCard'
-// import JobSeekerNavbar from '../jobSeekerHome/SeekerNavbar'
-// import Container from '@/components/Container'
-// import JobDetailsCard from './JobDetailsCard'
-// import AllFilterSection from './AllfilterSection'
 import { ChevronLeft, List, Search, X } from "lucide-react"
 import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { useParams } from 'next/navigation';
  
- 
- 
 export default function JobDetailspage() {
- 
- 
     const [currentCompany, setCurrentCompany] = useState<Job | undefined>();
     const [showCompanies, setShowCompanies] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
@@ -33,7 +23,6 @@ export default function JobDetailspage() {
  
     const [allJobs, setAllJobs] = useState<Job[]>([])
     const { data: jobs } = useGetAllJobPostsQuery({});
- 
  
     useEffect(() => {
  
@@ -48,8 +37,6 @@ export default function JobDetailspage() {
         refetch()
  
     }, [jobs?.data])
- 
- 
  
  
     // const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
