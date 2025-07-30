@@ -20,7 +20,7 @@ const ProfilePage: React.FC = () => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5005/api/v1/profiles/get-my-profile",
+          "http://172.252.13.71:5005/api/v1/profiles/get-my-profile",
           {
             method: "GET",
             headers: {
@@ -41,6 +41,7 @@ const ProfilePage: React.FC = () => {
         }
 
         setProfileData(data.data);
+        console.log("Profile Data Printed From the Main Page: ", profileData);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
@@ -51,28 +52,204 @@ const ProfilePage: React.FC = () => {
     fetchProfileData();
   }, []);
 
-  const updateProfileData = async (data: any) => {
-    console.log(data);
+  // Function to update the profile data
+  const updateProfileData = async (updatedProfileData: any) => {
+    try {
+      const response = await fetch(
+        `http://172.252.13.71:5005/api/v1/profiles/resume/${updatedProfileData?.User?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedProfileData), // Send updated data as JSON
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile data");
+      }
+
+      const data = await response.json();
+      console.log("Profile updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
+
+  // In your ProfilePage component
+  const handleSkillsUpdate = async (skills: string[]) => {
+    try {
+
+      // Filter out null/empty values
+      const filteredSkills = skills.filter(skill => skill && skill.trim() !== '');
+
+
+      // Create updated profile data
+      // const updatedProfile = {
+      //   ...profileData,
+      //   skills
+      // };
+
+      const updatedProfile = {
+        ...profileData,
+        skills: filteredSkills
+      };
+
+
+      // Update local state first for immediate UI update
+      setProfileData(updatedProfile);
+
+      // Send update to backend
+      const response = await fetch(
+        `http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ skills }), // Only send the skills to update
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update skills");
+      }
+
+      const data = await response.json();
+      console.log("Skills updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating skills:", error);
+      // Optionally revert local state if update fails
+      // setProfileData(profileData);
+    }
+  };
+
+  // Add these functions to your ProfilePage component
+  const handleEducationUpdate = async (updatedEducation: any) => {
+    try {
+      const updatedProfile = {
+        ...profileData,
+        education: updatedEducation
+      };
+
+      setProfileData(updatedProfile);
+
+      const response = await fetch(
+        `http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ education: updatedEducation }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update education");
+
+      const data = await response.json();
+      console.log("Education updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating education:", error);
+    }
+  };
+
+  const handleCertificationUpdate = async (updatedCertifications: any) => {
+    try {
+      const updatedProfile = {
+        ...profileData,
+        certifications: updatedCertifications
+      };
+
+      setProfileData(updatedProfile);
+
+      const response = await fetch(
+        `http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ certifications: updatedCertifications }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update certifications");
+
+      const data = await response.json();
+      console.log("Certifications updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating certifications:", error);
+    }
+  };
+
+  // Add this function to your ProfilePage component
+  const handleSocialMediaUpdate = async (updatedSocialMedia: any) => {
+    try {
+      const updatedProfile = {
+        ...profileData,
+        socialMedia: updatedSocialMedia
+      };
+
+      setProfileData(updatedProfile);
+
+      const response = await fetch(
+        `http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ socialMedia: updatedSocialMedia }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update social media");
+
+      const data = await response.json();
+      console.log("Social media updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating social media:", error);
+    }
+  };
+
 
   return (
     <div>
       <Container>
         <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
-          <ProfileHeader profileData={profileData} />
+          <ProfileHeader profileData={profileData} setProfileData={setProfileData} />
 
           <div className="space-y-12 mt-8">
-            <AboutSection profileData={profileData} />
+            <AboutSection profileData={profileData} setProfileData={setProfileData} />
 
-            <ExperienceSection experiences={[]} />
+            <ExperienceSection profileData={profileData} setProfileData={setProfileData} />
 
-            <SkillsSection
+            {/* <SkillsSection
               skills={[]}
               onSkillsUpdate={(skills) => updateProfileData("skills")}
+              profileData={profileData}
+            /> */}
+            <SkillsSection
+              skills={profileData?.skills || []}
+              onSkillsUpdate={handleSkillsUpdate} // Handle the skill update
+              profileData={profileData}
             />
 
-            <EducationSection education={[]} />
-            <ContactInfoProfile />
+            {/* <EducationSection profileData={profileData} /> */}
+
+            <EducationSection
+              profileData={profileData}
+              onEducationUpdate={handleEducationUpdate}
+              onCertificationUpdate={handleCertificationUpdate}
+            />
+            <ContactInfoProfile profileData={profileData} onSocialMediaUpdate={handleSocialMediaUpdate} />
           </div>
         </div>
       </Container>

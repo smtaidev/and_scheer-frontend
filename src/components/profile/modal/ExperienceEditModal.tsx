@@ -1,51 +1,131 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Cookies from "js-cookie";
 
 interface FormData {
-  jobTitle: string;
-  company: string;
-  dateRange: string;
-  experienceSummary: string;
+  job_title: string;
+  company_name: string;
+  start_date: string;
+  end_date: string;
+  job_description: string;
 }
 
-interface ExperienceAddModal {
+interface ExperienceEditModalProps {
   isModalOpenEdit: boolean;
-  setIsModalOpenEdit: any;
+  setIsModalOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedExperience: any;
+  handleUpdateExperience: (updatedExperience: any) => void;
 }
 
-const ExperienceEditModal: React.FC<ExperienceAddModal> = ({
+const ExperienceEditModal = ({
   isModalOpenEdit,
   setIsModalOpenEdit,
-}) => {
-  const { register, handleSubmit, reset, formState } = useForm<FormData>({
+  selectedExperience,
+  setProfileData,
+  profileData,
+  handleUpdateExperience,
+}: any) => {
+
+  console.log("Selected Experiange Data: ", selectedExperience)
+  console.log("Profile Data from the Experience Edit Modal: ", profileData)
+
+  // Helper function to format date to "yyyy-MM-dd"
+  const formatDate = (date: string) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
-      jobTitle: "Mid-Level UI/UX Designer",
-      company: "SM Technology (betopia Group)",
-      dateRange: "08/08/2024 - Till Now",
-      experienceSummary:
-        "I am very happy to get the opportunity for UI/UX Designer intern. I strive to bring creativity, diligence, and fresh perspectives to every project. Eager to learn, I embrace challenges and aim to exceed expectations with my innovative designs and user-centric approach.",
+      job_title: selectedExperience?.job_title || "",
+      company_name: selectedExperience?.company_name || "",
+      start_date: formatDate(selectedExperience?.start_date) || "",
+      end_date: formatDate(selectedExperience?.end_date) || "",
+      job_description: selectedExperience?.job_description || "",
     },
   });
 
+  // Reset form with selectedExperience data when modal is opened
+  useEffect(() => {
+    if (selectedExperience) {
+      reset({
+        job_title: selectedExperience?.job_title || "",
+        company_name: selectedExperience?.company_name || "",
+        start_date: formatDate(selectedExperience?.start_date) || "",
+        end_date: formatDate(selectedExperience?.end_date) || "",
+        job_description: selectedExperience?.job_description || "",
+      });
+    }
+  }, [isModalOpenEdit, selectedExperience, reset]);
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-    setIsModalOpenEdit(false); // Close modal after submission
-    reset(data); // Update default values with submitted data
+    // Combine the updated form data with the selected experience data
+    const newUpdatedExperience = {
+      job_title: selectedExperience?.job_title,
+      company_name: selectedExperience?.company_name,
+      start_date: selectedExperience?.start_date,
+      end_date: selectedExperience?.end_date,
+      job_description: selectedExperience?.job_description
+    }
+    const updatedExperience = { ...newUpdatedExperience, ...data };
+    console.log("Updated Experience Data: ", updatedExperience);
+    handleUpdateExperience(updatedExperience); // Pass the updated experience back to the parent
+    setIsModalOpenEdit(false); // Close the modal after updating
   };
 
-  const handleEdit = () => {
-    setIsModalOpenEdit(true);
-  };
+
+  // const onSubmit: SubmitHandler<FormData> = async (data) => {
+  //   try {
+  //     console.log("Experience Updated Data: ", data);
+
+  //     const updatedData = {
+  //       jobTitle: data?.jobTitle,
+  //       companyName: data?.companyName,
+  //       startDate: data?.startDate,
+  //       phonendDateeNumber: data?.endDate,
+  //       jobDescription: data?.jobDescription,
+  //     };
+
+  //     // const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`, {
+  //     //   method: "PATCH",
+  //     //   headers: {
+  //     //     Authorization: `Bearer ${Cookies.get("accessToken")}`,
+  //     //     "Content-Type": "application/json",
+  //     //   },
+  //     //   body: JSON.stringify(updatedData), // Send updated data as JSON
+  //     // });
+
+  //     // if (!response.ok) {
+  //     //   throw new Error("Failed to update profile data");
+  //     // }
+
+  //     // const updatedData = await response.json();
+  //     console.log("Profile updated successfully:", updatedData);
+
+  //     // Close the modal and reset form after submission
+  //     setIsModalOpenEdit(false);
+  //     reset(data);
+
+  //     setProfileData((prevData: any) => ({
+  //       ...prevData,  // Spread the previous state to maintain unchanged data
+  //       ...updatedData // Apply the updated data (could be nested as well)
+  //     }));
+
+  //   } catch (error) {
+  //     console.error("Error updating profile:", error);
+  //   }
+  // };
 
   const handleCancel = () => {
     setIsModalOpenEdit(false);
-    reset();
   };
 
-  const { defaultValues } = formState;
-
   return (
-    <div className="">
+    <>
       {isModalOpenEdit && (
         <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
@@ -54,33 +134,39 @@ const ExperienceEditModal: React.FC<ExperienceAddModal> = ({
               <div>
                 <label className="block text-gray-700">Job Title</label>
                 <input
-                  {...register("jobTitle")}
+                  {...register("job_title")}
                   className="w-full border-b border-gray-300 focus:outline-none"
                   placeholder="Job Title"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Company</label>
+                <label className="block text-gray-700">Company Name</label>
                 <input
-                  {...register("company")}
+                  {...register("company_name")}
                   className="w-full border-b border-gray-300 focus:outline-none"
                   placeholder="Company"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Date Range</label>
+                <label className="block text-gray-700">Start Date</label>
                 <input
-                  {...register("dateRange")}
+                  {...register("start_date")}
+                  type="date"
                   className="w-full border-b border-gray-300 focus:outline-none"
-                  placeholder="Date Range"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">
-                  Experience Summary
-                </label>
+                <label className="block text-gray-700">End Date</label>
+                <input
+                  {...register("end_date")}
+                  type="date"
+                  className="w-full border-b border-gray-300 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Job Description</label>
                 <textarea
-                  {...register("experienceSummary")}
+                  {...register("job_description")}
                   className="w-full border-b border-gray-300 focus:outline-none resize-none h-24"
                   placeholder="Experience Summary"
                 />
@@ -104,7 +190,7 @@ const ExperienceEditModal: React.FC<ExperienceAddModal> = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -50,6 +50,10 @@ const SkillsAddModal: React.FC<SkillsAddModalProps> = ({
   const { register, handleSubmit, reset } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    if (!data.skill || data.skill.trim() === '') {
+      return; // Don't submit empty skills
+    }
+
     onAddSkill(data.skill);
     reset();
     setIsModalOpen(false);
