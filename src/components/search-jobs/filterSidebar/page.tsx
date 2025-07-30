@@ -156,8 +156,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   const handleApply = async () => {
     const formData = {
       jobType: selectedWorkModes,
-      // experience: experience > 0 ? experience : undefined,
-      experience: experience > 0 ? experience : 0,
+      experience: experience > 0 && `${experience === 1 ? `${experience}-year` : `${experience}-years`}`,
       title: selectedDepartments,
       locations: selectedLocations,
       salaryRange: selectedSalaries,
