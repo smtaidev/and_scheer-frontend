@@ -1,30 +1,76 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Edit } from "lucide-react";
-
 import { useForm, SubmitHandler } from "react-hook-form";
+import Cookies from "js-cookie";
 
 interface FormData {
-  jobTitle: string;
-  professionalSummary: string;
+  JobTitle: string;
+  aboutMe: string;
 }
-const AboutSection = ({ profileData }: any) => {
+const AboutSection = ({ profileData, setProfileData }: any) => {
   console.log("Profile Data:", profileData);
 
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { register, handleSubmit, reset, formState } = useForm<FormData>({
     defaultValues: {
-      jobTitle: profileData?.JobTitle || "",
-      professionalSummary: profileData?.aboutMe || "",
+      JobTitle: profileData?.JobTitle || "",
+      aboutMe: profileData?.aboutMe || "",
     },
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-    setIsModalOpen(false); // Close modal after submission
-    reset(data); // Update default values with submitted data
+  useEffect(() => {
+    if (isModalOpen) {
+      reset({
+        JobTitle: profileData?.JobTitle || "",
+        aboutMe: profileData?.aboutMe || "",
+      });
+    }
+  }, [isModalOpen, profileData, reset]);
+
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    // console.log(data);
+    // setIsModalOpen(false); // Close modal after submission
+    // reset(data); // Update default values with submitted data
+
+    try {
+      console.log("Updated DataA: ", data);
+
+      const updatedData = {
+        JobTitle: data?.JobTitle,
+        aboutMe: data?.aboutMe,
+      };
+
+      const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData), // Send updated data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile data");
+      }
+
+      // const updatedData = await response.json();
+      console.log("Job Details updated successfully:", updatedData);
+
+      // Close the modal and reset form after submission
+      setIsModalOpen(false);
+      reset(data);
+
+      setProfileData((prevData: any) => ({
+        ...prevData,  // Spread the previous state to maintain unchanged data
+        ...updatedData // Apply the updated data (could be nested as well)
+      }));
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   const handleEdit = () => {
@@ -88,7 +134,7 @@ const AboutSection = ({ profileData }: any) => {
                     Job Title
                   </label>
                   <input
-                    {...register("jobTitle")}
+                    {...register("JobTitle")}
                     className="w-full border-b border-gray-300 focus:outline-none"
                     placeholder="Job Title"
                   />
@@ -98,7 +144,7 @@ const AboutSection = ({ profileData }: any) => {
                     Professional Summary
                   </label>
                   <textarea
-                    {...register("professionalSummary")}
+                    {...register("aboutMe")}
                     className="w-full border-b border-gray-300 focus:outline-none resize-none h-24"
                     placeholder="Professional Summary"
                   />

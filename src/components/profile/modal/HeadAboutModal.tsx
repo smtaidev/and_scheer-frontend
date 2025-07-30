@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Cookies from "js-cookie";
+
 
 interface FormData {
   firstName: string;
@@ -9,6 +11,9 @@ interface FormData {
   phoneNumber: string;
   email: string;
   location: string;
+  countryRegion: string,
+  city: string,
+  state: string,
   image: File | null;
 }
 
@@ -18,12 +23,16 @@ interface HeadModal {
   profileData: any;
 }
 
-const HeadAboutModal: React.FC<HeadModal> = ({
+// const HeadAboutModal: React.FC<HeadModal> = ({
+//   isModalOpen,
+//   setIsModalOpen, profileData, setProfileData
+// }) => {
+const HeadAboutModal = ({
   isModalOpen,
-  setIsModalOpen, profileData
-}) => {
-  if (!profileData) {
+  setIsModalOpen, profileData, setProfileData
+}: any) => {
 
+  if (!profileData) {
     return <div>Loading...</div>;
   }
 
@@ -34,16 +43,67 @@ const HeadAboutModal: React.FC<HeadModal> = ({
       JobTitle: profileData?.JobTitle || "",
       phoneNumber: profileData?.phoneNumber || "",
       email: profileData?.email || profileData?.user?.email || "",
-      location: `${profileData?.city}, ${profileData?.state}, ${profileData?.countryRegion}` || "",
+      // location: `${profileData?.city}, ${profileData?.state}, ${profileData?.countryRegion}` || "",
+      countryRegion: profileData?.countryRegion || "",
+      city: profileData?.city || "",
+      state: profileData?.state || "",
       image: profileData?.user?.profilePic || null, // Assuming profilePic is the field for the image
     },
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-    setIsModalOpen(false); // Close modal after submission
-    reset(data); // Update default values with submitted data
+  // const onSubmit: SubmitHandler<FormData> = (data) => {
+  //   console.log(data);
+  //   setIsModalOpen(false); // Close modal after submission
+  //   reset(data); // Update default values with submitted data
+  // };
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      console.log("Updated DataA: ", data);
+
+      const updatedData = {
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        JobTitle: data?.JobTitle,
+        phoneNumber: data?.phoneNumber,
+        email: data?.email,
+        // location: data?.location,
+        countryRegion: data?.countryRegion,
+        city: data?.city,
+        state: data?.state
+        // other fields...
+      };
+
+      const response = await fetch(`http://172.252.13.71:5005/api/v1/profiles/resume/${profileData?.User?.id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData), // Send updated data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile data");
+      }
+
+      // const updatedData = await response.json();
+      console.log("Profile updated successfully:", updatedData);
+
+      // Close the modal and reset form after submission
+      setIsModalOpen(false);
+      reset(data);
+
+      setProfileData((prevData: any) => ({
+        ...prevData,  // Spread the previous state to maintain unchanged data
+        ...updatedData // Apply the updated data (could be nested as well)
+      }));
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
+
 
   const handleEdit = () => {
     setIsModalOpen(true);
@@ -100,14 +160,44 @@ const HeadAboutModal: React.FC<HeadModal> = ({
                   placeholder="Email"
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-gray-700">Location</label>
                 <input
                   {...register("location")}
                   className="w-full border-b border-gray-300 focus:outline-none"
                   placeholder="Location"
                 />
+              </div> */}
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-700">Country/Region</label>
+                  <input
+                    {...register("countryRegion")}
+                    className="w-full border-b border-gray-300 focus:outline-none"
+                    placeholder="Country/Region"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">City</label>
+                  <input
+                    {...register("city")}
+                    className="w-full border-b border-gray-300 focus:outline-none"
+                    placeholder="City"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">State</label>
+                  <input
+                    {...register("state")}
+                    className="w-full border-b border-gray-300 focus:outline-none"
+                    placeholder="State"
+                  />
+                </div>
               </div>
+
               <div>
                 <label className="block text-gray-700">Image</label>
                 <input
