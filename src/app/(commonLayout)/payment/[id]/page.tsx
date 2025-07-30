@@ -1,6 +1,5 @@
 "use client";
 
-
 import PassPayment from "@/components/payment/stripePayment/Checkout";
 // import CheckoutPage from "@/components/payment/stripePayment/Checkout";
 
@@ -54,6 +53,7 @@ export default function Billing() {
   });
 
   console.log(paymentInfo);
+
   const handlePayment = (paymentInfo: PaymentInfoType) => {
     setPaymentInfo(paymentInfo);
     console.log(userBillingInfo, paymentInfo, "Hr is user info");
@@ -71,9 +71,7 @@ export default function Billing() {
             setUserBillingInfo={setUserBillingInfo}
           />
 
-
           <PassPayment />
-
         </div>
       </Container>
     </div>

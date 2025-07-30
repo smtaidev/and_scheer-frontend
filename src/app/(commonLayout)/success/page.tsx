@@ -15,10 +15,10 @@ export default function page() {
             Your Subscription is Active.
           </h1>
           <Link
-            href={"/create-account"}
+            href={"/signIn"}
             className="w-full mt-20 bg-primary border-none hover:bg-green-700 text-white py-2 px-4 rounded-md transition flex items-center justify-center"
           >
-            Create Company Profile
+            Please Log in
             <BiRightArrowAlt className="size-6" />
           </Link>
         </div>
