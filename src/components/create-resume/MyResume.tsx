@@ -77,7 +77,10 @@ export default function MyResume({ userId }: { userId: string | null }) {
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
     // Calculate the scaling factor to fit the content to the A4 page
-    const scaleFactor = Math.min(pdfWidth / imgProperties.width, pdfHeight / imgProperties.height);
+    const scaleFactor = Math.min(
+      pdfWidth / imgProperties.width,
+      pdfHeight / imgProperties.height
+    );
     const scaledWidth = imgProperties.width * scaleFactor;
     const scaledHeight = imgProperties.height * scaleFactor;
 
@@ -87,9 +90,8 @@ export default function MyResume({ userId }: { userId: string | null }) {
     // Save the PDF
     pdf.save("my_resume.pdf");
   };
-
-  const storedUserId = localStorage.getItem("userId");
-
+  const storedUserId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
   useEffect(() => {
     setIsLoading(true);
@@ -97,12 +99,15 @@ export default function MyResume({ userId }: { userId: string | null }) {
       if (!userId && !storedUserId) return;
       const idToUse = userId || storedUserId;
       try {
-        const response = await fetch(`http://localhost:5005/api/v1/profiles/resume/${idToUse}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
-          } // if using HttpOnly cookie
-        });
+        const response = await fetch(
+          `http://172.252.13.71:500/api/v1/profiles/resume/${idToUse}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
+            }, // if using HttpOnly cookie
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch user profile");
@@ -119,17 +124,17 @@ export default function MyResume({ userId }: { userId: string | null }) {
         console.error("Error fetching user profile:", error);
         setIsLoading(false);
       }
-    }
+    };
     fetchUserProfile();
-
   }, [storedUserId]);
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-xl font-medium text-gray-600">Loading your resume...</p>
+        <p className="text-xl font-medium text-gray-600">
+          Loading your resume...
+        </p>
       </div>
     );
-
   }
   return (
     <div className="flex justify-center mt-12 h-full">
@@ -140,7 +145,13 @@ export default function MyResume({ userId }: { userId: string | null }) {
         ></SectionHeader>
         <div className="overflow-x-scroll md:overflow-hidden">
           {/* <ResumeComponent downloadResume={downloadResume} printRef={printRef} /> */}
-          {profileData && <ResumeComponent downloadResume={downloadResume} printRef={printRef} profileData={profileData} />}
+          {profileData && (
+            <ResumeComponent
+              downloadResume={downloadResume}
+              printRef={printRef}
+              profileData={profileData}
+            />
+          )}
         </div>
         <div className="flex gap-12 py-16 ">
           <button

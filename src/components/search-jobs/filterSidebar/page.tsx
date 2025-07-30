@@ -1,41 +1,48 @@
-'use client'
-import { useGetCompanyNamesQuery, useGetDepartmentsQuery, useGetWorkModesQuery } from '@/redux/features/filters/filterSlice';
-import { JobFilterType, useGetAllJobPostsQuery, useLazyGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
-import { Department, WorkMode } from '@/types/categoryType/Category';
-import React, { useMemo, useState } from 'react';
+"use client";
+import {
+  useGetCompanyNamesQuery,
+  useGetDepartmentsQuery,
+  useGetWorkModesQuery,
+} from "@/redux/features/filters/filterSlice";
+import {
+  JobFilterType,
+  useGetAllJobPostsQuery,
+  useLazyGetAllJobPostsQuery,
+} from "@/redux/features/job/jobSlice";
+import { Department, WorkMode } from "@/types/categoryType/Category";
+import React, { useMemo, useState } from "react";
 
 const allLocation = [
-  { name: 'Erdmannhausen', count: '(2706)' },
-  { name: 'München', count: '(567)' },
-  { name: 'Wembach', count: '(234)' },
-  { name: 'Malgersdorf', count: '(187)' },
-  { name: 'Neustetten', count: '(156)' },
-  { name: 'The Black Forest', count: '(156)' },
-  { name: 'Cologne Cathedral', count: '(156)' },
+  { name: "Erdmannhausen", count: "(2706)" },
+  { name: "München", count: "(567)" },
+  { name: "Wembach", count: "(234)" },
+  { name: "Malgersdorf", count: "(187)" },
+  { name: "Neustetten", count: "(156)" },
+  { name: "The Black Forest", count: "(156)" },
+  { name: "Cologne Cathedral", count: "(156)" },
 
   // { name: 'In velit eu est co', count: '(98)' },
   // { name: 'Exercitation sapient', count: '(87)' },
-]
+];
 
 const salaryRanges = [
-  { range: '$1000-$2000', count: '(1760)' },
-  { range: '$2000 - $5000', count: '(567)' },
-  { range: '$1000-$7000', count: '(876)' },
-  { range: '$9,000 - $12,000', count: '(345)' },
+  { range: "$1000-$2000", count: "(1760)" },
+  { range: "$2000 - $5000", count: "(567)" },
+  { range: "$1000-$7000", count: "(876)" },
+  { range: "$9,000 - $12,000", count: "(345)" },
   // { range: '80k - 1lakh', count: '(234)' },
   // { range: '1lakh - 2lakh', count: '(123)' },
   // { range: 'Negotiable', count: '(89)' },
 ];
 
 const educationQualifications = [
-  { qual: 'Any Postgraduate', count: '(1240)' },
-  { qual: 'Graduate', count: '(876)' },
-  { qual: 'MSC', count: '(567)' },
-  { qual: 'B.Sc Honours', count: '(456)' },
-  { qual: 'B.Sc Engineer', count: '(345)' },
-  { qual: 'Diploma Engineer', count: '(234)' },
+  { qual: "Any Postgraduate", count: "(1240)" },
+  { qual: "Graduate", count: "(876)" },
+  { qual: "MSC", count: "(567)" },
+  { qual: "B.Sc Honours", count: "(456)" },
+  { qual: "B.Sc Engineer", count: "(345)" },
+  { qual: "Diploma Engineer", count: "(234)" },
 ];
-
 
 // Filter Sidebar Component
 export const FilterSidebar = ({ setFiltersData }: any) => {
@@ -64,7 +71,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
     experience: 0,
     locations: [],
     salaryRange: [],
-    jobType: []
+    jobType: [],
   };
 
   const { data: type } = useGetWorkModesQuery({});
@@ -73,7 +80,8 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   // const [filterJobPostsTrigger, { isFetching }] = useGetAllJobPostsQuery({});
   // const { data: info, isFetching } = useGetAllJobPostsQuery({ filters });
   // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
-  const [filterJobPostsTrigger, { data: info, isFetching }] = useLazyGetAllJobPostsQuery();
+  const [filterJobPostsTrigger, { data: info, isFetching }] =
+    useLazyGetAllJobPostsQuery();
   // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
 
   const workType = type?.data;
@@ -94,7 +102,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   }, [allCompany, showAllCompanies]);
   const hasMoreCompanies = Array.isArray(allCompany) && allCompany.length > 5;
 
-  console.log(allCompany)
+  console.log(allCompany);
   // Handlers for checkbox changes
   const handleWorkModeChange = (jobType: string) => {
     setSelectedWorkModes((prev) =>
@@ -148,14 +156,15 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   const handleApply = async () => {
     const formData = {
       jobType: selectedWorkModes,
-      experience: experience > 0 && `${experience === 1 ? `${experience}-year` : `${experience}-years`}`,
+      // experience: experience > 0 ? experience : undefined,
+      experience: experience > 0 ? experience : 0,
       title: selectedDepartments,
       locations: selectedLocations,
       salaryRange: selectedSalaries,
       educations: selectedEducations,
       companyName: selectedCompanies,
     };
-    console.log('Form Data printed:', formData);
+    console.log("Form Data printed:", formData);
 
     // filterJobPostsTrigger(formData);
 
@@ -187,7 +196,9 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
                 onChange={() => handleWorkModeChange(type.jobType)}
               />
               <span className="text-sm">{type.jobType}</span>
-              <span className="text-gray-400 text-xs ml-auto">({type.length})</span>
+              <span className="text-gray-400 text-xs ml-auto">
+                ({type.length})
+              </span>
             </label>
           ))}
         </div>
@@ -228,7 +239,9 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
                 onChange={() => handleDepartmentChange(dept.title)}
               />
               <span className="text-sm">{dept.title}</span>
-              <span className="text-gray-400 text-xs ml-auto">{dept.length}</span>
+              <span className="text-gray-400 text-xs ml-auto">
+                {dept.length}
+              </span>
             </label>
           ))}
         </div>
@@ -237,7 +250,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
             onClick={() => setShowAll(!showAll)}
             className="text-blue-500 text-sm mt-2 hover:text-blue-600 transition-colors"
           >
-            {showAll ? 'View Less' : 'View More'}
+            {showAll ? "View Less" : "View More"}
           </button>
         )}
       </div>
@@ -246,18 +259,22 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
       <div className="mb-6">
         <h3 className="font-medium mb-3">Location</h3>
         <div className="space-y-2">
-          {(showAllLocations ? allLocation : allLocation.slice(0, 5)).map((location, index) => (
-            <label key={index} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="rounded"
-                checked={selectedLocations.includes(location.name)}
-                onChange={() => handleLocationChange(location.name)}
-              />
-              <span className="text-sm">{location.name}</span>
-              <span className="text-gray-400 text-xs ml-auto">{location.count}</span>
-            </label>
-          ))}
+          {(showAllLocations ? allLocation : allLocation.slice(0, 5)).map(
+            (location, index) => (
+              <label key={index} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="rounded"
+                  checked={selectedLocations.includes(location.name)}
+                  onChange={() => handleLocationChange(location.name)}
+                />
+                <span className="text-sm">{location.name}</span>
+                <span className="text-gray-400 text-xs ml-auto">
+                  {location.count}
+                </span>
+              </label>
+            )
+          )}
         </div>
         {allLocation.length > 5 && (
           <button
@@ -273,18 +290,22 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
       <div className="mb-6">
         <h3 className="font-medium mb-3">Salary Range</h3>
         <div className="space-y-2">
-          {(showAllSalaries ? salaryRanges : salaryRanges.slice(0, 5)).map((salary, index) => (
-            <label key={index} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="rounded"
-                checked={selectedSalaries.includes(salary.range)}
-                onChange={() => handleSalaryChange(salary.range)}
-              />
-              <span className="text-sm">{salary.range}</span>
-              <span className="text-gray-400 text-xs ml-auto">{salary.count}</span>
-            </label>
-          ))}
+          {(showAllSalaries ? salaryRanges : salaryRanges.slice(0, 5)).map(
+            (salary, index) => (
+              <label key={index} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="rounded"
+                  checked={selectedSalaries.includes(salary.range)}
+                  onChange={() => handleSalaryChange(salary.range)}
+                />
+                <span className="text-sm">{salary.range}</span>
+                <span className="text-gray-400 text-xs ml-auto">
+                  {salary.count}
+                </span>
+              </label>
+            )
+          )}
         </div>
         {salaryRanges.length > 5 && (
           <button
@@ -336,7 +357,9 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
                 onChange={() => handleCompanyChange(company.companyName)}
               />
               <span className="text-sm">{company.companyName}</span>
-              <span className="text-gray-400 text-xs ml-auto">{company.length}</span>
+              <span className="text-gray-400 text-xs ml-auto">
+                {company.length}
+              </span>
             </label>
           ))}
         </div>
@@ -345,7 +368,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
             onClick={() => setShowAllCompanies(!showAllCompanies)}
             className="text-blue-500 text-sm mt-2 hover:text-blue-600 transition-colors"
           >
-            {showAllCompanies ? 'View Less' : 'View More'}
+            {showAllCompanies ? "View Less" : "View More"}
           </button>
         )}
       </div>
