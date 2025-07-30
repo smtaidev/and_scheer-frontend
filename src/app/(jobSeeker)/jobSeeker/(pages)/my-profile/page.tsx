@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import React, { useEffect, useState } from "react";
-
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import AboutSection from "@/components/profile/AboutSection";
 import ExperienceSection from "@/components/profile/Experience";
@@ -11,6 +9,7 @@ import EducationSection from "@/components/profile/EducationSection";
 import ContactInfoProfile from "@/components/profile/Contact_info";
 import Container from "@/components/ui/Container";
 import Cookies from "js-cookie";
+
 const ProfilePage: React.FC = () => {
   const [profileData, setProfileData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -231,18 +230,11 @@ const ProfilePage: React.FC = () => {
 
             <ExperienceSection profileData={profileData} setProfileData={setProfileData} />
 
-            {/* <SkillsSection
-              skills={[]}
-              onSkillsUpdate={(skills) => updateProfileData("skills")}
-              profileData={profileData}
-            /> */}
             <SkillsSection
               skills={profileData?.skills || []}
               onSkillsUpdate={handleSkillsUpdate} // Handle the skill update
               profileData={profileData}
             />
-
-            {/* <EducationSection profileData={profileData} /> */}
 
             <EducationSection
               profileData={profileData}
