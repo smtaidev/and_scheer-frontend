@@ -3,9 +3,8 @@ import AboutModal from "./modal/HeadAboutModal";
 import HeadAboutModal from "./modal/HeadAboutModal";
 import { useState } from "react";
 
-const ProfileHeade = ({profileData}:any) => {
-  console.log("profileData in ProfileHeader", profileData);
-  
+const ProfileHeade = ({ profileData }: any) => {
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleAboutMode = () => {
     setIsModalOpen(true);
