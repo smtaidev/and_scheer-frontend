@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Edit } from "lucide-react";
 
@@ -7,7 +9,10 @@ interface FormData {
   jobTitle: string;
   professionalSummary: string;
 }
-const AboutSection: React.FC = ({ profileData }: any) => {
+const AboutSection = ({ profileData }: any) => {
+  console.log("Profile Data:", profileData);
+
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { register, handleSubmit, reset, formState } = useForm<FormData>({
     defaultValues: {
@@ -57,7 +62,7 @@ const AboutSection: React.FC = ({ profileData }: any) => {
             <p className="text-xl font-semibold text-secondary mb-2">
               Job Title:
             </p>
-            <p className="text-sm text-gray-400">{profileData}</p>
+            <p className="text-sm text-gray-400">{profileData?.JobTitle}</p>
           </div>
 
           {/* Professional Summary */}
@@ -66,10 +71,7 @@ const AboutSection: React.FC = ({ profileData }: any) => {
               Professional Summary:
             </p>
             <p className="text-base text-subtitle leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Doloremque magnam tempore doloribus amet. Cum voluptates veritatis
-              totam, distinctio excepturi at adipisci? Nam nostrum cum
-              laboriosam sequi quia vel nobis explicabo?
+              {profileData?.aboutMe}
             </p>
           </div>
         </div>

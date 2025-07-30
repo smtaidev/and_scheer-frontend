@@ -20,7 +20,7 @@ const ProfilePage: React.FC = () => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-          "http://172.252.13.71:5005/api/v1/profiles/get-my-profile",
+          "http://localhost:5005/api/v1/profiles/get-my-profile",
           {
             method: "GET",
             headers: {
@@ -62,7 +62,7 @@ const ProfilePage: React.FC = () => {
           <ProfileHeader profileData={profileData} />
 
           <div className="space-y-12 mt-8">
-            {/* <AboutSection profileData={profileData} /> */}
+            <AboutSection profileData={profileData} />
 
             <ExperienceSection experiences={[]} />
 

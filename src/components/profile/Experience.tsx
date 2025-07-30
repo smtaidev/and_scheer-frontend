@@ -20,9 +20,9 @@ interface Experience {
   ExperienceNumber: string;
 }
 
-const ExperienceSection: React.FC<ExperienceSectionProps> = ({
+const ExperienceSection = ({
   experiences,
-}) => {
+}: any) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
   const experienceData = [
