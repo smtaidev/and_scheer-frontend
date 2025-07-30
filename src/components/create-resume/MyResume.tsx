@@ -100,7 +100,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
       const idToUse = userId || storedUserId;
       try {
         const response = await fetch(
-          `http://172.252.13.71:500/api/v1/profiles/resume/${idToUse}`,
+          `http://172.252.13.71:5005/api/v1/profiles/resume/${idToUse}`,
           {
             method: "GET",
             headers: {
