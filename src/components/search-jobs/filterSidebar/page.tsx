@@ -46,7 +46,7 @@ const educationQualifications = [
 
 // Filter Sidebar Component
 export const FilterSidebar = ({ setFiltersData }: any) => {
-  const [experience, setExperience] = useState(0);
+  const [experience, setExperience] = useState("0");
   const [showAll, setShowAll] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   // State for tracking selected filters
@@ -68,7 +68,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
     companyName: [],
     title: [],
     educations: [],
-    experience: 0,
+    experience: "0",
     locations: [],
     salaryRange: [],
     jobType: [],
@@ -156,8 +156,10 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
   const handleApply = async () => {
     const formData = {
       jobType: selectedWorkModes,
-      // experience: experience > 0 ? experience : undefined,
-      experience: experience > 0 ? experience : 0,
+      // experience: Number(experience) > 0 && `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`,
+      experience: Number(experience) > 0
+        ? `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`
+        : undefined,
       title: selectedDepartments,
       locations: selectedLocations,
       salaryRange: selectedSalaries,
@@ -215,7 +217,8 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
               min="0"
               max="10"
               value={experience}
-              onChange={(e) => setExperience(Number(e.target.value))}
+              // onChange={(e) => setExperience(Number(e.target.value))}
+              onChange={(e) => setExperience(e.target.value)}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded">

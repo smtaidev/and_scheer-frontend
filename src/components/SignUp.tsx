@@ -75,7 +75,7 @@ export default function SignUpForm() {
 
       if (response?.data?.success) {
         // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
+        // Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }
