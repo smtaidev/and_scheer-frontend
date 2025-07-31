@@ -39,7 +39,9 @@ export default function RecomandationJobCard({ job }: any) {
                 {pathname.includes("/jobSeeker/job-details") ? <>
                     <p className='text-primary underline'>View Details</p>
                 </> : <>
-                    <Link href={`${job?.job_url}`}>
+                    <Link 
+                    target='_blank'
+                    href={`${job?.job_url}`}>
                         <button className='2xl:px-6 px-2 py-2 2xl:py-3 bg-primary rounded xl:text-base 2xl:scale-75 2xl:pr-3 3xl:pr-0 3xl:scale-100 text-xs text-white cursor-pointer hover:bg-green-600 text-nowrap' >Apply Now</button>
                     </Link></>}
             </div>

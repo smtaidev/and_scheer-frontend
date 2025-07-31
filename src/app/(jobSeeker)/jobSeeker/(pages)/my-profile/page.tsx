@@ -218,31 +218,43 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  // Loader component with a spinner
+  const Loader = () => (
+    <div className="flex justify-center items-center h-full">
+      <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-solid rounded-full animate-spin border-t-blue-500"></div>
+    </div>
+  );
+
 
   return (
     <div>
       <Container>
         <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
-          <ProfileHeader profileData={profileData} setProfileData={setProfileData} />
+          {isLoading ? (
+            <Loader /> // Show loader while data is loading
+          ) : (
+            <>
+              <ProfileHeader profileData={profileData} setProfileData={setProfileData} />
+              <div className="space-y-12 mt-8">
+                <AboutSection profileData={profileData} setProfileData={setProfileData} />
 
-          <div className="space-y-12 mt-8">
-            <AboutSection profileData={profileData} setProfileData={setProfileData} />
+                <ExperienceSection profileData={profileData} setProfileData={setProfileData} />
 
-            <ExperienceSection profileData={profileData} setProfileData={setProfileData} />
+                <SkillsSection
+                  skills={profileData?.skills || []}
+                  onSkillsUpdate={handleSkillsUpdate} // Handle the skill update
+                  profileData={profileData}
+                />
 
-            <SkillsSection
-              skills={profileData?.skills || []}
-              onSkillsUpdate={handleSkillsUpdate} // Handle the skill update
-              profileData={profileData}
-            />
-
-            <EducationSection
-              profileData={profileData}
-              onEducationUpdate={handleEducationUpdate}
-              onCertificationUpdate={handleCertificationUpdate}
-            />
-            <ContactInfoProfile profileData={profileData} onSocialMediaUpdate={handleSocialMediaUpdate} />
-          </div>
+                <EducationSection
+                  profileData={profileData}
+                  onEducationUpdate={handleEducationUpdate}
+                  onCertificationUpdate={handleCertificationUpdate}
+                />
+                <ContactInfoProfile profileData={profileData} onSocialMediaUpdate={handleSocialMediaUpdate} />
+              </div>
+            </>
+          )}
         </div>
       </Container>
     </div>

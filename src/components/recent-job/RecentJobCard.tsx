@@ -4,15 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react'
 
-
-
 interface RecentJobCardProps {
   job: Job;
 }
 
 export default function RecentJobCard({ job }: RecentJobCardProps) {
   const pathname = usePathname()
-
 
   return (
     <div className='w-full md:max-w-[457px]  border border-gray-100 rounded-lg shadow-md p-4 bg-white '>

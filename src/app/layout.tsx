@@ -42,6 +42,7 @@ export default function RootLayout({
             <FormProvider>
               <Toaster position="top-center" expand={true} richColors />
               <Suspense fallback={<Loading />}>{children}</Suspense>
+              {/* <Suspense>{children}</Suspense> */}
             </FormProvider>
           </GoogleOAuthProvider>
         </StoreProvider>

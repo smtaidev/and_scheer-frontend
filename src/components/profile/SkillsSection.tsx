@@ -30,14 +30,26 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // const allSkills = [
+  //   ...new Set([
+  //     ...(profileData?.skills || []),
+  //     ...(profileData?.jobExperience?.flatMap((job: any) =>
+  //       job?.skills ? job?.skills?.split(',').map((s: string) => s.trim()) : []
+  //     ) || [])
+  //   ])
+  // ].filter(skill => skill && skill.trim() !== ''); // Filter out empty/null skills
+
   const allSkills = [
     ...new Set([
       ...(profileData?.skills || []),
       ...(profileData?.jobExperience?.flatMap((job: any) =>
-        job.skills ? job.skills.split(',').map((s: string) => s.trim()) : []
+        Array.isArray(job?.skills)
+          ? job?.skills.map((s: string) => s.trim()) // Map over the array of skills
+          : [] // Return an empty array if job.skills is not an array
       ) || [])
     ])
   ].filter(skill => skill && skill.trim() !== ''); // Filter out empty/null skills
+
 
   const handleAddSkill = (newSkill: string) => {
     if (!newSkill.trim()) return;
