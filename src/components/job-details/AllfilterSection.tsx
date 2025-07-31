@@ -1,53 +1,32 @@
 import React, { useState } from 'react'
 import AllfinterCard from './AllfinterCard'
 
-
-
-
 export default function AllFilterSection() {
-
-
-
     const filters = [
         {
-
             name: "All Filter",
-
         },
         {
-
             name: "Work Mode",
-
         },
         {
-
             name: "Experience",
-
         },
         {
-
             name: "Department",
-
         },
         {
-
             name: "Location ",
-
         },
         {
-
             name: "Salary",
-
         },
         {
-
             name: "Education Qualification",
-
         },
-
     ]
-    const [currentFilter, setCurrentFilter] = useState(filters[0].name)
 
+    const [currentFilter, setCurrentFilter] = useState(filters[0].name)
 
     return (
         <div className='flex gap-2 md:gap-8 justify-center flex-wrap' >

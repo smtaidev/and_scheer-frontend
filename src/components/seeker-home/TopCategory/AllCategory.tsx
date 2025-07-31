@@ -65,13 +65,10 @@ export default function AllCategory() {
         },
 
     ]
-
-
     return (
-        <div >
-            
+        <div className='border-0 mb-3 mt-2'>
             <div className=' ml-0  2xl:ml-44'>
-                <div className='py-6 md:py-15  px-11 md:px-15'>
+                <div className='py-2 md:py-2  px-11 md:px-15'>
                     
 
 

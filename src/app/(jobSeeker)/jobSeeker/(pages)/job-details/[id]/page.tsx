@@ -10,22 +10,21 @@ import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { useParams } from 'next/navigation';
- 
+
 export default function JobDetailspage() {
     const [currentCompany, setCurrentCompany] = useState<Job | undefined>();
     const [showCompanies, setShowCompanies] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
     const [companies, setCompanies] = useState<Company[]>([])
     const { data: res, isLoading, refetch } = useGetAllCompaniesQuery();
- 
+
     const { id } = useParams();
     console.log("Job ID: ", id);
- 
+
     const [allJobs, setAllJobs] = useState<Job[]>([])
-    const { data: jobs } = useGetAllJobPostsQuery({});
- 
+    const { data: jobs, isLoading: isAllJobsLoading } = useGetAllJobPostsQuery({});
+
     useEffect(() => {
- 
         if (jobs?.data) {
             setAllJobs(jobs?.data.data)
             setCurrentCompany(jobs?.data.data[0])
@@ -35,41 +34,50 @@ export default function JobDetailspage() {
             setCurrentCompany(nowJob)
         }
         refetch()
- 
+
     }, [jobs?.data])
- 
- 
+
+
     // const filteredCompanies = companies.filter((company) => company.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
- 
- 
+
     useEffect(() => {
- 
         if (res?.data) {
             setCompanies(res.data)
         }
     }, [res?.data]);
- 
-    if (isLoading) return <p>Loading...</p>
+
+    // if (isLoading) return <p>Loading...</p>
+    if (isLoading || isAllJobsLoading) {
+        return (
+            <div className="h-screen">
+                <div className="flex justify-center items-center h-full">
+                    <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-solid rounded-full animate-spin border-t-blue-500"></div>
+                </div>
+            </div>
+        )
+    }
+
     console.log(companies)
- 
- 
+
+
     const handleCompanySelect = (company: Job) => {
         setCurrentCompany(company)
         setShowCompanies(false)
     }
- 
+
     const toggleView = () => {
         setShowCompanies(!showCompanies)
     }
- 
+
     const clearSearch = () => {
         setSearchTerm("")
     }
+
     return (
         <div>
- 
             <Container>
                 <AllFilterSection />
+
                 <div className=" px-4 mt-5 md:mt-9">
                     {/* Mobile Header */}
                     <div className="md:hidden sticky top-0 bg-white border-b border-gray-200 p-4 z-10 mb-4">
@@ -87,7 +95,7 @@ export default function JobDetailspage() {
                                     {showCompanies ? "Companies" : currentCompany?.title || "Job Details"}
                                 </h1>
                             </div>
- 
+
                             {showCompanies && (
                                 <button
                                     onClick={toggleView}
@@ -99,21 +107,18 @@ export default function JobDetailspage() {
                                 </button>
                             )}
                         </div>
- 
- 
                     </div>
- 
+
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Companies List Section */}
-                        <div
-                            className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
+                        <div className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
                         >
-                            {allJobs.length > 0 ? (
+                            {allJobs?.length > 0 ? (
                                 allJobs?.map((company) => (
                                     <div
-                                        key={company.companyId}
+                                        key={company?.companyId}
                                         className={`cursor-pointer transition-all duration-200
-                                            ${currentCompany?.id === company.id ? "border border-primary rounded-lg shadow-sm shadow-primary/20" : "hover:shadow-md"}`}
+                                            ${currentCompany?.id === company?.id ? "border border-primary rounded-lg shadow-sm shadow-primary/20" : "hover:shadow-md"}`}
                                         onClick={() => handleCompanySelect(company)}
                                     >
                                         <RecentJobCard job={company} />
@@ -125,24 +130,15 @@ export default function JobDetailspage() {
                                 </div>
                             )}
                         </div>
- 
+
                         {/* Job Details Section */}
-                        <div
-                            className={`
-            flex-1
-            ${!showCompanies ? "block" : "hidden md:block"}
-          `}
-                        >
+                        <div className={`flex-1 ${!showCompanies ? "block" : "hidden md:block"}`}>
                             <JobDetailsCard currentCompany={currentCompany} />
                         </div>
                     </div>
                 </div>
- 
- 
+
             </Container>
- 
- 
- 
         </div>
     )
 }

@@ -45,9 +45,11 @@ export default function CourseCard({ course }:{course:Course}) {
           {course.is_paid && (
             <span className="text-sm text-gray-700 font-semibold">{course.price_detail.price_string}</span>
           )}
-          <Link href={`${course.visible_instructors[0].url}`}>
+          <Link target='_blank' href={`${course.visible_instructors[0].url}`}>
           
-          <button className="text-sm text-green-600 underline rounded cursor-pointer hover:font-semibold transition-all duration-300 mt-2">
+          <button 
+          // target="_blank"
+          className="text-sm text-green-600 underline rounded cursor-pointer hover:font-semibold transition-all duration-300 mt-2">
             See Details
           </button>
           </Link>

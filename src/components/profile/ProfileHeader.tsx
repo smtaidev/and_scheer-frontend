@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, Edit2 } from "lucide-react";
 import AboutModal from "./modal/HeadAboutModal";
 import HeadAboutModal from "./modal/HeadAboutModal";
 import { useState } from "react";
+import Image from "next/image";
 
 const ProfileHeade = ({ profileData, setProfileData }: any) => {
 
@@ -14,10 +15,18 @@ const ProfileHeade = ({ profileData, setProfileData }: any) => {
     <div className=" mx-auto bg-white shadow-sm border border-[#9191914D] rounded-lg p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
       {/* Profile Image */}
 
-      <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
-        {/* Placeholder circle for avatar */}
-        <div className="w-20 h-20 bg-blue-200 rounded-full"></div>
+      {/* <div className="w-32 h-32 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden shadow-lg"> */}
+      <div className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+        <Image
+          // src="/avatarPlaceholder.jpg"
+          src="/avatarPlaceholder1.png"
+          alt="Avatar"
+          className="w-full h-full object-cover"
+          height="200"
+          width="200"
+        />
       </div>
+
 
       {/* Profile Info */}
       <div className="flex-1 w-full">

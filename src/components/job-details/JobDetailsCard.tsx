@@ -1,6 +1,7 @@
 'use client'
 import { Job } from '@/types/AllTypes';
 import Image from 'next/image';
+import { toast } from "sonner"; // Assuming you're using the `sonner` library for toasts.
 import React from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
@@ -33,18 +34,23 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         try {
             const jobId = currentCompany?.id;
             console.log("Current Job IT: ", jobId);
-
-            // await applyJob(jobId);
             const response = await applyJob({ jobId }).unwrap();
-            // cayomer672@ikanteri.com
-            // 123456789
             console.log("Response: ", response);
-            // if (response.statusCode === 200) {
-            // console.log("Job applied successfully:", response);
-            // }
-            // console.log("Job Applied Successfully.")
-        } catch (error) {
+
+            // If the job application was successful, show a success toast
+            toast.success("Successfully applied for the job!");
+
+        } catch (error: any) {
             console.error("Failed to apply:", error);
+            toast.error(error.data.message)
+            // if (error?.message === "You have already applied for this job.") {
+            //     // If the error message is "You have already applied for this job", show a toast
+            //     toast.error("You have already applied for this job.");
+            // } else {
+            //     // Show a generic error toast in case of other errors
+            //     console.error("Failed to apply:", error);
+            //     toast.error("Something went wrong. Please try again.");
+            // }
         }
     };
 
@@ -53,11 +59,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
             <header className="flex justify-between items-center mb- 4">
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
-                    {/* <Image src={company?.logo || "/default-logo.png"} alt='' height={97} width={97} className='rounded-full bg-primary' /> */}
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
-                {/* <button className="bg-green-500 text-xs  font-medium px-2 md:px-4 py-2 rounded hover:bg-green-600 transition text-white cursor-pointer" >
-                    Apply Now
-                </button> */}
             </header>
 
             <h2 className="text-xl md:text-3xl xl:text-[42px]  md:mt-8 dark:">{currentCompany?.title || "UI/UX Designer (Onsite)"} <span className='text-primary text-2xl'>({currentCompany?.jobType})</span></h2>
@@ -79,19 +81,17 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 </div>
             </p>
 
-
             <p className="text-sm  dark: mt-1">
                 {currentCompany?.deadline && (
                     <div className='flex items-center gap-2'>
                         <p className='md:text-lg'>Application Deadline:</p >
                         <p className='md:text-lg text-subtitle'>{format(new Date(currentCompany.deadline), 'MMM dd, yyyy')}</p>
-
                     </div>
                 )}
 
             </p>
-            <p className="text-xl py-3 md:py-8 border-b border-gray-200"><span className="text-2xl md:text-5xl font-bold text-green-500">{currentCompany?.salaryRange}</span>/ Month</p>
 
+            <p className="text-xl py-3 md:py-8 border-b border-gray-200"><span className="text-2xl md:text-5xl font-bold text-green-500">{currentCompany?.salaryRange}</span>/ Month</p>
 
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Job Description</h3>
