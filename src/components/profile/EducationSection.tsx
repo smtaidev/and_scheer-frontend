@@ -10,28 +10,10 @@ import { EductionEditModal } from "./modal/EductionEditModal";
 import CertificationAddModal from "./modal/CertificationAddModal";
 
 interface EducationSectionProps {
-  // educations: Education[];
   profileData?: ProfileData;
 }
 
-// type Education = {
-//   institution_name: string;
-//   degree: string;
-//   startDate: string;
-//   endDate: string;
-//   major: string;
-// };
-
-// const EducationSection: React.FC<EducationSectionProps> = ({ profileData }) => {
 const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdate }: any) => {
-  // const [isAdding, setIsAdding] = useState(false);
-  // const [editingId, setEditingId] = useState<string | null>(null);
-
-  // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  // const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
-
-  // console.log("Education: ", profileData)
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCertificationAddModalOpen, setIsCertificationAddModalOpen] = useState(false);
@@ -79,13 +61,6 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
           <h2 className="lg:text-4xl md:text-2xl text-xl font-medium flex items-center gap-1">
             Education & Certifications
           </h2>
-          {/* <button
-            className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <Plus className="w-4 h-4" />
-            <span className="text-sm">Add</span>
-          </button> */}
         </div>
         {/* EDUCATION List */}
         <div className="mt-7">
@@ -190,13 +165,6 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
         setIsCertificationAddModalOpen={setIsCertificationAddModalOpen}
         onAddCertification={handleAddCertification}
       />
-
-      {/* edit eduction  */}
-      {/* <EductionEditModal
-        isModalOpenEdit={isModalOpenEdit}
-        setIsModalOpenEdit={setIsModalOpenEdit}
-        profileData={profileData}
-      /> */}
 
       <EductionEditModal
         isModalOpenEdit={isModalOpenEdit}

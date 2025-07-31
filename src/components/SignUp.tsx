@@ -1,18 +1,16 @@
 "use client";
+import { useSignUpMutation } from "@/redux/features/auth/auth";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
+import LoadingButton from "./loading/LoadingButton";
 import Input from "./ui/Input";
 import Logo from "./ui/MainLogo";
-import { toast } from "sonner";
-import { useSignUpMutation } from "@/redux/features/auth/auth";
-import LoadingButton from "./loading/LoadingButton";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import Cookies from "js-cookie";
 
 interface FormData {
   firstName?: string;
@@ -75,7 +73,7 @@ export default function SignUpForm() {
 
       if (response?.data?.success) {
         // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
+        // Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }
