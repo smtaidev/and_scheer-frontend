@@ -74,7 +74,7 @@ export default function CertificationInformation({ setStep, formData, setFormDat
                     label="Certification Title"
                     type="text"
                     placeholder="e.g., AWS Certified Developer"
-                    {...register(`certificates.${index}.certificateTitle`, { required: true })}
+                    {...register(`certificates.${index}.certificateTitle`)}
                   />
                 </div>
 
@@ -84,7 +84,7 @@ export default function CertificationInformation({ setStep, formData, setFormDat
                     label="Issuing Organization"
                     type="text"
                     placeholder="e.g., Amazon Web Services"
-                    {...register(`certificates.${index}.issuingOrganization`, { required: true })}
+                    {...register(`certificates.${index}.issuingOrganization`)}
                   />
                 </div>
 
@@ -93,7 +93,7 @@ export default function CertificationInformation({ setStep, formData, setFormDat
                   <FormInput
                     label="Issue Date"
                     type="date"
-                    {...register(`certificates.${index}.certificateIssuedDate`, { required: true })}
+                    {...register(`certificates.${index}.certificateIssuedDate`)}
                   />
                   <FormInput
                     label="Expiry Date"

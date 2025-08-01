@@ -166,7 +166,7 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
                             id="fileUpload"
                             type="file"
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            {...register(`education.${index}.achievements`, { required: true })}
+                            {...register(`education.${index}.achievements`)}
                           />
                           <div className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-center text-gray-600">
                             {"Click to browse or drag a file here"}

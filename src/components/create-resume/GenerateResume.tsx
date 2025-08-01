@@ -36,7 +36,7 @@ export default function GenerateResume({
         // router.push("/jobseekeruser/aigeneratedresume");
       }
 
-    }, 150);
+    }, 40);
   };
 
 
@@ -73,7 +73,7 @@ export default function GenerateResume({
           <form onSubmit={handleSubmit(onSubmit)}>
 
             <div className="flex justify-between">
-              <button type="button" onClick={() => handleBack()} className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black">
+              <button type="button" onClick={() => handleBack()} className={`px-4  py-2 rounded-md bg-secondary text-white cursor-pointer hover:bg-black ${isLoading? "invisible":""}`}>
                 Back
               </button>
               <button onClick={() => simulateLoading()}>

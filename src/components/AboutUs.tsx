@@ -81,10 +81,10 @@ export default async function AboutUs() {
 
 
               {/* Button */}
-              <Link href={"#pricing"}>
-                <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
+              <Link href="#pricing">
+                <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer group  items-center">
                   Join Us Today{" "}
-                  <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
+                  <BsArrowRight className=" text-xl ml-2 mt-1 transition-transform duration-300 group-hover:translate-x-2" />
                 </button>
               </Link>
             </div>
