@@ -14,6 +14,7 @@ type EducationFormData = {
     major: string;
     graduationStart: string;
     graduationEnd: string;
+    achievements: FileList | null;
   }[];
 };
 
@@ -27,11 +28,12 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
     defaultValues: {
       education: [
         {
-          degree: "",
-          institution: "",
-          major: "",
-          graduationStart: "",
-          graduationEnd: "",
+          degree: formData?.degree || "",
+          institution: formData?.institution ||  "",
+          major:  formData?.major || "",
+          graduationStart:  formData?.graduationStart || "",
+          graduationEnd:  formData?.graduationEnd || "",
+          achievements: formData?.achievements || null,
         },
       ],
     },
@@ -130,7 +132,7 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block  font-medium text-primary-dark mb-2">
-                      Achievements
+                      Certificates
                     </label>
 
                     <div className="w-full p-6 bg-gray-50 border border-[#c2c2c2] rounded-md flex flex-col items-center justify-center text-center">
@@ -163,9 +165,8 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
                           <input
                             id="fileUpload"
                             type="file"
-                            // onChange={handleFileChange}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          //  {...register(`education.${index}.achivement`, { required: true })}
+                            {...register(`education.${index}.achievements`, { required: true })}
                           />
                           <div className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-center text-gray-600">
                             {"Click to browse or drag a file here"}
@@ -203,6 +204,7 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
                     major: "",
                     graduationStart: "",
                     graduationEnd: "",
+                    achievements:null
                   })
                 }
                 className="text-[#28C76F] font-medium flex items-center"

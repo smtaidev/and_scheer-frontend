@@ -129,6 +129,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                   label="Company Name"
                   type="text"
                   placeholder="SJ Technology"
+                  defaultValue={formData?.companyName}
                   {...register(`experiences.${index}.companyName`)}
                 />
               </div>

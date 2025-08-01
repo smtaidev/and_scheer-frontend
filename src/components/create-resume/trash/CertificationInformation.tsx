@@ -19,10 +19,10 @@ export default function CertificationInformation({ setStep, formData, setFormDat
     defaultValues: {
       certificates: [
         {
-          certificateTitle: "",
-          issuingOrganization: "",
-          certificateIssuedDate: "",
-          certificateExpiryDate: "",
+          certificateTitle: formData.certificateTitle || "",
+          issuingOrganization: formData.issuingOrganization || "",
+          certificateIssuedDate: formData.certificateIssuedDate || "",
+          certificateExpiryDate:  formData.certificateExpiryDate ||"",
         },
       ],
     },
@@ -66,7 +66,7 @@ export default function CertificationInformation({ setStep, formData, setFormDat
       <div className="flex justify-center">
         <div className="w-full max-w-[1180px] h-auto">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {fields.map((field, index) => (
+            {fields?.map((field, index) => (
               <div key={field.id} className="mb-8">
                 {/* Certification Title */}
                 <div className="mb-4">
