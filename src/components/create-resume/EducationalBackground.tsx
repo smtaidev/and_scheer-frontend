@@ -74,7 +74,7 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
       <div className="flex justify-center">
         <div className="w-full max-w-[1180px]">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {fields.map((field, index) => (
+            {fields?.map((field, index) => (
               <div key={field.id} className="mb-8  pb-8">
                 {/* Degree */}
                 <div className="mb-4">

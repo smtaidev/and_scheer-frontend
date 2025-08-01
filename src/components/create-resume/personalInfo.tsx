@@ -21,8 +21,8 @@ export interface IPersonal {
   setStep: any;
   formData: any
   setFormData: any;
-   setCertificate?:any;
-   certificate?:any;
+  setCertificate?: any;
+  certificate?: any;
 }
 
 export default function PersonalInformation({ setStep, formData, setFormData }: IPersonal) {
@@ -51,15 +51,15 @@ export default function PersonalInformation({ setStep, formData, setFormData }: 
               <FormInput
                 label="First Name"
                 type="text"
-                placeholder="Saifur"
-                defaultValue={formData?.firstName || "firstName"}
+                placeholder="Vorname"
+                defaultValue={formData?.firstName}
                 {...register("firstName", { required: true })}
               />
               <FormInput
                 label="Last Name"
                 type="text"
-                placeholder="Rahman"
-                defaultValue={formData?.lastName || "firstName"}
+                placeholder="Nachname"
+                defaultValue={formData?.lastName}
                 {...register("lastName", { required: true })}
               />
             </div>
@@ -69,15 +69,15 @@ export default function PersonalInformation({ setStep, formData, setFormData }: 
               <FormInput
                 label="Phone Number"
                 type="text"
-                placeholder="+880 1567808747"
-                defaultValue={formData?.phone || "firstName"}
+                placeholder="+4915510830069"
+                defaultValue={formData?.phone}
                 {...register("phone", { required: true })}
               />
               <FormInput
                 label="Email Address"
                 type="email"
-                placeholder="ux.saifur.ug@gmail.com"
-                defaultValue={formData?.email || "firstName"}
+                placeholder="example@gmail.com"
+                defaultValue={formData?.email}
                 {...register("email", { required: true })}
               />
             </div>
@@ -85,51 +85,50 @@ export default function PersonalInformation({ setStep, formData, setFormData }: 
             {/* Country and Address */}
             <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
               <div className="w-full md:w-1/3">
-                <label className="block font-medium  text-primary-dark">
+                <label className="block font-medium text-primary-dark">
                   Country/Region
                 </label>
-                <select
+                <input
+                  type="text"
+                  placeholder="Geben Sie Ihr Land ein"
+                  defaultValue={formData?.country}
                   {...register("country", { required: true })}
                   className="w-full bg-gray-50 py-4 px-4 border border-[#c2c2c2] rounded"
-                >
-                  <option value="" disabled hidden>
-                    Select a country
-                  </option>
-                  <option value="bd">Bangladesh</option>
-                  <option value="us">United States</option>
-                  <option value="uk">United Kingdom</option>
-                  <option value="ca">Canada</option>
-                  <option value="au">Australia</option>
-                </select>
+                />
               </div>
               <div className="w-full md:w-2/3">
                 <FormInput
                   label="Address"
                   type="text"
-                  placeholder="Section-06, Mirpur, Dhaka."
+                  placeholder="Ihre Adresse"
+                  defaultValue={formData?.address}
                   {...register("address", { required: true })}
                 />
               </div>
             </div>
+
 
             {/* City, State, ZIP */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
               <FormInput
                 label="City"
                 type="text"
-                placeholder="Dhaka"
+                placeholder="München"
+                defaultValue={formData?.city}
                 {...register("city", { required: true })}
               />
               <FormInput
                 label="State"
                 type="text"
-                placeholder="Dhaka"
+                placeholder="Bayern"
+                defaultValue={formData?.state}
                 {...register("state", { required: true })}
               />
               <FormInput
                 label="ZIP Code"
                 type="text"
-                placeholder="1216"
+                placeholder="80331"
+                defaultValue={formData?.zip}
                 {...register("zip", { required: true })}
               />
             </div>

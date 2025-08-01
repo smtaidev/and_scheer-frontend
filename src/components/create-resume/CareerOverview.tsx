@@ -19,7 +19,7 @@ interface IPersonal {
 }
 
 
-export default function CareerOverview({setStep,formData,setFormData}: IPersonal) {
+export default function   CareerOverview({setStep,formData,setFormData}: IPersonal) {
   const { register, handleSubmit } = useForm<CareerFormData>();
   const router = useRouter();
 const dispatch=useDispatch()
@@ -50,11 +50,12 @@ const dispatch=useDispatch()
             <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
               <div className="w-full">
                 <label className="block text-xl font-medium text-gray-800">
-                  Job Title
+                  Role
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter your most recent or current job title"
+                  placeholder="Geben Sie Ihre letzte bzw. aktuelle Berufsbezeichnung ein"
+                  defaultValue={formData?.jobTitle}
                   className="w-full bg-gray-50 py-4 px-4 border border-[#c2c2c2] rounded"
                   {...register("jobTitle", { required: true })}
                 />
@@ -63,12 +64,13 @@ const dispatch=useDispatch()
 
             <div>
               <label className="block text-xl font-medium text-gray-800 ">
-                Job Description
+              Career Objective
               </label>
               <textarea
                 className="w-full h-[224px] bg-gray-50 py-4 px-4 border border-[#c2c2c2] rounded-md mb-16"
                 id="textarea"
-                placeholder="An experienced marketing professional with over 5 years of expertise in digital marketing, specializing in SEO, social media strategies, and content creation"
+                placeholder="Ein erfahrener Marketingprofi mit über 5 Jahren Erfahrung im digitalen Marketing, spezialisiert auf SEO, Social-Media-Strategien und Content-Erstellung"
+                defaultValue={formData?.jobDescription}
                 {...register("jobDescription", { required: true })}
               />
             </div>

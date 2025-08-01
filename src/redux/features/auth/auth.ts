@@ -47,6 +47,16 @@ const authApi = baseUrlApi.injectEndpoints({
         body: resetData,
       }),
     }),
+
+      // Define an endpoint to refresh the token
+      refreshToken: build.mutation({
+        query: () => ({
+          url: '/auth/refresh-token',
+          method: 'POST',
+        // Send the refresh token in the body
+        }),
+      }),
+  
   }),
 });
 
@@ -56,5 +66,6 @@ export const {
   useForgetPasswordMutation,
   useResetPasswordMutation,
   useGetMeQuery,
-  useGetMyProfileQuery
+  useGetMyProfileQuery,
+  useRefreshTokenMutation
 } = authApi;

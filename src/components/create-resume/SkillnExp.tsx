@@ -27,18 +27,18 @@ interface IPersonal {
 }
 
 export default function SkillsExperience({ setStep, formData, setFormData }: IPersonal) {
-  const { control, register, handleSubmit } = useForm<WorkForm>({
+  const { control, register, handleSubmit, getValues } = useForm<WorkForm>({
     defaultValues: {
       experiences: [
         {
-          jobTitle: "",
-          companyName: "",
-          startDate: "",
-          endDate: "",
-          jobDescription: "",
-          achievements: null,
-          skills: [], // skills field is initialized as an empty array
-          languages: [], // languages field initialized as an empty array
+          jobTitle: formData?.jobTitle || '',
+          companyName: formData?.companyName || '',
+          startDate: formData?.startDate || '',
+          endDate: formData?.endDate || '',
+          jobDescription: formData?.jobDescription || '',
+          achievements: formData?.achievements || null,
+          skills: formData?.skills || [],
+          languages: formData?.languages || [], // languages field initialized as an empty array
         },
       ],
     },
@@ -117,7 +117,8 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                 <FormInput
                   label="Job Title"
                   type="text"
-                  placeholder="Mid-Level UI/UX Designer"
+                  placeholder="Junior Software Engineer"
+                  defaultValue={formData?.jobTitle}
                   {...register(`experiences.${index}.jobTitle`)}
                 />
               </div>
@@ -127,7 +128,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                 <FormInput
                   label="Company Name"
                   type="text"
-                  placeholder="SM Technology (betopia Group)"
+                  placeholder="SJ Technology"
                   {...register(`experiences.${index}.companyName`)}
                 />
               </div>
@@ -148,19 +149,19 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
 
               {/* Job Description */}
               <div className="mb-4">
-                <label className="block text-xl font-medium text-gray-800">
+                <label className="text-[#333333] font-medium">
                   Job Description
                 </label>
                 <textarea
                   className="w-full h-[224px] bg-gray-50 py-5 px-4 border border-[#c2c2c2] rounded-md"
-                  placeholder="An experienced marketing professional..."
+                  placeholder="Ein erfahrener Ingenieurprofi ..."
                   {...register(`experiences.${index}.jobDescription`)}
                 />
               </div>
 
               {/* Achievements File Input */}
               <div className="mb-4">
-                <label className="block text-xl font-medium text-gray-800 mb-2">
+                <label className="text-[#333333] font-medium mb-2">
                   Achievements
                 </label>
                 <input
@@ -171,9 +172,11 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                 />
               </div>
 
+
+
               {/* Skills */}
               <div>
-                <label className="block text-sm md:text-xl font-medium mb-2">Skills Needed</label>
+                <label className="text-[#333333] font-medium mb-2">Skills Needed</label>
                 <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md min-h-[50px] mb-3">
                   {skills.map((skill, index) => (
                     <span
@@ -218,8 +221,8 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
               </div>
 
               {/* Languages */}
-              <div>
-                <label className="block text-sm md:text-xl font-medium mb-2">Languages</label>
+              <div className="mt-3">
+                <label className="text-[#333333] font-medium mb-2">Languages</label>
                 <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md min-h-[50px] mb-3">
                   {languages.map((language, index) => (
                     <span

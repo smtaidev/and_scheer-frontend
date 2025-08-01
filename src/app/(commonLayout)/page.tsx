@@ -10,8 +10,11 @@ import RecentJob from "@/components/recent-job/RecentJob";
 import ScrollTop from "@/components/shared/ScrollTop";
 import SuggestedCourses from "@/components/Suggested/SuggestedCourses";
 import TopTalent from "@/components/TopTalent";
+import { useRefreshTokenMutation } from "@/redux/features/auth/auth";
 
 const page = () => {
+
+
   return (
     <div className="black-main relative">
       <Banner></Banner>

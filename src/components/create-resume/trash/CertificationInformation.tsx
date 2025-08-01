@@ -38,7 +38,7 @@ export default function CertificationInformation({ setStep, formData, setFormDat
     // Capture the current form data when switching between sections
     setFormData({
       ...formData,
-      certificates: data.certificates ? <data value="" className="certificates"></data> : [], // Preserve the certificate data
+      certificates: data.certificates ? data.certificates: [], // Preserve the certificate data
     });
     setCertificate(!certificate); // Toggle between Education and Certification sections
   };

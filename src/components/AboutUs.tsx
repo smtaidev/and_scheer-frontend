@@ -1,9 +1,16 @@
+"use client"
 import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
 import Link from "next/link";
+import { useRefreshTokenMutation } from "@/redux/features/auth/auth";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
-export default function AboutUs() {
+export default async function AboutUs() {
+
+
+
   return (
     <div className="bg-[#F8F8F8]  ">
       <Container>
@@ -75,10 +82,10 @@ export default function AboutUs() {
 
               {/* Button */}
               <Link href={"#pricing"}>
-              <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
-                Join Us Today{" "}
-                <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
-              </button>
+                <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
+                  Join Us Today{" "}
+                  <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
+                </button>
               </Link>
             </div>
           </div>
