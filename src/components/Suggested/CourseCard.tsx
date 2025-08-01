@@ -1,60 +1,75 @@
-import { Course } from '@/types/AllTypes';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import type { Course } from "@/types/AllTypes"
+import Image from "next/image"
+import Link from "next/link"
+import { Star, BookOpen, Users } from "lucide-react"
 
-export default function CourseCard({ course }:{course:Course}) {
+export default function CourseCard({ course }: { course: Course }) {
   return (
-    <div className="w-full max-w-[457px]  bg-white border border-gray-100 rounded-lg shadow-md overflow-hidden flex flex-col relative p-4 hover:shadow-xl transition-shadow duration-300">
+    <div className="group w-full max-w-[400px] bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col relative hover:shadow-md hover:border-gray-300 transition-all duration-500 hover:-translate-y-1">
       {/* Course Image */}
-      <div className="relative w-full h-[255px] mb-4">
+      <div className="relative w-full h-[220px] overflow-hidden">
         <Image
-          src={course.image}
+          src={course.image || "/placeholder.svg"}
           alt={course.title}
-          className="object-cover w-full h-full rounded-lg"
-          height={255}
-          width={457}
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+          height={220}
+          width={400}
         />
+        {/* Price Badge */}
+        {course.is_paid && (
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg">
+            <span className="text-sm font-bold text-gray-900">{course.price_detail.price_string}</span>
+          </div>
+        )}
+        {/* Rating Badge */}
+        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2 py-1 rounded-full shadow-lg flex items-center gap-1">
+          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+          <span className="text-xs font-semibold text-gray-900">{course.rating}</span>
+        </div>
       </div>
 
       {/* Course Content */}
-      <div className="flex flex-col flex-grow">
-        <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">{course.title}</h3>
-        <p className="text-sm text-gray-500 mt-2 line-clamp-2">{course.description}</p>
+      <div className="flex flex-col flex-grow p-5">
+        <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-3 group-hover:text-primary transition-colors duration-300">
+          {course.title}
+        </h3>
 
-        {/* Course Features */}
-        <div className="mt-4 space-y-2">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <span>⭐ {course.rating}</span>
-            <span>•</span>
+        <div
+          className="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: course.description }}
+        />
+
+        {/* Course Stats */}
+        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+          <div className="flex items-center gap-1">
+            <Users className="w-4 h-4" />
             <span>{course.num_reviews} reviews</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <span>📚 {course.num_lectures} Lectures</span>
-            
+          <div className="flex items-center gap-1">
+            <BookOpen className="w-4 h-4" />
+            <span>{course.num_lectures} lectures</span>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Info & Button */}
-      <div className="p-4 pt-2 flex justify-between items-center">
-        <div>
-          <p className="text-sm text-gray-500">Instructor - <span className="font-semibold text-gray-700">{course?.visible_instructors[0].name || ""}</span></p>
-        </div>
-        <div className="flex flex-col items-end">
-          {course.is_paid && (
-            <span className="text-sm text-gray-700 font-semibold">{course.price_detail.price_string}</span>
-          )}
-          <Link target='_blank' href={`${course.visible_instructors[0].url}`}>
-          
-          <button 
-          // target="_blank"
-          className="text-sm text-green-600 underline rounded cursor-pointer hover:font-semibold transition-all duration-300 mt-2">
-            See Details
-          </button>
+        {/* Instructor Info */}
+        <div className="mt-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 uppercase tracking-wide">Instructor</span>
+              <span className="text-sm font-semibold text-gray-900">
+                {course?.visible_instructors[0]?.name || "Unknown"}
+              </span>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <Link target="_blank" href={`${course.visible_instructors[0]?.url || "#"}`} className="flex justify-end ">
+            <button className="text-primary underline font-semibold cursor-pointer">
+              View Details
+            </button>
           </Link>
         </div>
       </div>
     </div>
-  );
+  )
 }
