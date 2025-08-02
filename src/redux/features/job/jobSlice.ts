@@ -13,64 +13,12 @@ export interface JobFilterType {
 }
 
 const jobApi = baseUrlApi.injectEndpoints({
-    // tagTypes: ["allJobPosts"],
     endpoints: (builder) => ({
-        // getAllJobPosts: builder.query({
-        //     query: (filters: JobFilterType) => {
-
-        //         const params = new URLSearchParams();
-
-        //         if (filters.departments?.length) {
-        //             filters.departments.forEach(dep => params.append('departments', dep));
-        //         }
-
-        //         if (filters.educations?.length) {
-        //             filters.educations.forEach(edu => params.append('educations', edu));
-        //         }
-
-        //         if (filters.experience) {
-        //             params.append('experience', filters.experience.toString());
-        //         }
-
-        //         if (filters.locations?.length) {
-        //             filters.locations.forEach(loc => params.append('locations', loc));
-        //         }
-
-        //         if (filters.salaryRanges?.length) {
-        //             filters.salaryRanges.forEach(salary => params.append('salaryRanges', salary));
-        //         }
-
-        //         if (filters.jobType?.length) {
-        //             filters.jobType.forEach(mode => params.append('jobType', mode));
-        //         }
-
-        //         if (filters.companies?.length) {
-        //             filters.companies.forEach(comp => params.append('companies', comp));
-        //         }
-
-        //         return {
-        //             url: `/jobs/posts?${params.toString()}`,
-        //             method: "GET"
-        //         };
-        //     },
-        //     // invalidatesTags: ["allJobPosts"],
-        // }),
-
         getAllJobPosts: builder.query({
-            // query: (filters: JobFilterType & { search?: string }) => {
+           
             query: (filters: JobFilterType) => {
 
                 const params = new URLSearchParams();
-
-                // Add search parameter if exists
-                // if (filters.search) {
-                //     params.append("search", filters.search);
-                // }
-
-                // other filters (optional)
-                // filters.jobType?.forEach((type) => params.append("jobType", type));
-                // filters.locations?.forEach((loc) => params.append("location", loc));
-                // filters.companies?.forEach((c) => params.append("company", c));
 
                 if (filters.title?.length) {
                     filters.title.forEach(dep => params.append('title', dep));
@@ -105,7 +53,7 @@ const jobApi = baseUrlApi.injectEndpoints({
                     method: "GET"
                 };
             },
-            // invalidatesTags: ["allJobPosts"],
+           
         }),
 
         getMyJobPosts: builder.query({
@@ -114,10 +62,6 @@ const jobApi = baseUrlApi.injectEndpoints({
         }),
 
         getAppliedJobs: builder.query({
-            // query: () => ({
-            //     url: "/apply/apply-job", // Your full endpoint is http://172.252.13.71:5005/api/v1/apply/apply-job
-            //     method: "GET"
-            // })
             query: () => '/apply/apply-job'
         }),
 

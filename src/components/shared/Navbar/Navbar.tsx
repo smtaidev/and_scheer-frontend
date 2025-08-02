@@ -154,6 +154,8 @@ export default function Navbar({ navItem }: NavbarProps) {
     };
   }, [showMenu, me?.data]);
 
+  
+
   const handleSearch = () => {
     console.log("first");
 
@@ -250,14 +252,17 @@ export default function Navbar({ navItem }: NavbarProps) {
                   //   onClick={() => setShowMenu(false)}
                   //   className="w-full text-left hover:text-main-green">Profile</button>
                   <div onClick={() => setShowMenu(false)}>
-                    <div className="w-72 bg-white shadow-lg rounded-xl p-4 space-y-2">
+                    <div className="w-72 bg-white/80 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
+                         <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem
                         icon={<FaDownload />}
                         label="Download My Resume"
                         active
                       />
+                         <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem icon={<FaBriefcase />} label="Applied Job" />
+                        <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
