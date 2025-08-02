@@ -17,7 +17,7 @@ type JobDetailsCardProps = {
 
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
-    console.log("Current Compamy: ", currentCompany?.id)
+    console.log("Current Compamy: ", currentCompany)
     console.log("Company: ", company);
 
     // const id = Number(currentCompany?.id);
@@ -33,24 +33,24 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const handleApplyJob = async () => {
         try {
             const jobId = currentCompany?.id;
-            console.log("Current Job IT: ", jobId);
-            const response = await applyJob({ jobId }).unwrap();
+            const response = await applyJob({ jobId });
             console.log("Response: ", response);
 
-            // If the job application was successful, show a success toast
-            toast.success("Successfully applied for the job!");
+            if (response && 'data' in response && response.data?.success) {
+                toast.success("Successfully applied for the job!");
+            }else{
+                const errorMessage =
+                    response?.error && 'data' in response.error
+                        ? (response.error as { data?: { message?: string } }).data?.message
+                        : 'Failed to apply for the job.';
+                toast.warning(errorMessage);
+            }
+
 
         } catch (error: any) {
             console.error("Failed to apply:", error);
             toast.error(error.data.message)
-            // if (error?.message === "You have already applied for this job.") {
-            //     // If the error message is "You have already applied for this job", show a toast
-            //     toast.error("You have already applied for this job.");
-            // } else {
-            //     // Show a generic error toast in case of other errors
-            //     console.error("Failed to apply:", error);
-            //     toast.error("Something went wrong. Please try again.");
-            // }
+
         }
     };
 

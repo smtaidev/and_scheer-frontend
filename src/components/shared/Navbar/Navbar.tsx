@@ -31,17 +31,20 @@ type NavbarProps = {
 export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [isTrue, setIsTrue] = useState(false);
   const { data: me } = useGetMeQuery({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [user, setUser] = useState<string | any>("");
   const [isLogned, setIsLogned] = useState<string | null>(null);
+
   const [searchView, setSearchView] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
   // detecting outside click 
   const hiddenMenuByClick = useRef<HTMLDivElement>(null);
- 
+  // 🔹 Click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -49,7 +52,6 @@ export default function Navbar({ navItem }: NavbarProps) {
         !hiddenMenuByClick.current.contains(event.target as Node)
       ) {
         setMobileMenuOpen(false);
-          setShowMenu(false);
       }
     };
 
@@ -115,52 +117,48 @@ export default function Navbar({ navItem }: NavbarProps) {
     </div>
   );
 
+  const toggleMenu = () => {
+    setShowMenu((prev) => !prev);
+  };
 
   const menuRef = useRef<HTMLDivElement>(null);
   const [animate, setAnimate] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
       setIsLogned(accessToken);
     }
-    // const handleClickOutside = (event: MouseEvent) => {
-    //   if (
-    //     menuRef.current &&
-    //     event.target &&
-    //     !menuRef.current.contains(event.target as Node)
-    //   ) {
-    //     setShowMenu(false);
-    //   }
-    // };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        event.target &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setShowMenu(false);
+      }
+    };
     if (me?.data) {
       setUser(me?.data);
     }
 
 
-    // if (showMenu) {
-    //   document.addEventListener("mousedown", handleClickOutside);
-    // } else {
-    //   document.removeEventListener("mousedown", handleClickOutside);
-    // }
-
-    // return () => {
-    //   document.removeEventListener("mousedown", handleClickOutside);
-    // };
-  }, [ me?.data]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setShowMenu(false);
-      }
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu, me?.data]);
+
+  
 
   const handleSearch = () => {
+    console.log("first");
+
     setAnimate(!animate);
   };
 
@@ -232,7 +230,7 @@ export default function Navbar({ navItem }: NavbarProps) {
 
           <div className="relative">
             <button
-              onClick={()=>setShowMenu(!showMenu)}
+              onClick={toggleMenu}
               className="flex items-center gap-2 cursor-pointer"
             >
               <p className="flex items-center hover:scale-105 transition-all duration-300">
@@ -256,15 +254,15 @@ export default function Navbar({ navItem }: NavbarProps) {
                   <div onClick={() => setShowMenu(false)}>
                     <div className="w-72 bg-white/80 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
-                      <div className="border-b border-gray-300 my-2"></div>
+                         <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem
                         icon={<FaDownload />}
                         label="Download My Resume"
                         active
                       />
-                      <div className="border-b border-gray-300 my-2"></div>
+                         <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem icon={<FaBriefcase />} label="Applied Job" />
-                      <div className="border-b border-gray-300 my-2"></div>
+                        <div className="border-b border-gray-300 my-2"></div> 
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
@@ -313,7 +311,7 @@ export default function Navbar({ navItem }: NavbarProps) {
             </Link>
           ))}
           <div className="relative">
-            <button onClick={()=>setShowMenu(!showMenu)}>
+            <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
 
             </button>
@@ -392,7 +390,7 @@ export default function Navbar({ navItem }: NavbarProps) {
           <div className="bg-white rounded-2xl shadow-xl max-w-[645px] w-full mx-4 relative">
             {/* Close button */}
             <button
-              onClick={() => setShowDeleteModal(false)}
+                onClick={() => setShowDeleteModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Close modal"
             >

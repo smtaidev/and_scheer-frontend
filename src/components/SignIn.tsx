@@ -64,8 +64,9 @@ export default function SignInForm() {
       );
 
       if (response?.data?.success) {
+        console.log(response)
         // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
+        Cookies.set("accessToken", response?.data.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }
