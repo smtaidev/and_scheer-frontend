@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from "react";
 import Container from "./ui/Container";
 import ComponentHeader from "./shared/ComponentHeader";
@@ -6,51 +6,22 @@ import PackageCard from "./shared/PlanCard";
 import { useRouter } from "next/navigation";
 import { useGetSubscirptionPlansQuery } from "@/redux/features/Subscription/subscriptionSlice";
 import Loading from "./Others/Loading";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 export default function EmployerPlan() {
-  // const SeekerPlan = [
-  //   {
-  //     price: "19.99",
-  //     planType: "Job Seeker Plan",
-  //     packageName: "Standard Plan",
-  //     permissions: [
-  //       "Limited job applications",
-  //       "Standard profile visibility",
-  //       "Basic resume feedback",
-  //       "All free tier benifits included",
-  //       "Receive up to 10 job suggestions",
-  //     ],
-  //   },
-  //   {
-  //     price: "29.99",
-  //     planType: "Job Seeker Plan",
-  //     packageName: "Premium Plan",
-  //     permissions: [
-  //       "Unlimited job applications",
-  //       "Priority profile visibility",
-  //       "AI resume feedback",
-  //       "All free tier benifits included",
-  //       "Receive up to 25 job suggestions",
-  //     ],
-  //   },
-  // ];
-
-
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
-  console.log(
-    JobSeekerPlans?.data.filter(
-      (seeker: any) => seeker.description === "Employeer_Plan"
-    )
-  );
+
+  const { data: user } = useGetMeQuery({});
 
   if (isLoading) {
     return <Loading />;
   }
+
+  // Filter the employer plans
   const SeekerPlan = JobSeekerPlans?.data.filter(
     (seeker: any) => seeker.description === "Employer_Plan"
   );
-
 
   const router = useRouter();
 
@@ -76,7 +47,7 @@ export default function EmployerPlan() {
           description="Choose the Right Plan for Your Business."
         ></ComponentHeader>
 
-        <div className="flex justify-center flex-wrap mt-12  gap-6 px-4 md:px-0">
+        <div className="flex justify-center flex-wrap mt-12 gap-6 px-4 md:px-0">
           {SeekerPlan?.map((plan: any, index: any) => (
             <div key={index} className="flex justify-center">
               <PackageCard
@@ -84,8 +55,14 @@ export default function EmployerPlan() {
                 planType={plan?.planType}
                 packageName={plan?.planName}
                 permissions={plan?.features}
-                buttonText="Choose Plan"
-                onButtonClick={() => handleClick(plan?.id)}
+                // Button Text will be "Active" if the planId matches the user's planId
+                buttonText={user?.data.planId === plan?.id ? "Active" : "Get Started"}
+                onButtonClick={() => {
+                  // Only allow navigation to checkout if the plan is not active
+                  if (user?.data.planId !== plan?.id) {
+                    handleClick(plan?.id);
+                  }
+                }}
               />
             </div>
           ))}

@@ -372,7 +372,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         ${animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"}
       `}
       >
-        <SearchSection />
+        <SearchSection setAnimate={setAnimate} animate={animate} />
       </div>
 
       {/* modal logout  */}
