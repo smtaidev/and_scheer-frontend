@@ -231,8 +231,16 @@ export default function Navbar({ navItem }: NavbarProps) {
               onClick={toggleMenu}
               className="flex items-center gap-2 cursor-pointer"
             >
-              <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />{" "}
-              <p>{isLogned && user?.fullName}</p>
+              <p className="flex items-center hover:scale-105 transition-all duration-300">
+                {isLogned ? <><LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white mr-2" />{user?.fullName}
+                </> : <>
+                  <Link
+                    onClick={() => setShowMenu(false)}
+                    href={"/signIn"}
+                    className="w-full text-left hover:bg-green-600 bg-primary text-white rounded-md px-5 py-2 transition-all duration-200"
+                  >
+                    Sign In
+                  </Link></>}</p>
             </button>
 
             {showMenu && (
@@ -260,13 +268,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                     </div>
                   </div>
                 ) : (
-                  <Link
-                    onClick={() => setShowMenu(false)}
-                    href={"/signIn"}
-                    className="w-full text-left hover:text-main-green bg-gray-200 rounded-md px-5 py-2 "
-                  >
-                    Sign In
-                  </Link>
+                  <></>
                 )}
               </div>
             )}
@@ -306,27 +308,33 @@ export default function Navbar({ navItem }: NavbarProps) {
           <div className="relative">
             <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
+
             </button>
 
             {showMenu && (
-              <div className="absolute top-2 left-7 min-w-[120px] z-50 scale-75 ">
+              <div
+                className={`absolute min-w-[120px] -top-50 left-2 z-50 scale-75 transition-all duration-300 ease-in-out ${showMenu ? "translate-x-0 opacity-100" : "-translate-x-[250px] opacity-0"
+                  }`}
+              >
                 {isLogned ? (
-                  // <Link
-                  //   onClick={() => setShowMenu(false)}
-                  //   href={"/profile"} className="w-full text-left hover:text-main-green">Profile</Link>
+
                   <div onClick={() => setShowMenu(false)}>
-                    <div className="w-72 bg-white  rounded-xl p-4 space-y-2">
+                    <div className="w-72 bg-white/20 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
-                      <MenuItem
-                        icon={<FaDownload />}
-                        label="Download My Resume"
-                        active
-                      />
-                      <Link href={"/jobSeeker/my-application"}></Link>
+                      <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
+
+                      <MenuItem icon={<FaDownload />} label="Download My Resume" active />
+                      <div className=" border-gray-300 my-2"></div> {/* Divider */}
+
                       <Link href={"/jobSeeker/my-application"}>
-                        {" "}
+                        <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
+                      </Link>
+
+                      <Link href={"/jobSeeker/my-application"}>
                         <MenuItem icon={<FaBriefcase />} label="Applied Job" />
                       </Link>
+                      <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
+
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
@@ -364,7 +372,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         ${animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"}
       `}
       >
-        <SearchSection />
+        <SearchSection setAnimate={setAnimate} animate={animate} />
       </div>
 
       {/* modal logout  */}
@@ -377,7 +385,7 @@ export default function Navbar({ navItem }: NavbarProps) {
           <div className="bg-white rounded-2xl shadow-xl max-w-[645px] w-full mx-4 relative">
             {/* Close button */}
             <button
-              // onClick={onClose}
+                onClick={() => setShowDeleteModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Close modal"
             >
@@ -501,13 +509,13 @@ export default function Navbar({ navItem }: NavbarProps) {
               <div className="flex gap-3 mt-5">
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="flex-1 px-6 py-3 border border-gray-300 bg-gray-200  rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                  className="flex-1 md:px-6 cursor-pointer md:py-3 py-2 border border-gray-300 bg-gray-200 rounded md:rounded-lg hover:bg-gray-50 transition-colors font-medium text-xs md:text-base"
                 >
                   No, Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className={`flex-1 px-2 md:px-6 py-1 md:py-3 rounded-lg transition-colors font-medium bg-red-600 `}
+                  className={`flex-1 px-2 md:px-6 py-1 md:py-3 rounded md:rounded-lg  font-medium bg-red-600 hover:bg-red-800 transition text-white text-xs md:text-base cursor-pointer`}
                 >
                   Yes, Logout
                 </button>

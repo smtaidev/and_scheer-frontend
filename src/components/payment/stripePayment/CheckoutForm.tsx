@@ -123,7 +123,7 @@ function PaymentForm() {
       toast.success("Payment successful!");
       reset();
       setPaymentProcessing(false);
-      router.push("/success");
+      router.push("/signIn");
     } catch (err) {
       console.log(err);
       toast.error("Failed to process payment. Please try again.");

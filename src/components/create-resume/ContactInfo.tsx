@@ -32,7 +32,8 @@ export default function ContactInfo({ setStep, formData, setFormData }: IPersona
   const contactInfoSchema = z.object({
     linkedin_profile_url: z
       .string()
-      .url({ message: "LinkedIn profile must be a valid URL" }),
+      .url({ message: "LinkedIn profile must be a valid URL" })
+      .or(z.literal("")), 
 
     personal_website_url: z
       .string()
@@ -46,7 +47,7 @@ export default function ContactInfo({ setStep, formData, setFormData }: IPersona
       .string()
       .url({ message: "Social media URL must be a valid URL" })
       .optional()
-      .or(z.literal("")), // allow empty
+      
   });
   const {
     register,
@@ -84,7 +85,7 @@ export default function ContactInfo({ setStep, formData, setFormData }: IPersona
               label="LinkedIn Profile"
               type="text"
               placeholder="Enter your LinkedIn profile URL"
-              {...register("linkedin_profile_url", { required: true })}
+              {...register("linkedin_profile_url")}
             />
             {errors.linkedin_profile_url && (
               <p className="text-red-500 text-sm mt-1">{errors.linkedin_profile_url.message}</p>

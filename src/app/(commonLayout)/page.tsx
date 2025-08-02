@@ -1,3 +1,4 @@
+"use client"
 import AboutUs from "@/components/AboutUs";
 import Banner from "@/components/Banner";
 import ChooseUs from "@/components/ChooseUs";
@@ -10,8 +11,14 @@ import RecentJob from "@/components/recent-job/RecentJob";
 import ScrollTop from "@/components/shared/ScrollTop";
 import SuggestedCourses from "@/components/Suggested/SuggestedCourses";
 import TopTalent from "@/components/TopTalent";
+import Cookies from "js-cookie";
+
+
 
 const page = () => {
+
+
+
   return (
     <div className="black-main relative">
       <Banner></Banner>
@@ -24,7 +31,7 @@ const page = () => {
       <SuggestedCourses></SuggestedCourses>
       <JobSeekerPlan />
       <EmployerPlan />
-      <Newsletter />
+      {/* <Newsletter /> */}
       <Footer />
       <ScrollTop />
     </div>

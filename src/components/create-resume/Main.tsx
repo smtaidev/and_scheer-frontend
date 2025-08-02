@@ -111,11 +111,11 @@ const MainComponents = () => {
       ).values()
     ),
 
-    certifications: formData.certificates?.map((cert: any) => ({
-      certification_title: cert.certificateTitle,
-      issuing_organization: cert.issuingOrganization,
-      certification_issue_date: cert.issueDate,
-      certification_expiry_date: cert.expiryDate || null,
+    certifications: formData?.certificates?.map((cert: any) => ({
+      certification_title: cert?.certificateTitle,
+      issuing_organization: cert?.issuingOrganization,
+      certification_issue_date: cert?.issueDate,
+      certification_expiry_date: cert?.expiryDate || null,
     })),
     linkedin_profile_url: formData.linkedin_profile_url,
     personal_website_url: formData.personal_website_url,
@@ -153,6 +153,8 @@ const MainComponents = () => {
       console.error("Error:", error);
     }
   };
+
+  console.log(formData)
 
   return (
     <Container>

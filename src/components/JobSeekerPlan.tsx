@@ -6,17 +6,16 @@ import PackageCard from "./shared/PlanCard";
 import { useGetSubscirptionPlansQuery } from "@/redux/features/Subscription/subscriptionSlice";
 import Loading from "./Others/Loading";
 import { useRouter } from "next/navigation";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 export default function JobSeekerPlan() {
   const router = useRouter();
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
-  // console.log(
-  //   JobSeekerPlans?.data.filter(
-  //     (seeker: any) => seeker.description === "Job_Seeker_Plan"
-  //   )
-  // );
+
   console.log("yes", JobSeekerPlans);
+
+  const { data: user } = useGetMeQuery({});
 
   if (isLoading) {
     return <Loading />;
@@ -55,9 +54,21 @@ export default function JobSeekerPlan() {
                 planType={plan?.planType}
                 packageName={plan?.planName}
                 permissions={plan?.features}
-                buttonText="Choose Plan"
-                onButtonClick={() => handleClick(plan?.id)}
+                // Button Text will be "Active" if the planId matches the user's planId
+                buttonText={
+                  (user?.data.planId === plan?.id && ((user?.data.isSubscribed === "true") ||
+                    user?.data.totalPayPerJobCount > 0))
+                    ? "Active"
+                    : "Get Started"
+                }
+                onButtonClick={() => {
+                  // Only allow navigation to checkout if the plan is not active
+                  if (user?.data.planId !== plan?.id) {
+                    handleClick(plan?.id);
+                  }
+                }}
               />
+
             </div>
           ))}
         </div>

@@ -1,11 +1,16 @@
+"use client"
 import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
 import Link from "next/link";
 
-export default function AboutUs() {
+
+export default async function AboutUs() {
+
+
+
   return (
-    <div className="bg-[#F8F8F8]  ">
+    <div id="about" className="bg-[#F8F8F8]  ">
       <Container>
         <div>
           <div className="flex flex-col md:flex-row items-center gap-10 px-6  max-w-6xl mx-auto">
@@ -74,11 +79,11 @@ export default function AboutUs() {
 
 
               {/* Button */}
-              <Link href={"#pricing"}>
-              <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer">
-                Join Us Today{" "}
-                <BsArrowRight className="my-auto ml-2"> </BsArrowRight>
-              </button>
+              <Link href="#pricing">
+                <button className="mt-4 px-6 py-3 flex bg-secondary text-white font-semibold rounded hover:bg-black transition cursor-pointer group  items-center">
+                  Join Us Today{" "}
+                  <BsArrowRight className=" text-xl ml-2 mt-1 transition-transform duration-300 group-hover:translate-x-2" />
+                </button>
               </Link>
             </div>
           </div>

@@ -16,6 +16,7 @@ export default function PackageCard({
   packageName,
   permissions,
   onButtonClick,
+  buttonText
 }: // buttonText,
 
   PackageCardProps) {
@@ -57,8 +58,11 @@ export default function PackageCard({
 
 
       {/* Button */}
+      {
+        buttonText !="Get Started" ? <>  <Button onClick={onButtonClick} name={buttonText} className="text-white py-3 px-6 rounded-md bg-slate-600 hover:bg-slate-700"/></>:<>  <Button onClick={onButtonClick} name={buttonText} /></>
+      }
 
-      <Button onClick={onButtonClick} name="Get Started" />
+    
     </div>
   );
 }

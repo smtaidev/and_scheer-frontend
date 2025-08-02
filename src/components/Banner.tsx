@@ -33,16 +33,16 @@ export default function Banner() {
 
           <div className="flex gap-3 mt-4">
             <Link href={"/create-account"}>
-              <button className="border px-3 text-xs md:text-base rounded py-2 hover:bg-gray-300 hover:shadow-lg border-gray-300  transition-all duration-300 cursor-pointer">
+              <button className="border px-3 text-xs md:text-base rounded py-2 hover:bg-gray-200 hover:shadow-md border-gray-200  transition-all duration-300 cursor-pointer">
                 For Employers
               </button>
             </Link>
 
             <Link
               href={"/jobSeeker/start-now"}
-              className="text-white text-xs md:text-base font-semibold px-3 rounded py-2 flex gap-1 bg-primary hover:bg-green-600 transition-all duration-300"
+              className="text-white group text-xs md:text-base font-semibold px-3 rounded py-2 flex gap-1 bg-primary hover:bg-green-600 transition-all duration-300"
             >
-              Create AI Resume <BsArrowRight className="my-auto" />
+              Create AI Resume <BsArrowRight className="my-auto transition-transform text-xl mt-1 duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
