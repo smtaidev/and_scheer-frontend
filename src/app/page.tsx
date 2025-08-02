@@ -12,8 +12,15 @@ import ScrollTop from "@/components/shared/ScrollTop";
 import SuggestedCourses from "@/components/Suggested/SuggestedCourses";
 import TopTalent from "@/components/TopTalent";
 import Cookies from "js-cookie";
+import Navbar from "@/components/shared/Navbar/Navbar";
 
-
+const navitem = [
+  { name: "Home", href: "/" },
+  { name: "For Job Seekers", href: "/jobSeeker/home" },
+  { name: "For Employers", href: "/create-account" },
+  { name: "Course", href: "#course" },
+  { name: "Pricing", href: "#pricing" },
+];
 
 const page = () => {
 
@@ -21,6 +28,7 @@ const page = () => {
 
   return (
     <div className="black-main relative">
+         <Navbar navItem={navitem}></Navbar>
       <Banner></Banner>
       <RecentJob title={"Recent Job"}></RecentJob>
 
