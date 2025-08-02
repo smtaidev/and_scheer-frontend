@@ -16,16 +16,16 @@ const Footer: React.FC = () => {
                 <a href="#" className="hover:text-green-400">
                   Home
                 </a>
-                <a href="#" className="hover:text-green-400">
+                <a href="#about" className="hover:text-green-400">
                   About Us
                 </a>
-                <a href="#" className="hover:text-green-400">
+                <a href="course" className="hover:text-green-400">
                   Courses
                 </a>
-                <a href="#" className="hover:text-green-400">
+                <a href="/create-account" className="hover:text-green-400">
                   For Employers
                 </a>
-                <a href="#" className="hover:text-green-400">
+                <a href="/jobSeeker/home" className="hover:text-green-400">
                   For Job Seekers
                 </a>
               </nav>

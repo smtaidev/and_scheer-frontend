@@ -39,6 +39,7 @@ export default function EmployerPlan() {
     router.push(`/checkout/${id}`);
   };
 
+
   return (
     <div>
       <Container>
@@ -56,12 +57,12 @@ export default function EmployerPlan() {
                 packageName={plan?.planName}
                 permissions={plan?.features}
                 // Button Text will be "Active" if the planId matches the user's planId
-                buttonText={user?.data.planId === plan?.id ? "Active" : "Get Started"}
+                buttonText={(user?.data.planId === plan?.id && user?.data.isSubscribed ==true) ? "Active" : "Get Started"}
                 onButtonClick={() => {
                   // Only allow navigation to checkout if the plan is not active
-                  if (user?.data.planId !== plan?.id) {
+              
                     handleClick(plan?.id);
-                  }
+               
                 }}
               />
             </div>

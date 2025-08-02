@@ -1,10 +1,31 @@
-
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
+
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function CreateAccount() {
+
+    const {data:user}=useGetMeQuery({})
+    const router= useRouter()
+
+    const handleEmployer=()=>{
+
+        if(user?.data.companyName){
+            toast.warning("You already have a company account!")
+        }else if(user?.data.role !="EMPLOYEE"){
+         toast.warning(" Only Employer can create a company account!")
+        }
+        else{
+            router.push("/company-details")
+        }
+    }
+
+
     return (
         <Container>
             <div className="  flex justify-center items-center min-h-screen flex-col md:flex-row md:space-x-4 md:mx-3">
@@ -27,12 +48,10 @@ export default function CreateAccount() {
                     <p className="text-gray-400 text-sm mb-4 md:mb-12 leading-[1.6]">
                         Follow these simple steps to set up your company profile and find the perfect  <br /> candidate for your team.
                     </p>
-                    <Link href={"/company-details"} >
-                        <button className="px-18 py-4 bg-[#28C76F] text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-700">
+             
+                        <button onClick={()=>handleEmployer()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 cursor-pointer transition">
                             Start Now
                         </button>
-                    </Link>
-
                 </div>
             </div>
         </Container>

@@ -509,13 +509,13 @@ export default function Navbar({ navItem }: NavbarProps) {
               <div className="flex gap-3 mt-5">
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="flex-1 md:px-6 md:py-3 py-2 border border-gray-300 bg-gray-200 rounded md:rounded-lg hover:bg-gray-50 transition-colors font-medium text-xs md:text-base"
+                  className="flex-1 md:px-6 cursor-pointer md:py-3 py-2 border border-gray-300 bg-gray-200 rounded md:rounded-lg hover:bg-gray-50 transition-colors font-medium text-xs md:text-base"
                 >
                   No, Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className={`flex-1 px-2 md:px-6 py-1 md:py-3 rounded md:rounded-lg transition-colors font-medium bg-red-600 text-white text-xs md:text-base`}
+                  className={`flex-1 px-2 md:px-6 py-1 md:py-3 rounded md:rounded-lg  font-medium bg-red-600 hover:bg-red-800 transition text-white text-xs md:text-base cursor-pointer`}
                 >
                   Yes, Logout
                 </button>

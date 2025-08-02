@@ -3,16 +3,14 @@ import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
 import Link from "next/link";
-import { useRefreshTokenMutation } from "@/redux/features/auth/auth";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+
 
 export default async function AboutUs() {
 
 
 
   return (
-    <div className="bg-[#F8F8F8]  ">
+    <div id="about" className="bg-[#F8F8F8]  ">
       <Container>
         <div>
           <div className="flex flex-col md:flex-row items-center gap-10 px-6  max-w-6xl mx-auto">
