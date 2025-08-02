@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Button from "../shared/button/Button";
 import SectionHeader from "../shared/SectionHeader";
 import FormInput from "../ui/FormInput";
+import Link from "next/link";
 
 
 interface PersonalInfoType {
@@ -134,9 +135,11 @@ export default function PersonalInformation({ setStep, formData, setFormData }: 
             </div>
 
             <div className="flex justify-between">
-              <button className="px-4  py-2 rounded-md bg-secondary text-white">
+              <Link href={"/jobSeeker/start-now"}>
+              <button type="button" className="px-4  py-2 rounded-md bg-secondary text-white cursor-pointer">
                 Back
               </button>
+              </Link>
               <Button
                 type="submit"
                 text="Next"

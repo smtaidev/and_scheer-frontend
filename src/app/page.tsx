@@ -28,7 +28,7 @@ const page = () => {
 
   return (
     <div className="black-main relative">
-         <Navbar navItem={navitem}></Navbar>
+      <Navbar navItem={navitem}></Navbar>
       <Banner></Banner>
       <RecentJob title={"Recent Job"}></RecentJob>
 
