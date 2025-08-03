@@ -13,7 +13,7 @@ export default function JobSeekerPlan() {
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
 
-  console.log("yes", JobSeekerPlans);
+
 
   const { data: user } = useGetMeQuery({});
 

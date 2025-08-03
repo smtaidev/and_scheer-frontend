@@ -46,10 +46,11 @@ export default function SignUpForm() {
 
     try {
       const response = await createAcount(userData).unwrap();
-      console.log(response);
+      localStorage.setItem("myEmail",data?.email)
       if (response?.success) {
-        toast.success(response?.message);
+        // toast.success(response?.message);
         reset();
+        router.push("/email-verify")
       }
     } catch (error: any) {
       console.log(error);

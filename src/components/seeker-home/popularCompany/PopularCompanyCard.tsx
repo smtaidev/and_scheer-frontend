@@ -5,7 +5,7 @@ import { CiLocationOn } from 'react-icons/ci';
 export default function PopularCompanyCard({company}:{company:Company}) {
     console.log(company)
     return (
-        <div className="w-full md:max-w-[457px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-[18px]">
+        <div className="w-full md:max-w-[457px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-[18px] border border-gray-200 ">
             <div className="relative ">
                 <Image
                     src="/c1.jpg" // Add your actual image in the public folder

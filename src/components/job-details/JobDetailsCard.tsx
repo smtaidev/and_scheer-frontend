@@ -2,14 +2,15 @@
 import { Job } from '@/types/AllTypes';
 import Image from 'next/image';
 import { toast } from "sonner"; // Assuming you're using the `sonner` library for toasts.
-import React from 'react';
+import React, { useState } from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
 import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import LoadingButton from '../loading/LoadingButton';
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -17,13 +18,9 @@ type JobDetailsCardProps = {
 
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
-    console.log("Current Compamy: ", currentCompany)
-    console.log("Company: ", company);
-
-    // const id = Number(currentCompany?.id);
-
     const { id } = useParams();
-
+    const [loading,setLoading]=useState(false)
+    const router=useRouter()
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
 
@@ -31,6 +28,11 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
     // }
     const handleApplyJob = async () => {
+        setLoading(true);
+        const token=localStorage.getItem("accessToken");
+         toast.warning("Please Login first!")
+        if(!token) return router.push("/signIn");
+       
         try {
             const jobId = currentCompany?.id;
             const response = await applyJob({ jobId });
@@ -38,19 +40,21 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
             if (response && 'data' in response && response.data?.success) {
                 toast.success("Successfully applied for the job!");
+                setLoading(false)
             }else{
                 const errorMessage =
                     response?.error && 'data' in response.error
                         ? (response.error as { data?: { message?: string } }).data?.message
                         : 'Failed to apply for the job.';
                 toast.warning(errorMessage);
+                setLoading(false)
             }
 
 
         } catch (error: any) {
             console.error("Failed to apply:", error);
             toast.error(error.data.message)
-
+            setLoading(false)
         }
     };
 
@@ -125,11 +129,14 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             </section>
 
             <footer className="mt-6 flex gap-3">
-                <button
+                {
+                    loading? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton/></div>:<> <button
                     onClick={handleApplyJob}
                     className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
                     Apply Now
-                </button>
+                </button></>
+                }
+               
                 <Link href={'/'}>
                     <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
                         Back to Listing
