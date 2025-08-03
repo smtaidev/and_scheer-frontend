@@ -26,7 +26,8 @@ import {
   useGetMyProfileQuery,
 } from "@/redux/features/auth/auth";
 import axios from "axios";
-import { Loader } from "@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page";
+import { Loader } from "../shared/MainLoader";
+
 
 interface JobTitle {
   title: string;

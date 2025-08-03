@@ -1,3 +1,4 @@
+
 import EmailVerificationPage from '@/components/EmailVerify'
 import React from 'react'
 

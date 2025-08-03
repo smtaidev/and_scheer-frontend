@@ -21,7 +21,8 @@ import { Job } from "@/types/AllTypes";
 import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
 import axios from "axios";
 import RecomandationJobCard from './RecomandationJobCard';
-import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page';
+import { Loader } from '../shared/MainLoader';
+
 
 interface JobTitle {
     title: string;

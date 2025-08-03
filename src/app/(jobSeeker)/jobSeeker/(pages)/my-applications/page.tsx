@@ -4,7 +4,8 @@ import { CgArrowsV } from 'react-icons/cg';
 import Container from '@/components/ui/Container';
 import { useGetAppliedJobsQuery } from '@/redux/features/job/jobSlice';
 import Link from 'next/link';
-import { Loader } from '../my-profile/page';
+import { Loader } from '@/components/shared/MainLoader';
+
 
 
 

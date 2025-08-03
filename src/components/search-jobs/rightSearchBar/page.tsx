@@ -1,6 +1,6 @@
 
-import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page'
 import PopularCompanyCard from '@/components/seeker-home/popularCompany/PopularCompanyCard'
+import { Loader } from '@/components/shared/MainLoader'
 import CourseCard from '@/components/Suggested/CourseCard'
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
 import { useGetRecommandedCourseQuery } from '@/redux/features/course/courseSlice'

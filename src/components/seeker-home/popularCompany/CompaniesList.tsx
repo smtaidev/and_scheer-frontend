@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PopularCompanyCard from './PopularCompanyCard'
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
 import { Company } from '@/types/AllTypes'
-import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page'
+import { Loader } from '@/components/shared/MainLoader'
 
 export default function CompaniesList() {
 

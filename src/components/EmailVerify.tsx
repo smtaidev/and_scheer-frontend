@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FiMail, FiArrowRight, FiClock, FiCheckCircle } from 'react-icons/fi';
@@ -9,15 +9,16 @@ export default function EmailVerificationPage() {
   const [isResending, setIsResending] = useState(false);
   const [isResent, setIsResent] = useState(false);
   const [countdown, setCountdown] = useState(0);
-
+ const [maskedEmail, setMaskedEmail] = useState('');
+ const [userEmail, setUserEmail] = useState('');
   const [resendLink]=useResendVerifyLinkMutation()
 
   // Mock user email - in production you'd get this from your auth context or query params
-  const userEmail = localStorage.getItem("myEmail");
-  const maskedEmail = userEmail?.replace(
-    /^(.)(.*)(@.*)$/,
-    (_, a, b, c) => a + b.replace(/./g, '•') + c
-  );
+  // const userEmail = localStorage.getItem("myEmail");
+  // const maskedEmail = userEmail?.replace(
+  //   /^(.)(.*)(@.*)$/,
+  //   (_, a, b, c) => a + b.replace(/./g, '•') + c
+  // );
 
   const handleResendEmail = async () => {
     if (countdown > 0) return;
@@ -47,6 +48,18 @@ export default function EmailVerificationPage() {
       setIsResending(false);
     }
   };
+
+  useEffect(()=>{
+     const email = localStorage.getItem("myEmail");
+    if (email) {
+      setUserEmail(email);
+      const masked = email.replace(
+        /^(.)(.*)(@.*)$/,
+        (_, a, b, c) => a + b.replace(/./g, '•') + c
+      );
+      setMaskedEmail(masked);
+    }
+  },[])
 
   return (
     <>
