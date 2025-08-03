@@ -12,6 +12,9 @@ import {
 } from "react-icons/fa";
 
 import { useGetMeQuery } from "@/redux/features/auth/auth";
+import { logOut } from "@/redux/features/auth/authSlice";
+import { clearTokens } from "@/lib/tokenUtils";
+import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -41,8 +44,9 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [searchView, setSearchView] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  // detecting outside click 
+  // detecting outside click
   const hiddenMenuByClick = useRef<HTMLDivElement>(null);
   // 🔹 Click outside handler
   useEffect(() => {
@@ -142,7 +146,6 @@ export default function Navbar({ navItem }: NavbarProps) {
       setUser(me?.data);
     }
 
-
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -153,8 +156,6 @@ export default function Navbar({ navItem }: NavbarProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu, me?.data]);
-
-  
 
   const handleSearch = () => {
     console.log("first");
@@ -168,12 +169,21 @@ export default function Navbar({ navItem }: NavbarProps) {
 
   // logout functtion working
   const handleDelete = () => {
-    localStorage.removeItem("accessToken");
-    Cookies.remove("accessToken");
+    console.log("🚪 Logout initiated - Clearing all auth data");
+
+    // Clear all tokens and storage using centralized function
+    clearTokens();
+
+    // Clear Redux auth state
+    dispatch(logOut());
+
+    // Clear local component state
     setUser(null);
     setShowMenu(false);
     setShowDeleteModal(false);
     setIsLogned(null);
+
+    console.log("✅ All auth data cleared successfully");
     toast.success("Logged out successfully");
     router.push("/");
   };
@@ -193,15 +203,17 @@ export default function Navbar({ navItem }: NavbarProps) {
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
           <button
             onClick={() => handleSearch()}
-            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${searchView ? "hidden" : ""
-              } `}
+            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${
+              searchView ? "hidden" : ""
+            } `}
           >
             <FaSearch />
             Search
           </button>
           <span
-            className={`w-0.5 h-6 bg-gray-300   ${searchView ? "hidden" : "inline-block"
-              }`}
+            className={`w-0.5 h-6 bg-gray-300   ${
+              searchView ? "hidden" : "inline-block"
+            }`}
           ></span>
 
           {Array.isArray(navItem) &&
@@ -234,15 +246,23 @@ export default function Navbar({ navItem }: NavbarProps) {
               className="flex items-center gap-2 cursor-pointer"
             >
               <p className="flex items-center hover:scale-105 transition-all duration-300">
-                {isLogned ? <><LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white mr-2" />{user?.fullName}
-                </> : <>
-                  <Link
-                    onClick={() => setShowMenu(false)}
-                    href={"/signIn"}
-                    className="w-full text-left hover:bg-green-600 bg-primary text-white rounded-md px-5 py-2 transition-all duration-200"
-                  >
-                    Sign In
-                  </Link></>}</p>
+                {isLogned ? (
+                  <>
+                    <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white mr-2" />
+                    {user?.fullName}
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      onClick={() => setShowMenu(false)}
+                      href={"/signIn"}
+                      className="w-full text-left hover:bg-green-600 bg-primary text-white rounded-md px-5 py-2 transition-all duration-200"
+                    >
+                      Sign In
+                    </Link>
+                  </>
+                )}
+              </p>
             </button>
 
             {showMenu && (
@@ -254,15 +274,15 @@ export default function Navbar({ navItem }: NavbarProps) {
                   <div onClick={() => setShowMenu(false)}>
                     <div className="w-72 bg-white/80 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
-                         <div className="border-b border-gray-300 my-2"></div> 
+                      <div className="border-b border-gray-300 my-2"></div>
                       <MenuItem
                         icon={<FaDownload />}
                         label="Download My Resume"
                         active
                       />
-                         <div className="border-b border-gray-300 my-2"></div> 
+                      <div className="border-b border-gray-300 my-2"></div>
                       <MenuItem icon={<FaBriefcase />} label="Applied Job" />
-                        <div className="border-b border-gray-300 my-2"></div> 
+                      <div className="border-b border-gray-300 my-2"></div>
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
@@ -295,9 +315,11 @@ export default function Navbar({ navItem }: NavbarProps) {
       </div>
 
       {/* Mobile Menu */}
-      <div ref={hiddenMenuByClick}
-        className={`md:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"
-          }`}
+      <div
+        ref={hiddenMenuByClick}
+        className={`md:hidden transition-all duration-300 overflow-hidden ${
+          mobileMenuOpen ? "max-h-screen" : "max-h-0"
+        }`}
       >
         <div className="bg-white border-t border-gray-100 px-4 py-4 space-y-3">
           {navItem.map((item) => (
@@ -313,33 +335,38 @@ export default function Navbar({ navItem }: NavbarProps) {
           <div className="relative">
             <button onClick={toggleMenu}>
               <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white" />
-
             </button>
 
             {showMenu && (
               <div
-                className={`absolute min-w-[120px] -top-50 left-2 z-50 scale-75 transition-all duration-300 ease-in-out ${showMenu ? "translate-x-0 opacity-100" : "-translate-x-[250px] opacity-0"
-                  }`}
+                className={`absolute min-w-[120px] -top-50 left-2 z-50 scale-75 transition-all duration-300 ease-in-out ${
+                  showMenu
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-[250px] opacity-0"
+                }`}
               >
                 {isLogned ? (
-
                   <div onClick={() => setShowMenu(false)}>
                     <div className="w-72 bg-white/20 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2">
                       <MenuItem icon={<FaUser />} label="My Profile" />
-                      <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
-
-                      <MenuItem icon={<FaDownload />} label="Download My Resume" active />
-                      <div className=" border-gray-300 my-2"></div> {/* Divider */}
-
+                      <div className="border-b border-gray-300 my-2"></div>{" "}
+                      {/* Divider */}
+                      <MenuItem
+                        icon={<FaDownload />}
+                        label="Download My Resume"
+                        active
+                      />
+                      <div className=" border-gray-300 my-2"></div>{" "}
+                      {/* Divider */}
                       <Link href={"/jobSeeker/my-application"}>
-                        <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
+                        <div className="border-b border-gray-300 my-2"></div>{" "}
+                        {/* Divider */}
                       </Link>
-
                       <Link href={"/jobSeeker/my-application"}>
                         <MenuItem icon={<FaBriefcase />} label="Applied Job" />
                       </Link>
-                      <div className="border-b border-gray-300 my-2"></div> {/* Divider */}
-
+                      <div className="border-b border-gray-300 my-2"></div>{" "}
+                      {/* Divider */}
                       <MenuItem
                         icon={<FaSignOutAlt />}
                         label="Log Out"
@@ -385,12 +412,12 @@ export default function Navbar({ navItem }: NavbarProps) {
       {showDeleteModal && (
         <div
           className="fixed inset-0 bg-black/20 bg-opacity-50 flex items-center justify-center z-50 p-4"
-        // onClick={handleBackdropClick}
+          // onClick={handleBackdropClick}
         >
           <div className="bg-white rounded-2xl shadow-xl max-w-[645px] w-full mx-4 relative">
             {/* Close button */}
             <button
-                onClick={() => setShowDeleteModal(false)}
+              onClick={() => setShowDeleteModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Close modal"
             >
@@ -532,7 +559,3 @@ export default function Navbar({ navItem }: NavbarProps) {
     </nav>
   );
 }
-
-
-
-

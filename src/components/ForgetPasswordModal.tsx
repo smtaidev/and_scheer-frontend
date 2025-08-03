@@ -39,7 +39,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
         setModalOpen(false);
       }
     } catch (error: any) {
-      console.log(error, "yes");
+      // console.log(error, "yes");
       toast.error(error.data.message);
     }
   };

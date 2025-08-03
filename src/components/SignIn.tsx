@@ -1,23 +1,22 @@
 "use client";
 // import FormInput from '@/components/FormInput';
-import Image from "next/image";
+import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
-import Logo from "./ui/MainLogo";
+import Image from "next/image";
 import Input from "./ui/Input";
-import {
-  useSignInMutation,
-  useSignUpMutation,
-} from "@/redux/features/auth/auth";
 import { toast } from "sonner";
+import Logo from "./ui/MainLogo";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { TLoggedUser } from "@/types/reduxType";
+import { verifyToken } from "@/lib/verifyToken";
+import { GoogleLogin } from "@react-oauth/google";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
-import Cookies from "js-cookie";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { loginUser } from "@/services/auth";
 
 interface FormData {
   email: string;
@@ -25,25 +24,36 @@ interface FormData {
 }
 
 export default function SignInForm() {
+  const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm<FormData>();
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
-  const [sigInUser, { isLoading }] = useSignInMutation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await sigInUser(data).unwrap();
-      console.log(response);
-      if (response?.success) {
-        // localStorage.setItem("accessToken", response?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
-        toast.success(response?.message);
+      setIsLoading(true);
+      const res = await loginUser(data);
+      console.log("📋 Login response:", res);
+
+      if (res?.success) {
+        console.log("✅ Server-side login successful - cookies set by server");
+
+        const user = verifyToken(res.data.accessToken) as TLoggedUser;
+        console.log("👤 Decoded user:", user);
+        console.log("🚀 Dispatching setUser to Redux...");
+        dispatch(setUser({ user: user, token: res.data.accessToken }));
+        toast.success(res?.message);
         router.push("/");
         reset();
+      } else {
+        toast.error(res?.message || "Login failed");
       }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.data.message);
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err?.message || "Login failed");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,7 +62,7 @@ export default function SignInForm() {
   };
 
   const handleSuccess = async (credentialResponse: any) => {
-    console.log("yesTonek= ", credentialResponse.credential);
+    console.log("yesToken= ", credentialResponse.credential);
 
     try {
       // Send the credential to your server
@@ -64,9 +74,16 @@ export default function SignInForm() {
       );
 
       if (response?.data?.success) {
-        console.log(response)
-        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        Cookies.set("accessToken", response?.data.data?.accessToken);
+        console.log(
+          "✅ Google login successful - backend sets HTTP-only cookies"
+        );
+
+        const user = verifyToken(
+          response?.data.data?.accessToken
+        ) as TLoggedUser;
+        dispatch(
+          setUser({ user: user, token: response?.data.data?.accessToken })
+        );
         router.push("/");
         toast.success("Login successful");
       }
@@ -95,7 +112,7 @@ export default function SignInForm() {
             width={588}
             layout="intrinsic"
           />
-        </div> 
+        </div>
 
         {/* Right: Form Section */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">

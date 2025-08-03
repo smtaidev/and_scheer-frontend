@@ -5,12 +5,12 @@ const authApi = baseUrlApi.injectEndpoints({
     getMe: build.query({
       query: () => ({
         url: "/auth/me",
-        method: "GET"
+        method: "GET",
       }),
     }),
 
     getMyProfile: build.query({
-      query: (userId) => `/profiles/get-my-profile`
+      query: (userId) => `/profiles/get-my-profile`,
     }),
 
     signUp: build.mutation({
@@ -48,15 +48,14 @@ const authApi = baseUrlApi.injectEndpoints({
       }),
     }),
 
-      // Define an endpoint to refresh the token
-      // refreshToken: build.mutation({
-      //   query: (refreshToken) => ({
-      //     url: '/auth/refresh-token',
-      //     method: 'POST',
-      //     body: { refreshToken }, // Send the refresh token in the body
-      //   }),
-      // }),
-  
+    // Define an endpoint to refresh the token
+    refreshToken: build.mutation({
+      query: (refreshToken) => ({
+        url: "/auth/refresh-token",
+        method: "POST",
+        body: { refreshToken }, // Send the refresh token in the body
+      }),
+    }),
   }),
 });
 
@@ -67,5 +66,5 @@ export const {
   useResetPasswordMutation,
   useGetMeQuery,
   useGetMyProfileQuery,
-  
+  useRefreshTokenMutation,
 } = authApi;

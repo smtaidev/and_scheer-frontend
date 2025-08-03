@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import AboutUs from "@/components/AboutUs";
 import Banner from "@/components/Banner";
 import ChooseUs from "@/components/ChooseUs";
@@ -23,9 +23,6 @@ const navitem = [
 ];
 
 const page = () => {
-
-
-
   return (
     <div className="black-main relative">
       <Navbar navItem={navitem}></Navbar>
