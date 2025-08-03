@@ -33,7 +33,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
-  const { data: me } = useGetMeQuery({});
+  const { data: me,refetch } = useGetMeQuery({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState<string | any>("");
   const [isLogned, setIsLogned] = useState<string | null>(null);
@@ -93,15 +93,22 @@ export default function Navbar({ navItem }: NavbarProps) {
       }`}
     >
       {label === "Applied Job" ? (
+        
         <Link className="flex gap-3" href="/jobSeeker/my-applications">
           <div className="text-xl">{icon}</div>
           <span>{label}</span>
         </Link>
       ) : label === "My Profile" ? (
-        <Link className="flex gap-3" href="/jobSeeker/my-profile">
+        
+          user?.role=="JOB_SEEKER" ? <> <Link className="flex gap-3" href="/jobSeeker/my-profile">
           <div className="text-xl">{icon}</div>
           <span>{label}</span>
-        </Link>
+        </Link></>:<> <Link className="flex gap-3" href="/my-profile">
+          <div className="text-xl">{icon}</div>
+          <span>{label}</span>
+        </Link></>
+        
+       
       ) : label === "Download My Resume" ? (
         <Link className="flex gap-3" href="/jobSeeker/resume-download">
           <div className="text-xl">{icon}</div>
@@ -140,6 +147,7 @@ export default function Navbar({ navItem }: NavbarProps) {
     if (me?.data) {
       setUser(me?.data);
     }
+    refetch()
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -221,6 +229,21 @@ const mobileMenuVariants = {
   }
 };
 
+
+  const filteredNavItems = navItem.filter((item) => {
+      if (!user) {
+      return item.name !== "For Job Seekers" && item.name !== "For Employers";
+    }
+    if (user?.role === "JOB_SEEKER" && item.name === "For Employers") {
+      return false; // Hide "For Employers" for job seekers
+    }
+    if (user?.role === "EMPLOYEE" && item.name === "For Job Seekers") {
+      return false; // Hide "For Employers" for employees
+    }
+    return true; // Keep all other items
+  });
+
+
   return (
     <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
       <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -247,8 +270,8 @@ const mobileMenuVariants = {
               searchView ? "hidden" : "inline-block"
             }`}
           ></span>
-          {Array.isArray(navItem) &&
-            navItem.map((item, index) => (
+          {Array.isArray(filteredNavItems) &&
+            filteredNavItems.map((item, index) => (
               <React.Fragment key={item.name}>
                 <Link
                   href={item.href}
@@ -256,7 +279,7 @@ const mobileMenuVariants = {
                 >
                   {item.name}
                 </Link>
-                {index < navItem.length - 1 && (
+                {index < filteredNavItems.length - 1 && (
                   <span className="w-0.5 h-6 bg-gray-300 inline-block"></span>
                 )}
               </React.Fragment>
@@ -352,7 +375,7 @@ const mobileMenuVariants = {
             className="md:hidden overflow-hidden"
           >
             <div className="bg-white border-t border-gray-100 px-4 py-4 space-y-3">
-              {navItem.map((item) => (
+              {filteredNavItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}

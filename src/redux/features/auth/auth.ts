@@ -54,6 +54,13 @@ const authApi = baseUrlApi.injectEndpoints({
         body: email,
       }),
     }),
+        updateContactInfo: build.mutation({
+      query: (contactInfo) => ({
+        url: "/users/update",
+        method: "PATCH",
+        body: contactInfo,
+      }),
+    }),
 
       // Define an endpoint to refresh the token
       // refreshToken: build.mutation({
@@ -74,5 +81,6 @@ export const {
   useResetPasswordMutation,
   useGetMeQuery,
   useGetMyProfileQuery,
-  useResendVerifyLinkMutation
+  useResendVerifyLinkMutation,
+  useUpdateContactInfoMutation
 } = authApi;

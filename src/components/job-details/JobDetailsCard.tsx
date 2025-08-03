@@ -8,7 +8,7 @@ import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
 import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
 
@@ -20,6 +20,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
     const { id } = useParams();
     const [loading,setLoading]=useState(false)
+    const router=useRouter()
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
 
@@ -27,7 +28,11 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
     // }
     const handleApplyJob = async () => {
-        setLoading(true)
+        setLoading(true);
+        const token=localStorage.getItem("accessToken");
+         toast.warning("Please Login first!")
+        if(!token) return router.push("/signIn");
+       
         try {
             const jobId = currentCompany?.id;
             const response = await applyJob({ jobId });

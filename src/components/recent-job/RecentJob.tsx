@@ -82,8 +82,6 @@ export default function RecentJob({ title }: JobTitle) {
   }, [jobs?.data?.data]);
   // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
-  console.log("Recent Jobs: ", jobs?.data?.data);
-
   return (
     <div className="bg-card ">
       <div className="bg-[#F8F8F8] ml-0  2xl:ml-44">
