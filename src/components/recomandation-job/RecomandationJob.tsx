@@ -21,6 +21,8 @@ import { Job } from "@/types/AllTypes";
 import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
 import axios from "axios";
 import RecomandationJobCard from './RecomandationJobCard';
+import { Loader } from '../shared/MainLoader';
+
 
 interface JobTitle {
     title: string;
@@ -33,6 +35,7 @@ export default function RecomandationJob({ title }: JobTitle) {
     // const { data: jobs } = useGetAllJobPostsQuery({});
     const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
+    
     const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
     const [jobLoading, setJobLoading] = useState(true);
 
@@ -80,7 +83,7 @@ export default function RecomandationJob({ title }: JobTitle) {
 
 
     // console.log(jobs);
-
+console.log(recomandationJobs?.data)
     useEffect(() => {
         if (recomandationJobs?.data?.recommendations) {
             setJobLoading(false);
@@ -96,7 +99,7 @@ export default function RecomandationJob({ title }: JobTitle) {
                     </h1>
 
                     {
-                        jobLoading && <p>Recomandation Job Posts Loading.....</p>
+                        jobLoading && <p><Loader/></p>
                     }
 
                     {

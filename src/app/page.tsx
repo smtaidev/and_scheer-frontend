@@ -1,4 +1,3 @@
-"use client";
 import AboutUs from "@/components/AboutUs";
 import Banner from "@/components/Banner";
 import ChooseUs from "@/components/ChooseUs";

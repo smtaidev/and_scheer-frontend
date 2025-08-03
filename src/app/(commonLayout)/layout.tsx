@@ -1,5 +1,6 @@
 import Footer from "@/components/shared/footer/Footer";
 import Navbar from "@/components/shared/Navbar/Navbar";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 const navitem = [
   { name: "Home", href: "/" },
@@ -13,6 +14,7 @@ export default function layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <div>
       {" "}

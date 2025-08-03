@@ -9,6 +9,10 @@ import EducationSection from "@/components/profile/EducationSection";
 import ContactInfoProfile from "@/components/profile/Contact_info";
 import Container from "@/components/ui/Container";
 import Cookies from "js-cookie";
+import { Loader } from "@/components/shared/MainLoader";
+
+
+
 
 const ProfilePage: React.FC = () => {
   const [profileData, setProfileData] = useState<any>(null);
@@ -219,12 +223,6 @@ const ProfilePage: React.FC = () => {
   };
 
   // Loader component with a spinner
-  const Loader = () => (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-solid rounded-full animate-spin border-t-blue-500"></div>
-    </div>
-  );
-
 
   return (
     <div>

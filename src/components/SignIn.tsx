@@ -1,6 +1,7 @@
 "use client";
 // import FormInput from '@/components/FormInput';
 import axios from "axios";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 import Input from "./ui/Input";
@@ -34,14 +35,11 @@ export default function SignInForm() {
     try {
       setIsLoading(true);
       const res = await loginUser(data);
-      console.log("📋 Login response:", res);
 
       if (res?.success) {
         console.log("✅ Server-side login successful - cookies set by server");
 
         const user = verifyToken(res.data.accessToken) as TLoggedUser;
-        console.log("👤 Decoded user:", user);
-        console.log("🚀 Dispatching setUser to Redux...");
         dispatch(setUser({ user: user, token: res.data.accessToken }));
         toast.success(res?.message);
         router.push("/");
@@ -81,9 +79,15 @@ export default function SignInForm() {
         const user = verifyToken(
           response?.data.data?.accessToken
         ) as TLoggedUser;
+
         dispatch(
           setUser({ user: user, token: response?.data.data?.accessToken })
         );
+
+        console.log(response);
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        localStorage.removeItem("myEmail");
+        Cookies.set("accessToken", response?.data.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }

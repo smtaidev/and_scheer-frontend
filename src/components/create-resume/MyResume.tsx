@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Cookies from "js-cookie";
-
+import Lottie from 'react-lottie'; 
 
 // Adjust path if different
 
@@ -94,6 +94,17 @@ export default function MyResume({ userId }: { userId: string | null }) {
   const storedUserId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
+     const defaultOptions = {
+    loop: true, // Whether the animation should loop
+    autoplay: true, // Whether the animation should start automatically
+    animationData: require('@/assets/banner/loading.json'), // Path to your animation file
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice', // Aspect ratio configuration
+    },
+  };
+
+
+
   useEffect(() => {
     setIsLoading(true);
     const fetchUserProfile = async () => {
@@ -132,7 +143,8 @@ export default function MyResume({ userId }: { userId: string | null }) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p className="text-xl font-medium text-gray-600">
-          Loading your resume...
+          <Lottie options={defaultOptions} height={400} width={400} />
+          <p className="text-center">Preparing your resume...</p>
         </p>
       </div>
     );
@@ -157,7 +169,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
         <div className="flex gap-12 py-16 ">
           <button
             onClick={downloadResume}
-            className="w-full bg-[#DBDBDB] text-black  py-3 px-6 rounded-lg hover:bg-gray-200 transition  font-medium"
+            className="w-full bg-[#DBDBDB] text-black  py-3 px-6 rounded-lg hover:bg-gray-200 transition  font-medium cursor-pointer"
             name="Download Resume"
           >
             Download Resume

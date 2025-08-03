@@ -32,9 +32,6 @@ const HeadAboutModal = ({
   setIsModalOpen, profileData, setProfileData
 }: any) => {
 
-  // if (!profileData) {
-  //   return <div>Loading...</div>;
-  // }
 
   const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {

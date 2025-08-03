@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import AllfinterCard from './AllfinterCard'
+import Link from 'next/link'
 
 export default function AllFilterSection() {
     const filters = [
@@ -33,7 +34,9 @@ export default function AllFilterSection() {
             {
                 filters?.map((filter) =>
                     <div key={filter.name} onClick={() => setCurrentFilter(filter.name)} className={`${currentFilter === filter.name ? "bg-scheer-primary rounded-lg" : ""}`}>
-                        <AllfinterCard key={filter.name} name={filter.name} />
+                      <Link href={"/jobSeeker/search-jobs"}>
+                       <AllfinterCard key={filter.name} name={filter.name} />
+                      </Link>  
                     </div>)
             }
         </div>

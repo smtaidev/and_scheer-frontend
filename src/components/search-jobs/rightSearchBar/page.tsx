@@ -1,5 +1,6 @@
 
 import PopularCompanyCard from '@/components/seeker-home/popularCompany/PopularCompanyCard'
+import { Loader } from '@/components/shared/MainLoader'
 import CourseCard from '@/components/Suggested/CourseCard'
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
 import { useGetRecommandedCourseQuery } from '@/redux/features/course/courseSlice'
@@ -29,7 +30,7 @@ export default function SerachRightSideBar() {
     }
   }, [res?.data]);
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p><Loader/> </p>
   console.log(companies)
 
 
@@ -37,7 +38,7 @@ export default function SerachRightSideBar() {
 
   return (
     <div>
-      <div className=" bg-white w-full  border-gray-200 ">
+      <div className=" bg-white w-full  border-gray-200 mb-12">
         {/* Top Company Section */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4">Top Company</h2>

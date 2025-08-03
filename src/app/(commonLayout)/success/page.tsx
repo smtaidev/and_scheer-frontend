@@ -9,6 +9,7 @@ import { validateAndRedirect, getRoleFromToken } from "@/lib/roleUtils";
 import JobSeekerPlan from "@/components/JobSeekerPlan";
 import EmployerPlan from "@/components/EmployerPlan";
 import { CheckCircle } from "lucide-react";
+import EmailVerificationPage from "../../../components/EmailVerify";
 
 export default function page() {
   const router = useRouter();
@@ -60,9 +61,9 @@ export default function page() {
 
 
       </div> */}
-       <div className="pt-6 flex flex-col items-center justify-center bg-white px-4">
+       {/* <div className="pt-6 flex flex-col items-center justify-center bg-white px-4"> */}
       {/* Success Icon */}
-      <div className="flex flex-col items-center mb-6 ">
+      {/* <div className="flex flex-col items-center mb-6 ">
         <CheckCircle className="w-16 h-16 text-green-500 mb-2" />
         <h1 className="text-2xl font-bold text-gray-800">
           Your email is successfully verified
@@ -76,7 +77,8 @@ export default function page() {
       
     </div>
        <JobSeekerPlan />
-        <EmployerPlan />
+        <EmployerPlan /> */}
+        <EmailVerificationPage/>
     </div>
 
   );

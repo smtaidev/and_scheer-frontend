@@ -1,40 +1,13 @@
 'use client';
 import React from 'react';
 import { CgArrowsV } from 'react-icons/cg';
-import { MoreHorizontal } from 'lucide-react';
 import Container from '@/components/ui/Container';
 import { useGetAppliedJobsQuery } from '@/redux/features/job/jobSlice';
 import Link from 'next/link';
+import { Loader } from '@/components/shared/MainLoader';
 
-const aiLogData = [
-  {
-    id: 1,
-    timestamp: 'Jun 30, 2025 | 10:45 AM',
-    userName: 'Rafiq Islam',
-    projectName: 'Skyline Tower',
-    action: 'AI Extracted FloorPlan.pdf',
-    status: 'Success',
-    notes: 'No issues found.',
-  },
-  {
-    id: 2,
-    timestamp: 'Jun 30, 2025 | 09:10 AM',
-    userName: 'Nusrat Jahan',
-    projectName: 'Green Valley',
-    action: 'AI Extraction Failed',
-    status: 'Failed',
-    notes: 'Unsupported file format.',
-  },
-  {
-    id: 3,
-    timestamp: 'Jun 29, 2025 | 03:33 PM',
-    userName: 'Afsar Hossain',
-    projectName: 'Bridge Point',
-    action: 'Updated certificate via AI',
-    status: 'Success',
-    notes: 'Manually reviewed post-extraction.',
-  },
-];
+
+
 
 const StatusBadge = ({ status }: { status: string }) => {
   const isSuccess = status === 'Success';
@@ -49,12 +22,6 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-const ActionButton = () => (
-  <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-    <MoreHorizontal size={16} className="text-gray-500" />
-  </button>
-);
-
 // Change Time Format
 const changeTimeFormat = (timeStr: string) => {
   // const timeStr = "2025-07-29T03:50:11.596Z";
@@ -67,10 +34,9 @@ export default function AppliedJobList() {
 
   const { data, isLoading, error } = useGetAppliedJobsQuery({});
 
-  const appliedJobs = data?.data || []; // Adjust based on your API response shape
-  console.log("Applied Jobs: ", appliedJobs);
+  const appliedJobs = data?.data || []; 
 
-  if (isLoading) return <p>Loading applied jobs...</p>;
+  if (isLoading) return <p className='min-h-[500px] flex items-center justify-center'><Loader/></p>;
   if (error) return <p>Failed to fetch applied jobs.</p>;
 
 

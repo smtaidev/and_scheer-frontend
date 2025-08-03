@@ -26,6 +26,8 @@ import {
   useGetMyProfileQuery,
 } from "@/redux/features/auth/auth";
 import axios from "axios";
+import { Loader } from "../shared/MainLoader";
+
 
 interface JobTitle {
   title: string;
@@ -81,8 +83,6 @@ export default function RecentJob({ title }: JobTitle) {
   }, [jobs?.data?.data]);
   // }, [jobs?.data, recomandationJobs?.data, myProfile?.data?.profileId])
 
-  console.log("Recent Jobs: ", jobs?.data?.data);
-
   return (
     <div className="bg-card ">
       <div className="bg-[#F8F8F8] ml-0  2xl:ml-44">
@@ -91,7 +91,7 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          {jobDataLoading && <p>Job Posts Loading.....</p>}
+          {jobDataLoading && <p><Loader/></p>}
 
           {!jobDataLoading && (
             <div className="relative">
