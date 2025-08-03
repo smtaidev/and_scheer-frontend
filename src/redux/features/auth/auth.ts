@@ -47,6 +47,13 @@ const authApi = baseUrlApi.injectEndpoints({
         body: resetData,
       }),
     }),
+    resendVerifyLink: build.mutation({
+      query: (email) => ({
+        url: "/auth/resend-verification-link",
+        method: "POST",
+        body: email,
+      }),
+    }),
 
       // Define an endpoint to refresh the token
       // refreshToken: build.mutation({
@@ -67,5 +74,5 @@ export const {
   useResetPasswordMutation,
   useGetMeQuery,
   useGetMyProfileQuery,
-  
+  useResendVerifyLinkMutation
 } = authApi;

@@ -169,7 +169,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
         <div className="flex gap-12 py-16 ">
           <button
             onClick={downloadResume}
-            className="w-full bg-[#DBDBDB] text-black  py-3 px-6 rounded-lg hover:bg-gray-200 transition  font-medium"
+            className="w-full bg-[#DBDBDB] text-black  py-3 px-6 rounded-lg hover:bg-gray-200 transition  font-medium cursor-pointer"
             name="Download Resume"
           >
             Download Resume

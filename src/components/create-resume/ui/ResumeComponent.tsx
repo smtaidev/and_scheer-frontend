@@ -37,7 +37,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
   return (
     // <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white min-h-screen overflow-hidden flex flex-col">
     // // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
-    <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
+    <div ref={printRef}  className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
       {/* Header Section */}
       <div className="p-8">
         <div className='p-8 flex gap-20'>
@@ -84,13 +84,13 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
             <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-blue pb-2">PORTFOLIO</h2>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <FaExternalLinkAlt className="w-4 h-4 text-[#ff46b8]" />
+                <FaExternalLinkAlt className=" text-[#ff46b8] pt-2 size-6" />
                 <a href={`${profileData?.profile?.socialMedia?.personal_website_url}`} className="text-[#2563EB] hover:underline text-sm">
                   Portfolio
                 </a>
               </div>
               <div className="flex items-center space-x-2">
-                <FaLinkedin className="w-4 h-4 text-[#3B82F6]" />
+                <FaLinkedin className=" text-[#3B82F6] pt-2 size-6" />
                 <a href={`${profileData.profile?.socialMedia?.linkedin_profile_url}`} className="text-[#2563EB] hover:underline text-sm">
                   LinkedIn
                 </a>
@@ -104,7 +104,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
             <ul className='flex justify-center items-start flex-col'>
               {profileData?.profile?.skills.map((skill: string) => (
                 <li key={skill} className="flex items-center  space-x-2">
-                  <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
+                  {/* <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div> */}
                   <span className='text-[#374151]'>{skill}</span>
                 </li>
               ))}
@@ -117,7 +117,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
             <ul>
               {profileData?.profile?.languages.map((lang: string, index: number | string) => (
                 <li key={index} className="flex items-center space-x-2">
-                  <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div>
+                  {/* <div className="w-1 h-1 bg-[#90CDF4] rounded-full"></div> */}
                   <span className='text-[#374151]'>{lang}</span>
                 </li>
               ))}
