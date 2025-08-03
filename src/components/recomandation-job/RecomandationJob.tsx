@@ -21,6 +21,7 @@ import { Job } from "@/types/AllTypes";
 import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
 import axios from "axios";
 import RecomandationJobCard from './RecomandationJobCard';
+import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page';
 
 interface JobTitle {
     title: string;
@@ -97,7 +98,7 @@ console.log(recomandationJobs?.data)
                     </h1>
 
                     {
-                        jobLoading && <p>Recomandation Job Posts Loading.....</p>
+                        jobLoading && <p><Loader/></p>
                     }
 
                     {

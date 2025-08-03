@@ -26,6 +26,7 @@ import {
   useGetMyProfileQuery,
 } from "@/redux/features/auth/auth";
 import axios from "axios";
+import { Loader } from "@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page";
 
 interface JobTitle {
   title: string;
@@ -91,7 +92,7 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          {jobDataLoading && <p>Job Posts Loading.....</p>}
+          {jobDataLoading && <p><Loader/></p>}
 
           {!jobDataLoading && (
             <div className="relative">

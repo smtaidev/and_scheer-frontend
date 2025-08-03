@@ -13,39 +13,39 @@ import { Department, WorkMode } from "@/types/categoryType/Category";
 import React, { useMemo, useState } from "react";
 
 const allLocation = [
-  { name: "Erdmannhausen", count: "(2706)" },
-  { name: "München", count: "(567)" },
-  { name: "Wembach", count: "(234)" },
-  { name: "Malgersdorf", count: "(187)" },
-  { name: "Neustetten", count: "(156)" },
-  { name: "The Black Forest", count: "(156)" },
-  { name: "Cologne Cathedral", count: "(156)" },
+  { name: "Erdmannhausen", count: "" },
+  { name: "München", count: "" },
+  { name: "Wembach", count: "" },
+  { name: "Malgersdorf", count: "" },
+  { name: "Neustetten", count: "" },
+  { name: "The Black Forest", count: "" },
+  { name: "Cologne Cathedral", count: "" },
 
   // { name: 'In velit eu est co', count: '(98)' },
   // { name: 'Exercitation sapient', count: '(87)' },
 ];
 
 const salaryRanges = [
-  { range: "$1000-$2000", count: "(1760)" },
-  { range: "$2000 - $5000", count: "(567)" },
-  { range: "$1000-$7000", count: "(876)" },
-  { range: "$9,000 - $12,000", count: "(345)" },
-  // { range: '80k - 1lakh', count: '(234)' },
+  { range: "$1000-$2000", count: "" },
+  { range: "$2000 - $5000", count: "" },
+  { range: "$1000-$7000", count: "" },
+  { range: "$9,000 - $12,000", count: "" },
+  // { range: '80k - 1lakh', count: '' },
   // { range: '1lakh - 2lakh', count: '(123)' },
   // { range: 'Negotiable', count: '(89)' },
 ];
 
 const educationQualifications = [
-  { qual: "Any Postgraduate", count: "(1240)" },
-  { qual: "Graduate", count: "(876)" },
-  { qual: "MSC", count: "(567)" },
-  { qual: "B.Sc Honours", count: "(456)" },
-  { qual: "B.Sc Engineer", count: "(345)" },
-  { qual: "Diploma Engineer", count: "(234)" },
+  { qual: "Any Postgraduate", count: "" },
+  { qual: "Graduate", count: "" },
+  { qual: "MSC", count: "" },
+  { qual: "B.Sc Honours", count: "" },
+  { qual: "B.Sc Engineer", count: "" },
+  { qual: "Diploma Engineer", count: "" },
 ];
 
 // Filter Sidebar Component
-export const FilterSidebar = ({ setFiltersData }: any) => {
+export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilterSidebarVisible }: any) => {
   const [experience, setExperience] = useState("0");
   const [showAll, setShowAll] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -172,8 +172,7 @@ export const FilterSidebar = ({ setFiltersData }: any) => {
 
     const response = await filterJobPostsTrigger(formData);
     setFiltersData(response?.data?.data?.data);
-    // const response = await filterJobPostsTrigger(formData);
-    console.log(response?.data?.data?.data);
+   setIsFilterSidebarVisible(!isFilterSidebarVisible)
   };
 
   return (

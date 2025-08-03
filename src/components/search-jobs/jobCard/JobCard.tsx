@@ -9,11 +9,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function JobCard({ job }: { job: Job }) {
-    console.log(job)
 
     const { data: comInfo } = useGetAllCompaniesQuery();
     const company = comInfo?.data?.find(p => p.id == job?.companyId);
-    console.log(company, "Here is filtered")
 
     return (
         <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full md:min-w-[666px]">

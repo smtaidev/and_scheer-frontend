@@ -16,7 +16,7 @@ export default function SearchJobPage() {
     // console.log(isFilterSidebarVisible)
 
     // console.log("Filter Data: ", filtersData);
-    console.log("Filter Data: ", filtersData?.length);
+    console.log("Filter Data: ", filtersData);
 
     useEffect(() => {
         console.log(filtersData)
@@ -25,12 +25,12 @@ export default function SearchJobPage() {
 
 
     return (
-        <div>
-            <AllCategory />
+        <div className="mt-8">
+            {/* <AllCategory /> */}
 
             {/* Toggle Button for FilterSidebar */}
             <button
-                className="px-4 py-2 border rounded-md shadow-md border-gray-200 ml-12 mb-4 lg:hidden"
+                className="px-4 py-2 border rounded-md shadow-md border-gray-200 ml-2 mb-4 lg:hidden"
                 onClick={() => setIsFilterSidebarVisible(!isFilterSidebarVisible)}
             >
                 All Filter
@@ -53,11 +53,12 @@ export default function SearchJobPage() {
     lg:block
   `}
                 >
-                    <FilterSidebar setFiltersData={setFiltersData} />
+                    <FilterSidebar setIsFilterSidebarVisible={setIsFilterSidebarVisible} isFilterSidebarVisible={isFilterSidebarVisible} setFiltersData={setFiltersData} />
                 </div>
 
 
                 <div className="flex-1 gap-5 px-4 md:px-6 lg:px-8 md:flex">
+
                     <JobList filtersData={filtersData} />
                     <SerachRightSideBar />
                 </div>

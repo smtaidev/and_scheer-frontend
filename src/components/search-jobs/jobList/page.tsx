@@ -3,144 +3,12 @@ import React, { useEffect, useState } from 'react'
 import JobCard from '../jobCard/JobCard';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { Job } from '@/types/AllTypes';
+import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page';
 
 
 export default function JobList({ filtersData }: any) {
 
-    // const jobs = [
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    //     {
-    //         company: "SM Technology",
-    //         title: "UI/UX Designer",
-    //         location: "Dhaka, Bangladesh (Onsite)",
-    //         rating: "2.9",
-    //         reviews: "4.0 (50 Reviews)",
-    //         skills: "Figma • Adobe Illustrator • Adobe Photoshop • Adobe XD(optional)",
-    //         salary: "4,500",
-    //         timePosted: "Updated 2 days ago"
-    //     },
-    // ];
-
-    console.log("Filters Data From the Job List Page: ", filtersData);
+console.log(filtersData)
 
     const [jobs, setJobs] = useState([])
 
@@ -161,9 +29,8 @@ export default function JobList({ filtersData }: any) {
 
     }, [allJob?.data, filtersData])
 
-    if (isLoading) return <p>All Job Posts Loading.....</p>
+    if (isLoading) return <p><Loader/></p>
 
-    console.log(jobs);
     return (
 
         <div>

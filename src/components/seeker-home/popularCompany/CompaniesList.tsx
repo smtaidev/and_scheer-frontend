@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PopularCompanyCard from './PopularCompanyCard'
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
 import { Company } from '@/types/AllTypes'
+import { Loader } from '@/app/(jobSeeker)/jobSeeker/(pages)/my-profile/page'
 
 export default function CompaniesList() {
 
@@ -18,8 +19,7 @@ export default function CompaniesList() {
          }
   },[res?.data]);
   
-  if(isLoading) return <p>Loading...</p>
-  console.log(companies)
+  if(isLoading) return <p className='flex items-center justify-center'><Loader/></p>
 
 
 
