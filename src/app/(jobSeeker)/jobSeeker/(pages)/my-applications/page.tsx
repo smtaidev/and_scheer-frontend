@@ -45,8 +45,11 @@ export default function AppliedJobList() {
 
       <div className="md:px-12   mx-3">
         {/* Header */}
-        <div className="py-4 border-gray-200">
+        <div className="py-4 border-gray-200 flex justify-between">
           <h2 className="text-lg md:text-[32px] font-semibold text-gray-900">Applied Job List</h2>
+          <Link className='mt-5 underline font-semibold' href={"/jobSeeker/interview-list"}>
+          Interview List
+          </Link>
         </div>
 
         {/* Table */}

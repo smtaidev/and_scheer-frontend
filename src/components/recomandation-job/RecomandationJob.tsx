@@ -35,8 +35,9 @@ export default function RecomandationJob({ title }: JobTitle) {
     // const { data: jobs } = useGetAllJobPostsQuery({});
     const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
-
-    const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+    const profileId = myProfile?.data?.profileId;
+    
+    const { data: recomandationJobs } = useRecomandationJobsQuery(profileId);
     const [jobLoading, setJobLoading] = useState(true);
 
     // console.log("Current User: ", currentUser?.data?.id);
