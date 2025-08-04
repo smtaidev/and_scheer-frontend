@@ -11,6 +11,7 @@ import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
+import { useGetMeQuery } from '@/redux/features/auth/auth';
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -23,20 +24,19 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const router=useRouter()
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
+    const {data:user}=useGetMeQuery({})
 
     // const handleApplyNow = () => {
     //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
     // }
     const handleApplyJob = async () => {
         setLoading(true);
-        const token=localStorage.getItem("accessToken");
-         toast.warning("Please Login first!")
-        if(!token) return router.push("/signIn");
+        if(!user.data) return router.push("/signIn");
        
         try {
             const jobId = currentCompany?.id;
             const response = await applyJob({ jobId });
-            console.log("Response: ", response);
+
 
             if (response && 'data' in response && response.data?.success) {
                 toast.success("Successfully applied for the job!");
@@ -49,10 +49,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 toast.warning(errorMessage);
                 setLoading(false)
             }
-
-
         } catch (error: any) {
-            console.error("Failed to apply:", error);
             toast.error(error.data.message)
             setLoading(false)
         }
@@ -137,7 +134,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 </button></>
                 }
                
-                <Link href={'/'}>
+                <Link href={'/jobSeeker/search-jobs'}>
                     <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
                         Back to Listing
                     </button>

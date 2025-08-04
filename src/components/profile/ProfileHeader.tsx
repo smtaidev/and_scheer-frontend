@@ -3,29 +3,65 @@ import AboutModal from "./modal/HeadAboutModal";
 import HeadAboutModal from "./modal/HeadAboutModal";
 import { useState } from "react";
 import Image from "next/image";
+import { useGetMeQuery, useUpdateContactInfoMutation } from "@/redux/features/auth/auth";
+import { FiEdit } from "react-icons/fi";
 
 const ProfileHeade = ({ profileData, setProfileData }: any) => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleAboutMode = () => {
     setIsModalOpen(true);
-    console.log("yes");
+
   };
+
+  const { data: user } = useGetMeQuery({});
+  const [updatePic] = useUpdateContactInfoMutation();
+
+  const handleProfile = async (e: any) => {
+    const file = e.target.files[0];
+    const name = profileData?.firstName
+
+    const formData = new FormData();
+
+
+    formData.append("data", JSON.stringify({ name }))
+    if (file) {
+      formData.append('file', file);
+    }
+
+
+    const res = await updatePic(formData);
+    console.log(res)
+  }
+
+
   return (
     <div className=" mx-auto bg-white shadow-sm border border-[#9191914D] rounded-lg p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
       {/* Profile Image */}
 
       {/* <div className="w-32 h-32 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden shadow-lg"> */}
-      <div className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
-        <Image
-          // src="/avatarPlaceholder.jpg"
-          src="/avatarPlaceholder1.png"
-          alt="Avatar"
-          className="w-full h-full object-cover"
-          height="200"
-          width="200"
-        />
+      <div className="relative">
+        <div className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden shadow-lg ">
+          <Image
+            // src="/avatarPlaceholder.jpg"
+            src={user?.data.profilePic || "/avatarPlaceholder1.png"}
+            alt="Avatar"
+            className="w-full h-full object-cover"
+            height="200"
+            width="200"
+          />
+          <label className="absolute bottom-3 right-2 bg-white p-1 rounded-full shadow-md cursor-pointer">
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleProfile}
+            />
+            <FiEdit className="h-4 w-4 text-prbg-primary" />
+          </label>
+        </div>
       </div>
+
 
 
       {/* Profile Info */}
