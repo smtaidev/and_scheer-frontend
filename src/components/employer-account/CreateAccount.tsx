@@ -10,17 +10,20 @@ import { useRouter } from "next/navigation";
 
 export default function CreateAccount() {
 
-    const {data:user}=useGetMeQuery({})
-    const router= useRouter()
+    const { data: user } = useGetMeQuery({})
+    const router = useRouter()
 
-    const handleEmployer=()=>{
+    const handleEmployer = () => {
 
-        if(user?.data.companyName){
+        if (!user) {
+            router.push("/signIn")
+            toast.warning("Please Login First!")
+        } else if (user?.data.companyName) {
             toast.warning("You already have a company account!")
-        }else if(user?.data.role !="EMPLOYEE"){
-         toast.warning(" Only Employer can create a company account!")
+        } else if (user?.data.role != "EMPLOYEE") {
+            toast.warning(" Only Employer can create a company account!")
         }
-        else{
+        else {
             router.push("/company-details")
         }
     }
@@ -48,10 +51,10 @@ export default function CreateAccount() {
                     <p className="text-gray-400 text-sm mb-4 md:mb-12 leading-[1.6]">
                         Follow these simple steps to set up your company profile and find the perfect  <br /> candidate for your team.
                     </p>
-             
-                        <button onClick={()=>handleEmployer()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 cursor-pointer transition">
-                            Start Now
-                        </button>
+
+                    <button onClick={() => handleEmployer()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 cursor-pointer transition">
+                        Start Now
+                    </button>
                 </div>
             </div>
         </Container>
