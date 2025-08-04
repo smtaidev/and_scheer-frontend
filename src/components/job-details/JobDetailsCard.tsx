@@ -1,7 +1,6 @@
 'use client'
 import { Job } from '@/types/AllTypes';
-import Image from 'next/image';
-import { toast } from "sonner"; // Assuming you're using the `sonner` library for toasts.
+import { toast } from "sonner";
 import React, { useState } from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
@@ -31,7 +30,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     // }
     const handleApplyJob = async () => {
         setLoading(true);
-        if(!user.data) return router.push("/signIn");
+        if(!user?.data) return router.push("/signIn");
        
         try {
             const jobId = currentCompany?.id;

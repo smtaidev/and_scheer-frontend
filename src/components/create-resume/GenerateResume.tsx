@@ -25,6 +25,9 @@ export default function GenerateResume({
   };
 
   const simulateLoading = () => {
+
+    
+
     setIsLoading(true);
     let currentProgress = 0;
     const interval = setInterval(() => {

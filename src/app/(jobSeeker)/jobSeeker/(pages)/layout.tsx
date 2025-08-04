@@ -18,6 +18,7 @@ export default function layout({
 }>) {
 
    const navitem=[
+    { name: "Home", href: "/jobSeeker/home" },
     { name: "Job", href: "/jobSeeker/job-details/jobs" },
     { name: "Company", href: "/jobSeeker/search-jobs" },
     // { name: "Course", href: "#" },

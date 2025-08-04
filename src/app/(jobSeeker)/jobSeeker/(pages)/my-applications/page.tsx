@@ -37,7 +37,7 @@ export default function AppliedJobList() {
   const appliedJobs = data?.data || []; 
 
   if (isLoading) return <p className='min-h-[500px] flex items-center justify-center'><Loader/></p>;
-  if (error) return <p>Failed to fetch applied jobs.</p>;
+  // if (error) return <p>Failed to fetch applied jobs.</p>;
 
 
   return (
@@ -45,12 +45,17 @@ export default function AppliedJobList() {
 
       <div className="md:px-12   mx-3">
         {/* Header */}
-        <div className="py-4 border-gray-200">
+        <div className="py-4 border-gray-200 flex justify-between">
           <h2 className="text-lg md:text-[32px] font-semibold text-gray-900">Applied Job List</h2>
+          <Link className='mt-5 underline font-semibold' href={"/jobSeeker/interview-list"}>
+          Interview List
+          </Link>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
+
+        {
+          appliedJobs && appliedJobs.length>0 ? <><div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
           <div className="min-w-[1000px]">
             {/* Table Header */}
             <div className="bg-primary text-white px-6 py-3 rounded-t-lg text-sm md:text-base lg:text-lg font-medium">
@@ -84,7 +89,24 @@ export default function AppliedJobList() {
               ))}
             </div>
           </div>
-        </div>
+        </div></>:<><div className="flex justify-center items-center h-[400px] bg-gray-50">
+  <div className="text-center p-8 rounded-lg bg-white shadow-md">
+    <div className="text-gray-500 text-xl font-medium">
+      No Application Found
+    </div>
+    <p className="mt-2 text-gray-400">
+      Please check your search or create a new application
+    </p>
+    {/* Optional button */}
+    <Link href={"/jobSeeker/job-details/jobs"}>
+    <button className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-green-600 transition cursor-pointer">
+      Apply for Jobs
+    </button>
+    </Link>
+  </div>
+</div></>
+        }
+        
       </div>
     </Container>
 

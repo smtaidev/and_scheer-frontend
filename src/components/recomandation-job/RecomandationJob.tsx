@@ -35,8 +35,9 @@ export default function RecomandationJob({ title }: JobTitle) {
     // const { data: jobs } = useGetAllJobPostsQuery({});
     const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
+    const profileId = myProfile?.data?.profileId;
     
-    const { data: recomandationJobs } = useRecomandationJobsQuery(myProfile?.data?.profileId);
+    const { data: recomandationJobs } = useRecomandationJobsQuery(profileId);
     const [jobLoading, setJobLoading] = useState(true);
 
     // console.log("Current User: ", currentUser?.data?.id);
@@ -83,7 +84,7 @@ export default function RecomandationJob({ title }: JobTitle) {
 
 
     // console.log(jobs);
-console.log(recomandationJobs?.data)
+    console.log(myProfile?.data?.profileId)
     useEffect(() => {
         if (recomandationJobs?.data?.recommendations) {
             setJobLoading(false);
@@ -97,10 +98,6 @@ console.log(recomandationJobs?.data)
                     <h1 className="text-2xl md:text-5xl font-semibold mb-4">
                         {title || "Recent Job"}{" "}
                     </h1>
-
-                    {
-                        jobLoading && <p><Loader/></p>
-                    }
 
                     {
                         !jobLoading && <div className="relative">
