@@ -123,7 +123,7 @@ export default function UserProfileCard() {
             <h1 className="text-4xl font-light text-gray-700 mb-2">{user?.fullName}</h1>
           )}
           <p className="text-sm font-medium text-gray-500 tracking-wider mb-6">
-            {user?.role === "EMPLOYEE" ? "Employee" : "Admin"}
+            {user?.role === "EMPLOYEE" ? "Employee" : user?.role }
           </p>
 
 
@@ -171,7 +171,7 @@ export default function UserProfileCard() {
                       day: "numeric",
                     })
                     : "N/A"} */}
-                     {user?.subscriptionType === "monthly" ? "Monthly" : user?.subscriptionType}
+                     {user?.subscriptionType === "monthly" ? "Monthly" : user?.subscriptionType || "N/A"}
                 </p>
               </div>
 

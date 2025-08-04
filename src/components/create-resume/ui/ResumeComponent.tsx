@@ -6,7 +6,6 @@ import { PiPhone } from 'react-icons/pi';
 import { TbMapPinCode } from 'react-icons/tb';
 import { RefObject } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { useGetMeQuery } from '@/redux/features/auth/auth';
 
 interface ResumeComponentProps {
   downloadResume: () => void;
@@ -32,13 +31,13 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
     return `${startFormatted} - ${endFormatted}`;
   }
 
-  const { data: user } = useGetMeQuery({});
+
 
 
   return (
     // <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white min-h-screen overflow-hidden flex flex-col">
     // // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
-    <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
+    <div ref={printRef}  className="p-5 border-0 border-[#2B93DD] mx-auto bg-white min-w-5xl">
       {/* Header Section */}
       <div className="p-8">
         <div className='p-8 flex gap-20'>
@@ -52,14 +51,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({ downloadResume, print
                 width={200}
               /> */}
               <div className='h-[150px] w-[150px] rounded-full bg-[#E5E7EB]  flex items-center justify-center'>
-                <Image
-                  // src="/avatarPlaceholder.jpg"
-                  src={user?.data.profilePic || "/avatarPlaceholder1.png"}
-                  alt="Avatar"
-                  className="w-full h-full object-cover"
-                  height="200"
-                  width="200"
-                />
+
               </div>
             </div>
           </div>

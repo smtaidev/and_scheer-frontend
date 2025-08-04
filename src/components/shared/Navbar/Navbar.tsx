@@ -247,7 +247,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   };
 
   const filteredNavItems = navItem.filter((item) => {
-    if (!user) {
+    if (!user || user?.role =="USER") {
       return item.name !== "For Job Seekers" && item.name !== "For Employers";
     }
     if (user?.role === "JOB_SEEKER" && item.name === "For Employers") {

@@ -10,10 +10,15 @@ import MyResume from "./MyResume";
 import Cookies from "js-cookie";
 import PersonalInformation from "./personalInfo";
 import SkillsExperience from "./SkillnExp";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const MainComponents = () => {
   const [step, setStep] = useState(1);
 
+  const {data:user}=useGetMeQuery({})
+  const router=useRouter();
   const [userId, setUserId] = useState<string | null>(null);
   const [formData, setNewForm] = useState({
     firstName: "",
@@ -124,6 +129,12 @@ const MainComponents = () => {
   };
 
   const onSubmit = async () => {
+
+    if(!user.data){
+        router.push("/signIn");
+        toast.error("Please Login First!")
+    }
+
     try {
       const sendForm = new FormData();
 
