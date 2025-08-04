@@ -83,7 +83,7 @@ export default function RecomandationJob({ title }: JobTitle) {
 
 
     // console.log(jobs);
-    console.log(recomandationJobs)
+    console.log(myProfile?.data?.profileId)
     useEffect(() => {
         if (recomandationJobs?.data?.recommendations) {
             setJobLoading(false);

@@ -1,23 +1,23 @@
 "use client";
 // import FormInput from '@/components/FormInput';
-import axios from "axios";
-import Cookies from "js-cookie";
-import Link from "next/link";
 import Image from "next/image";
-import Input from "./ui/Input";
-import { toast } from "sonner";
-import Logo from "./ui/MainLogo";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { TLoggedUser } from "@/types/reduxType";
-import { verifyToken } from "@/lib/verifyToken";
-import { GoogleLogin } from "@react-oauth/google";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
+import Logo from "./ui/MainLogo";
+import Input from "./ui/Input";
+import {
+  useSignInMutation,
+  useSignUpMutation,
+} from "@/redux/features/auth/auth";
+import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
-import { setUser } from "@/redux/features/auth/authSlice";
-import { loginUser } from "@/services/auth";
+import Cookies from "js-cookie";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 interface FormData {
   email: string;
@@ -25,59 +25,25 @@ interface FormData {
 }
 
 export default function SignInForm() {
-  const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm<FormData>();
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [sigInUser, { isLoading }] = useSignInMutation();
 
   const onSubmit = async (data: FormData) => {
     try {
-      setIsLoading(true);
-      console.log("🔄 Starting login process...");
-
-      const res = await loginUser(data);
-      console.log("📋 Login response:", res);
-
-      if (res?.success) {
-        console.log("✅ Login successful - cookies set by backend");
-        console.log("🍪 Full login response:", res);
-        console.log("🍪 Response data:", res.data);
-        console.log(
-          "🍪 Access token:",
-          res.data?.accessToken?.substring(0, 50) + "..."
-        );
-
-        if (!res.data?.accessToken) {
-          console.error("❌ No access token in response!");
-          toast.error("Login response missing access token");
-          return;
-        }
-
-        try {
-          const user = verifyToken(res.data.accessToken) as TLoggedUser;
-          console.log("👤 Decoded user:", user);
-
-          console.log("🚀 Dispatching setUser to Redux...");
-          dispatch(setUser({ user: user, token: res.data.accessToken }));
-          console.log("✅ Redux dispatch completed");
-
-          toast.success(res?.message);
-          router.push("/");
-          reset();
-        } catch (tokenError) {
-          console.error("❌ Error verifying token:", tokenError);
-          toast.error("Invalid token received");
-        }
-      } else {
-        console.log("❌ Login failed:", res?.message);
-        toast.error(res?.message || "Login failed");
+      const response = await sigInUser(data).unwrap();
+      console.log(response);
+      if (response?.success) {
+        // localStorage.setItem("accessToken", response?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
+        toast.success(response?.message);
+        router.push("/");
+        reset();
       }
-    } catch (err: any) {
-      console.error("❌ Login error:", err);
-      toast.error(err?.message || "Login failed");
-    } finally {
-      setIsLoading(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.data.message);
     }
   };
 
@@ -86,7 +52,7 @@ export default function SignInForm() {
   };
 
   const handleSuccess = async (credentialResponse: any) => {
-    console.log("yesToken= ", credentialResponse.credential);
+    console.log("yesTonek= ", credentialResponse.credential);
 
     try {
       // Send the credential to your server
@@ -98,22 +64,8 @@ export default function SignInForm() {
       );
 
       if (response?.data?.success) {
-        console.log(
-          "✅ Google login successful - backend sets HTTP-only cookies"
-        );
-
-        const user = verifyToken(
-          response?.data.data?.accessToken
-        ) as TLoggedUser;
-
-        dispatch(
-          setUser({ user: user, token: response?.data.data?.accessToken })
-        );
-
-        console.log("✅ Google login response:", response);
-        // ✅ Backend now sets HTTP-only cookies automatically
-        // No need to manually set cookies here
-        localStorage.removeItem("myEmail");
+        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }
@@ -142,7 +94,7 @@ export default function SignInForm() {
             width={588}
             layout="intrinsic"
           />
-        </div>
+        </div> 
 
         {/* Right: Form Section */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
