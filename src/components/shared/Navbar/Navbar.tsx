@@ -10,11 +10,10 @@ import {
   FaSignOutAlt,
   FaUser,
 } from "react-icons/fa";
-import { useGetMeQuery } from "@/redux/features/auth/auth";
 import { logOut } from "@/redux/features/auth/authSlice";
 import { clearTokens } from "@/lib/tokenUtils";
 import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
+import { useAppSelector } from "@/redux/hooks";
 import { X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -35,14 +34,15 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
-  const { data: me, refetch } = useGetMeQuery({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [user, setUser] = useState<string | any>("");
-  const [isLogned, setIsLogned] = useState<string | null>(null);
   const [searchView, setSearchView] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
+
+  // ✅ Get auth state from Redux instead of API calls
+  const { user, token } = useAppSelector((state) => state.auth);
+  const isLogned = !!user && !!token; // User is logged in if both user and token exist
 
   // detecting outside click
   const hiddenMenuByClick = useRef<HTMLDivElement>(null);
@@ -139,10 +139,6 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-    if (accessToken) {
-      setIsLogned(accessToken);
-    }
     const handleClickOutside = (event: MouseEvent) => {
       if (
         menuRef.current &&
@@ -152,10 +148,7 @@ export default function Navbar({ navItem }: NavbarProps) {
         setShowMenu(false);
       }
     };
-    if (me?.data) {
-      setUser(me?.data);
-    }
-    refetch();
+
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -164,7 +157,17 @@ export default function Navbar({ navItem }: NavbarProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showMenu, me?.data]);
+  }, [showMenu]);
+
+  // ✅ Log current auth state for debugging
+  useEffect(() => {
+    console.log("🔍 Navbar auth state:", {
+      hasUser: !!user,
+      userName: user?.fullName,
+      hasToken: !!token,
+      isLogned,
+    });
+  }, [user, token, isLogned]);
 
   const handleSearch = () => {
     console.log("first");
@@ -185,10 +188,8 @@ export default function Navbar({ navItem }: NavbarProps) {
     dispatch(logOut());
 
     // Clear local component state
-    setUser(null);
     setShowMenu(false);
     setShowDeleteModal(false);
-    setIsLogned(null);
 
     console.log("✅ All auth data cleared successfully");
     toast.success("Logged out successfully");

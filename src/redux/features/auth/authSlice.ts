@@ -15,6 +15,10 @@ const authSlice = createSlice({
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
+      console.log("✅ Redux auth state updated:", {
+        hasUser: !!user,
+        hasToken: !!token,
+      });
     },
     logOut: (state) => {
       console.log("🚪 LOGOUT ACTION TRIGGERED - Clearing auth state");

@@ -1,7 +1,5 @@
-import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { verifyToken } from "@/lib/verifyToken";
-import { clearTokens } from "@/lib/tokenUtils";
 import { TLoggedUser } from "@/types/reduxType";
 import { setUser, logOut } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -17,69 +15,30 @@ export const useTokenRefresh = () => {
       try {
         const decodedToken = verifyToken(token) as TLoggedUser;
         const currentTime = Date.now() / 1000;
-        const expiryBuffer = 2 * 60; // 2 minutes before expiry
+        // Dynamic buffer: Use 50% of token lifetime or minimum 5 seconds
+        const tokenLifetime = decodedToken.exp - decodedToken.iat;
+        const expiryBuffer = Math.max(5, tokenLifetime * 0.5); // 50% of lifetime or 5 seconds
 
-        // If token will expire soon, refresh it
+        console.log("🔍 Token check:", {
+          timeUntilExpiry: Math.round(decodedToken.exp - currentTime),
+          expiryBuffer: Math.round(expiryBuffer),
+          willRefresh: decodedToken.exp < currentTime + expiryBuffer,
+        });
+
+        // If token will expire soon or is expired, refresh it
         if (decodedToken.exp < currentTime + expiryBuffer) {
           console.log("🔄 Token expiring soon, auto-refreshing...");
 
-          console.log("🍪 Available cookies for refresh:", document.cookie);
-          const refreshToken = Cookies.get("refreshToken");
-          console.log(
-            "🔑 Refresh token found for auto-refresh:",
-            !!refreshToken
-          );
-
-          if (!refreshToken) {
-            console.log("❌ No refresh token available for auto-refresh");
-            clearTokens();
-            dispatch(logOut());
-            return;
-          }
-
-          // Check if refresh token is valid
-          try {
-            const refreshTokenDecoded = verifyToken(
-              refreshToken
-            ) as TLoggedUser;
-            const currentTime = Date.now() / 1000;
-            console.log(
-              "🔍 Refresh token expiry:",
-              new Date(refreshTokenDecoded.exp * 1000)
-            );
-            console.log("🔍 Current time:", new Date());
-            console.log(
-              "🔍 Refresh token expired?",
-              refreshTokenDecoded.exp < currentTime
-            );
-
-            if (refreshTokenDecoded.exp < currentTime) {
-              console.log("💥 Refresh token is expired! Logging out...");
-              clearTokens();
-              dispatch(logOut());
-              return;
-            }
-          } catch (error) {
-            console.log("⚠️ Could not decode refresh token:", error);
-            console.log(
-              "🔍 Refresh token content:",
-              refreshToken.substring(0, 50) + "..."
-            );
-          }
-
-          console.log(
-            "📤 Sending refresh request with token:",
-            refreshToken.substring(0, 50) + "..."
-          );
+          console.log("📤 Sending refresh request via HTTP-only cookies...");
 
           const response = await fetch(
-            "http://localhost:5005/api/v1/auth/refresh-token",
+            "http://172.252.13.71:5005/api/v1/auth/refresh-token",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              credentials: "include", // refreshToken sent automatically via HTTP-only cookie
+              credentials: "include", // RefreshToken sent automatically via HTTP-only cookie
             }
           );
 
@@ -89,16 +48,9 @@ export const useTokenRefresh = () => {
             if (data?.success && data?.data?.accessToken) {
               console.log("✅ Token auto-refreshed successfully");
               console.log(
-                "🔄 New refresh token automatically set via HTTP-only cookie"
+                "🔄 New tokens automatically set via HTTP-only cookies by backend"
               );
               const newUser = verifyToken(data.data.accessToken) as TLoggedUser;
-
-              // Save new token
-              Cookies.set("accessToken", data.data.accessToken, {
-                expires: 7,
-                sameSite: "lax",
-                secure: process.env.NODE_ENV === "production",
-              });
 
               dispatch(
                 setUser({
@@ -108,18 +60,48 @@ export const useTokenRefresh = () => {
               );
             } else {
               console.log("❌ Auto-refresh failed, logging out");
-              clearTokens();
               dispatch(logOut());
             }
           } else {
             console.log("❌ Auto-refresh request failed, logging out");
-            clearTokens();
             dispatch(logOut());
           }
         }
       } catch (error) {
-        console.error("❌ Error during auto-refresh:", error);
-        clearTokens();
+        console.error("❌ Error during token check:", error);
+
+        // Don't immediately logout on decode errors, try refresh first
+        console.log("🔄 Attempting refresh due to token decode error...");
+
+        try {
+          const response = await fetch(
+            "http://172.252.13.71:5005/api/v1/auth/refresh-token",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data?.success && data?.data?.accessToken) {
+              const newUser = verifyToken(data.data.accessToken) as TLoggedUser;
+              dispatch(
+                setUser({ user: newUser, token: data.data.accessToken })
+              );
+              console.log("✅ Recovered from token error via refresh");
+              return;
+            }
+          }
+        } catch (refreshError) {
+          console.error("❌ Recovery refresh failed:", refreshError);
+        }
+
+        // Only logout if refresh also fails
+        console.log("❌ All recovery attempts failed, logging out");
         dispatch(logOut());
       }
     };
@@ -127,8 +109,8 @@ export const useTokenRefresh = () => {
     // Check token immediately
     checkAndRefreshToken();
 
-    // Set up interval to check every minute
-    const interval = setInterval(checkAndRefreshToken, 60 * 1000);
+    // Set up interval to check every 5 seconds for short-lived tokens
+    const interval = setInterval(checkAndRefreshToken, 5 * 1000);
 
     return () => clearInterval(interval);
   }, [token, dispatch]);
