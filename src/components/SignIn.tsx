@@ -34,21 +34,47 @@ export default function SignInForm() {
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
+      console.log("🔄 Starting login process...");
+
       const res = await loginUser(data);
+      console.log("📋 Login response:", res);
 
       if (res?.success) {
-        console.log("✅ Server-side login successful - cookies set by server");
+        console.log("✅ Login successful - cookies set by backend");
+        console.log("🍪 Full login response:", res);
+        console.log("🍪 Response data:", res.data);
+        console.log(
+          "🍪 Access token:",
+          res.data?.accessToken?.substring(0, 50) + "..."
+        );
 
-        const user = verifyToken(res.data.accessToken) as TLoggedUser;
-        dispatch(setUser({ user: user, token: res.data.accessToken }));
-        toast.success(res?.message);
-        router.push("/");
-        reset();
+        if (!res.data?.accessToken) {
+          console.error("❌ No access token in response!");
+          toast.error("Login response missing access token");
+          return;
+        }
+
+        try {
+          const user = verifyToken(res.data.accessToken) as TLoggedUser;
+          console.log("👤 Decoded user:", user);
+
+          console.log("🚀 Dispatching setUser to Redux...");
+          dispatch(setUser({ user: user, token: res.data.accessToken }));
+          console.log("✅ Redux dispatch completed");
+
+          toast.success(res?.message);
+          router.push("/");
+          reset();
+        } catch (tokenError) {
+          console.error("❌ Error verifying token:", tokenError);
+          toast.error("Invalid token received");
+        }
       } else {
+        console.log("❌ Login failed:", res?.message);
         toast.error(res?.message || "Login failed");
       }
     } catch (err: any) {
-      console.log(err);
+      console.error("❌ Login error:", err);
       toast.error(err?.message || "Login failed");
     } finally {
       setIsLoading(false);
@@ -84,10 +110,10 @@ export default function SignInForm() {
           setUser({ user: user, token: response?.data.data?.accessToken })
         );
 
-        console.log(response);
-        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
+        console.log("✅ Google login response:", response);
+        // ✅ Backend now sets HTTP-only cookies automatically
+        // No need to manually set cookies here
         localStorage.removeItem("myEmail");
-        Cookies.set("accessToken", response?.data.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }

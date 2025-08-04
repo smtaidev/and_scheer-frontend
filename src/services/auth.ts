@@ -1,8 +1,4 @@
-"use server";
-
-import { jwtDecode } from "jwt-decode";
-import { cookies } from "next/headers";
-
+// ✅ CLIENT-SIDE login function
 export const loginUser = async (userData: {
   email: string;
   password: string;
@@ -14,31 +10,29 @@ export const loginUser = async (userData: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
-      credentials: "include", // Include HTTP-only cookies
+      credentials: "include",
     });
 
     const result = await res.json();
 
-    if (result?.success) {
-      (await cookies()).set("accessToken", result?.data?.accessToken);
-      (await cookies()).set("refreshToken", result?.data?.refreshToken);
-    }
+    // ✅ Backend now sets HTTP-only cookies automatically
+    // No need to manually set cookies here
+    console.log("✅ Login response received, HTTP-only cookies set by backend");
 
     return result;
   } catch (err: any) {
-    return Error(err);
+    console.error("❌ Login error:", err);
+    return { success: false, message: "Login failed" };
   }
 };
 
-export const getCurrentUser = async () => {
-  const accessToken = (await cookies()).get("accessToken")?.value;
-
-  let decodedData = null;
-
-  if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
-    return decodedData;
-  } else {
+// ✅ Get current user from Redux state (client-side)
+export const getCurrentUser = () => {
+  try {
+    // Since we're using HTTP-only cookies, we can't access them from client
+    // Get user from Redux state instead
+    return null;
+  } catch (err) {
     return null;
   }
 };
@@ -52,21 +46,55 @@ export const getNewToken = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", // RefreshToken sent automatically via HTTP-only cookie
+      }
+    );
+
+    const result = await res.json();
+
+    console.log("🔄 Refresh result:", result);
+
+    if (result?.success) {
+      console.log("✅ Token refreshed successfully");
+      console.log(
+        "🔄 New tokens automatically set via HTTP-only cookies by backend"
+      );
+    }
+
+    return result;
+  } catch (err: any) {
+    console.error("❌ Token refresh error:", err);
+    return { success: false, message: "Token refresh failed" };
+  }
+};
+
+// Client-side version for RTK Query
+export const refreshTokenClient = async () => {
+  try {
+    const res = await fetch(
+      `http://172.252.13.71:5005/api/v1/auth/refresh-token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // RefreshToken sent automatically via HTTP-only cookie
       }
     );
 
     const result = await res.json();
 
     if (result?.success) {
-      console.log("✅ Token refreshed via server action");
       console.log(
-        "🔄 New refresh token automatically set via HTTP-only cookie"
+        "✅ Client refresh successful, HTTP-only cookies updated by backend"
       );
+      // Return the new token so RTK Query can use it
+      return result?.data?.accessToken;
     }
 
-    return result;
+    return null;
   } catch (err: any) {
-    return Error(err);
+    console.error("Token refresh failed:", err);
+    return null;
   }
 };

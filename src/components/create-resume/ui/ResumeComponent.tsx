@@ -6,6 +6,7 @@ import { PiPhone } from "react-icons/pi";
 import { TbMapPinCode } from "react-icons/tb";
 import { RefObject } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 interface ResumeComponentProps {
   downloadResume: () => void;
