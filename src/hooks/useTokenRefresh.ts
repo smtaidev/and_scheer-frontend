@@ -15,9 +15,8 @@ export const useTokenRefresh = () => {
       try {
         const decodedToken = verifyToken(token) as TLoggedUser;
         const currentTime = Date.now() / 1000;
-        // Dynamic buffer: Use 50% of token lifetime or minimum 5 seconds
         const tokenLifetime = decodedToken.exp - decodedToken.iat;
-        const expiryBuffer = Math.max(5, tokenLifetime * 0.5); // 50% of lifetime or 5 seconds
+        const expiryBuffer = Math.max(5, tokenLifetime * 0.5);
 
         console.log("🔍 Token check:", {
           timeUntilExpiry: Math.round(decodedToken.exp - currentTime),
