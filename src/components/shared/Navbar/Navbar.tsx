@@ -345,12 +345,12 @@ setIsLogned(false)
                   animate="visible"
                   exit="exit"
                   variants={profileVariants}
-                  className="absolute top-12 -right-0 min-w-[120px] bg-white/20 backdrop-blur-xl z-50"
+                  className="absolute top-12 -right-0 min-w-[120px] bg-white/50 backdrop-blur-xl rounded-xl z-50 border border-gray-200"
                 >
                   {isLogned ? (
                     <motion.div
                       onClick={() => setShowMenu(false)}
-                      className="w-72  shadow-md rounded-xl p-4 space-y-2 border border-gray-200"
+                      className="w-72   p-4 space-y-2 "
                     >
                       <MenuItem icon={<FaUser />} label="My Profile" />
                       <div className="border-b border-gray-300 my-2"></div>

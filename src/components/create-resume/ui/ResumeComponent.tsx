@@ -59,9 +59,9 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
           <div className="pr-0">
             <div className="w-48  h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
               <Image
-                src={myUser?.data.profilePic || "/man.png"} // Fallback image
+                src={myUser?.data.profilePic || "/avatarPlaceholder1.png"} // Fallback image
                 alt="image"
-                className="w-full h-full rounded-full justify-center object-center"
+                className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
                 width={200}
               />
@@ -213,7 +213,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
           )}
 
           {/* Training */}
-          {profileData?.profile?.certifications && (
+          {profileData?.profile?.certifications.length>0 && (
             <div className="mb-8">
               <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">
                 TRAINING / CERTIFICATION
