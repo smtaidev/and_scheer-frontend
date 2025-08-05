@@ -3,6 +3,7 @@ import React from 'react';
 import { CgArrowsV } from 'react-icons/cg';
 import { Link2Icon, MoreHorizontal } from 'lucide-react';
 import Container from '@/components/ui/Container';
+import Link from 'next/link';
 
 const aiLogData = [
   {
@@ -69,37 +70,54 @@ export default function InterviewSheduler() {
         {/* Table Container */}
         <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
           {/* Force horizontal scroll */}
-          <div className="min-w-[600px]">
-            {/* Table Header */}
-            <div className="bg-primary px-6 rounded-t-lg">
-              <div className="grid grid-cols-12 gap-4 py-3 text-white text-md lg:text-xl ">
-                <div className="col-span-2 flex items-center">Company Name <CgArrowsV className="my-auto ml-1" /></div>
-                <div className="col-span-2 flex items-center">Interviewer name <CgArrowsV className="my-auto ml-1" /></div>
-                <div className="col-span-2 flex items-center">Position <CgArrowsV className="my-auto ml-1" /></div>
-                <div className="col-span-2 flex items-center">Interview Date <CgArrowsV className="my-auto ml-1" /></div>
-                <div className="col-span-2 flex items-center">Interview Link <CgArrowsV className="my-auto ml-1" /></div>
-                <div className="col-span-2 flex items-center">Action <CgArrowsV className="my-auto ml-1" /></div>
+          {
+            aiLogData ? <><div className="flex justify-center items-center h-[400px] bg-gray-50">
+              <div className="text-center p-8 rounded-lg bg-white shadow-md">
+                <div className="text-gray-500 text-xl font-medium">
+                  No Interview Found
+                </div>
+                <p className="mt-2 text-gray-400">
+                  Check the applied jobs and wait for the interview.
+                </p>
+
               </div>
             </div>
+            </> : <>
 
-            {/* Table Body */}
-            <div className="divide-y divide-gray-200">
-              {aiLogData.map((row) => (
-                <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-                  <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-scheer-primary-dark">
-                    <div className="col-span-2">{row.timestamp}</div>
-                    <div className="col-span-2">{row.userName}</div>
-                    <div className="col-span-2">{row.projectName}</div>
-                    <div className="col-span-2">{row.action}</div>
-                    <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
-                      <Link2Icon /> interview link
-                    </div>
-                    <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">Chat Now</div>
+              {/* <div className="min-w-[600px]">
+
+                <div className="bg-primary px-6 rounded-t-lg">
+                  <div className="grid grid-cols-12 gap-4 py-3 text-white text-md lg:text-xl ">
+                    <div className="col-span-2 flex items-center">Company Name <CgArrowsV className="my-auto ml-1" /></div>
+                    <div className="col-span-2 flex items-center">Interviewer name <CgArrowsV className="my-auto ml-1" /></div>
+                    <div className="col-span-2 flex items-center">Position <CgArrowsV className="my-auto ml-1" /></div>
+                    <div className="col-span-2 flex items-center">Interview Date <CgArrowsV className="my-auto ml-1" /></div>
+                    <div className="col-span-2 flex items-center">Interview Link <CgArrowsV className="my-auto ml-1" /></div>
+                    <div className="col-span-2 flex items-center">Action <CgArrowsV className="my-auto ml-1" /></div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+
+            
+                <div className="divide-y divide-gray-200">
+                  {aiLogData?.map((row: any) => (
+                    <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                      <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-scheer-primary-dark">
+                        <div className="col-span-2">{row.timestamp}</div>
+                        <div className="col-span-2">{row.userName}</div>
+                        <div className="col-span-2">{row.projectName}</div>
+                        <div className="col-span-2">{row.action}</div>
+                        <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
+                          <Link2Icon /> interview link
+                        </div>
+                        <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">Chat Now</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div> */}
+              </>
+          }
+
         </div>
 
       </div>
