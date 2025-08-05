@@ -84,4 +84,5 @@ export const {
   useGetMyProfileQuery,
   useResendVerifyLinkMutation,
   useUpdateContactInfoMutation,
+  useRefreshTokenMutation
 } = authApi;

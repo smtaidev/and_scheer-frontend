@@ -37,6 +37,7 @@ export default function SignInForm() {
       if (response?.success) {
         // localStorage.setItem("accessToken", response?.data?.accessToken);
         Cookies.set("accessToken", response?.data?.accessToken);
+        Cookies.set("refreshToken", response?.data?.refreshToken);
         toast.success(response?.message);
         router.push("/");
         reset();

@@ -32,13 +32,13 @@ type NavbarProps = {
   navItem: NavItem[];
 };
 
-export default function Navbar({ navItem }: NavbarProps) {
+export default function FloatNavbar({ navItem }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchView, setSearchView] = useState(false);
-  const [isLogned, setIsLogned] = useState(false)
+  const [isLogned,setIsLogned]=useState(false)
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   // ✅ Get auth state from Redux instead of API calls
   const { token } = useAppSelector((state) => state.auth);
   const user = myUser?.data
-  // User is logged in if both user and token exist
+// User is logged in if both user and token exist
   const hiddenMenuByClick = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,11 +74,11 @@ export default function Navbar({ navItem }: NavbarProps) {
       setSearchView(false);
     }
     refetch();
-    if (user) {
+    if(user){
 
       setIsLogned(true);
     }
-
+    
   }, [pathname, user]);
 
   const MenuItem = ({
@@ -190,24 +190,22 @@ export default function Navbar({ navItem }: NavbarProps) {
   const handleDelete = () => {
 
     Cookies.remove("accessToken");
-    
+    refetch()
     clearTokens();
-    setIsLogned(false)
-    setTimeout(() => setIsLogned(false), 0);
+setIsLogned(false)
+  setTimeout(() => setIsLogned(false), 0);
     // Clear Redux auth state
     dispatch(logOut());
- 
+
     // Clear local component state
     setShowMenu(false);
     setShowDeleteModal(false);
 
 
     toast.success("Logged out successfully");
-    window.location.reload();
-    window.location.href = "/";
-
-    setTimeout(() => router.push("/"), 100);
-    
+    window.location.reload()
+   
+     setTimeout(()=> router.push("/"),100);
   };
 
   // Animation variants for profile dropdown
@@ -285,18 +283,18 @@ export default function Navbar({ navItem }: NavbarProps) {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
-          <button
+          {/* <button
             onClick={() => handleSearch()}
             className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${searchView ? "hidden" : ""
               }`}
           >
             <FaSearch />
             Search
-          </button>
-          <span
+          </button> */}
+          {/* <span
             className={`w-0.5 h-6 bg-gray-300 ${searchView ? "hidden" : "inline-block"
               }`}
-          ></span>
+          ></span> */}
           {Array.isArray(filteredNavItems) &&
             filteredNavItems.map((item, index) => (
               <React.Fragment key={item.name}>
@@ -496,13 +494,7 @@ export default function Navbar({ navItem }: NavbarProps) {
           onClick={handleSearch}
         ></div>
       )}
-      <div
-        className={`absolute bg-white border-t-2 border-gray-400 w-full py-12 transform transition-all duration-500 ease-out z-10 ${animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"
-          }`}
-      >
-        <SearchSection setAnimate={setAnimate} animate={animate} />
-      </div>
-
+    
       {/* modal logout */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/20 bg-opacity-50 flex items-center justify-center z-50 p-4">
