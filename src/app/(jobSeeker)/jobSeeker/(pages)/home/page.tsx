@@ -17,9 +17,10 @@ export default function JobSeekerHomePage() {
 
   return (
     <div>
+ 
+      <RecomandationJob title={title}></RecomandationJob>
       <SeekerBanner />
       {/* <RecentJob title={title}></RecentJob> */}
-      <RecomandationJob title={title}></RecomandationJob>
       <TopCategory />
       <RecentUpload />
       <PopularCompany />

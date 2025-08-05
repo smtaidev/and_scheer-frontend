@@ -36,7 +36,7 @@ export default function RecomandationJob({ title }: JobTitle) {
     const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
     const profileId = myProfile?.data?.profileId;
-    
+
     const { data: recomandationJobs } = useRecomandationJobsQuery(profileId);
     const [jobLoading, setJobLoading] = useState(true);
 
@@ -95,9 +95,15 @@ export default function RecomandationJob({ title }: JobTitle) {
         <div className="bg-card ">
             <div className="bg-[#F8F8F8] ml-0  2xl:ml-44">
                 <div className=" py-15  px-11 md:px-15">
-                    <h1 className="text-2xl md:text-5xl font-semibold mb-4">
-                        {title || "Recent Job"}{" "}
-                    </h1>
+                    {
+                        title ? <> <h1 className="text-2xl md:text-5xl font-semibold ">
+                            {title || "Recent Job"}{" "}
+                        </h1>
+                        <p className='mb-4 mt-1 md:mt-3  text-secondary text-xs md:text-xl'>Jobs found for you based on your profile and application</p></> : <> <h1 className="text-2xl md:text-5xl font-semibold mb-4">
+                            {"Recent Job"}
+                        </h1></>
+                    }
+
 
                     {
                         !jobLoading && <div className="relative">

@@ -1,28 +1,35 @@
 "use client";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 import { useGetCompanyNamesQuery } from "@/redux/features/filters/filterSlice";
 import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaBriefcase, FaSearch } from "react-icons/fa";
+import { FaBriefcase, FaHashtag, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
     jobName: string;
-    company: string;
+    zipCode: string;
     location: string;
   }
 
+  const [searchJobs, setSearchJobs] = useState<any[]>([]);
+  const [showResults, setShowResults] = useState(false);  
+  
+
   const { register, handleSubmit } = useForm<SearchFormInputs>();
   const { data: info } = useGetAllJobPostsQuery({});
+
+  const {data:user}=useGetMeQuery({})
+
+  const { data: comName } = useGetCompanyNamesQuery({});
   const allJobsPost = info?.data?.data || [];
 
   const [showAllCompanies, setShowAllCompanies] = useState(false);
-  const { data: comName } = useGetCompanyNamesQuery({});
   const allCompany = comName?.data;
 
-  const [searchJobs, setSearchJobs] = useState<any[]>([]);
-  const [showResults, setShowResults] = useState(false);  //👈 Controls visibility of results
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -37,8 +44,8 @@ export default function SearchField({ setAnimate, animate }: any) {
       const titleMatch = data.jobName
         ? job.title.toLowerCase().includes(data.jobName.toLowerCase())
         : true;
-      const companyMatch = data.company
-        ? job.company?.companyName.toLowerCase().includes(data.company.toLowerCase())
+      const companyMatch = data.zipCode
+        ? job.company?.companyName.toLowerCase().includes(data.zipCode.toLowerCase())
         : true;
       const locationMatch = data.location
         ? job?.location.toLowerCase().includes(data.location.toLowerCase())
@@ -51,7 +58,9 @@ export default function SearchField({ setAnimate, animate }: any) {
     setShowResults(true); // 👈 Show results after search
   };
 
-  // 👇 Detect click outside
+  const currentRoute=usePathname()
+
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -79,7 +88,31 @@ export default function SearchField({ setAnimate, animate }: any) {
               {...register("jobName")}
             />
           </div>
-          {/* Search Button */}
+          {
+            user?.data?.role=="JOB_SEEKER" && currentRoute.includes("/jobSeeker")? <>  {/* Location Input */}
+          <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+            <FaMapMarkerAlt className="text-gray-500" />
+            <input
+              type="text"
+              placeholder="Location (Germany)"
+              className="flex-1 bg-transparent focus:outline-none"
+              {...register("location")}
+            />
+          </div>
+
+          {/* Zip Code Input */}
+          <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+            <FaHashtag className="text-gray-500" />
+            <input
+              type="text"
+              placeholder="Zip code"
+              className="flex-1 bg-transparent focus:outline-none w-24"
+              {...register("zipCode")}
+            />
+          </div></>:<></>
+          }
+        
+
           <button
             type="submit"
             className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded bg-neutral-700 hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer"
