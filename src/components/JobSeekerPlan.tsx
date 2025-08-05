@@ -46,7 +46,7 @@ export default function JobSeekerPlan() {
           description="Choose the Right Plan for Your Career."
         ></ComponentHeader>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 px-4 md:px-0">
+        <div className="flex justify-center flex-wrap gap-6 px-4 md:px-0">
           {SeekerPlan?.map((plan: any) => (
             <div key={plan?.id} className="md:flex justify-center">
               <PackageCard
@@ -56,11 +56,11 @@ export default function JobSeekerPlan() {
                 permissions={plan?.features}
                 // Button Text will be "Active" if the planId matches the user's planId
                 buttonText={
-                  (user?.data.planId === plan?.id && ((user?.data.isSubscribed === "true") ||
-                    user?.data.totalPayPerJobCount > 0))
+                  user?.data.planId === plan?.id && new Date(user?.data.planExpiration) > new Date()
                     ? "Active"
-                    : "Get Started"
+                    : ""
                 }
+
                 onButtonClick={() => {
                   // Only allow navigation to checkout if the plan is not active
                   if (user?.data.planId !== plan?.id) {

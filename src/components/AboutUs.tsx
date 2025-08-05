@@ -3,9 +3,22 @@ import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
 import Link from "next/link";
+import { useRefreshTokenMutation } from "@/redux/features/auth/auth";
 
 
 export default async function AboutUs() {
+
+
+  const [refresh]=useRefreshTokenMutation();
+
+  const token=async()=>{
+
+    const res = await refresh({});
+    console.log(res);
+
+  }
+
+  // token();
 
 
 

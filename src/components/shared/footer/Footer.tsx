@@ -13,13 +13,13 @@ const Footer: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start justify-between gap-6">
               {/* Navigation Links */}
               <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                <a href="#" className="hover:text-green-400">
+                <a href="/#" className="hover:text-green-400">
                   Home
                 </a>
-                <a href="#about" className="hover:text-green-400">
+                <a href="/#about" className="hover:text-green-400">
                   About Us
                 </a>
-                <a href="course" className="hover:text-green-400">
+                <a href="/#course" className="hover:text-green-400">
                   Courses
                 </a>
                 <a href="/create-account" className="hover:text-green-400">
