@@ -126,8 +126,8 @@ export default function Navbar({ navItem }: NavbarProps) {
             </Link>
           </>
         )
-      ) : label === "Download My Resume" ? (
-        <Link className="flex gap-3" href="/jobSeeker/resume-download">
+      ) : label === "Find Your Job" ? (
+        <Link className="flex gap-3" href="/jobSeeker/home">
           <div className="text-xl">{icon}</div>
           <span>{label}</span>
         </Link>
@@ -315,7 +315,7 @@ setIsLogned(false)
               onClick={toggleMenu}
               className="flex items-center gap-2 cursor-pointer"
             >
-              <p className="flex items-center hover:scale-105 transition-all duration-300">
+              <p className="flex items-center  transition-all duration-300">
                 {isLogned ? (
                   <>
                     <motion.div
@@ -345,18 +345,18 @@ setIsLogned(false)
                   animate="visible"
                   exit="exit"
                   variants={profileVariants}
-                  className="absolute top-12 -right-0 min-w-[120px] z-50"
+                  className="absolute top-12 -right-0 min-w-[120px] bg-white/20 backdrop-blur-xl z-50"
                 >
                   {isLogned ? (
                     <motion.div
                       onClick={() => setShowMenu(false)}
-                      className="w-72 bg-white/80 backdrop-blur-xl shadow-md rounded-xl p-4 space-y-2 border border-gray-200"
+                      className="w-72  shadow-md rounded-xl p-4 space-y-2 border border-gray-200"
                     >
                       <MenuItem icon={<FaUser />} label="My Profile" />
                       <div className="border-b border-gray-300 my-2"></div>
                       <MenuItem
-                        icon={<FaDownload />}
-                        label="Download My Resume"
+                        icon={<FaSearch />}
+                        label="Find Your Job"
                         active
                       />
                       <div className="border-b border-gray-300 my-2"></div>
@@ -418,7 +418,7 @@ setIsLogned(false)
                   onClick={toggleMenu}
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <p className="flex items-center hover:scale-105 transition-all duration-300">
+                  <p className="flex items-center  transition-all duration-300">
                     {isLogned ? (
                       <>
                         <motion.div
@@ -447,11 +447,11 @@ setIsLogned(false)
                       animate="visible"
                       exit="exit"
                       variants={profileVariants}
-                      className="absolute  top-30 left-17 z-50"
+                      className="absolute  top-30 left-17 z-50 bg-white/20 backdrop-blur-xl rounded-xl border border-gray-200"
                     >
                       {isLogned ? (
                         <motion.div onClick={() => setShowMenu(false)}>
-                          <div className="w-56 bg-white/80 backdrop-blur-xl shadow-md rounded-xl p-2 border border-gray-200 ">
+                          <div className="w-56   p-2  ">
                             <MenuItem icon={<FaUser />} label="My Profile" />
                             <div className="border-b border-gray-300 my-2"></div>
                             <MenuItem

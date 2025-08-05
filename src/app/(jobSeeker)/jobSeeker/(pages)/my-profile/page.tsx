@@ -10,7 +10,8 @@ import ContactInfoProfile from "@/components/profile/Contact_info";
 import Container from "@/components/ui/Container";
 import Cookies from "js-cookie";
 import { Loader } from "@/components/shared/MainLoader";
-
+import { GoDownload } from "react-icons/go";
+import Link from "next/link";
 
 
 
@@ -227,11 +228,20 @@ const ProfilePage: React.FC = () => {
   return (
     <div>
       <Container>
-        <div className="max-w-6xl my-20 mx-auto px-4 section-gap bg-white">
+
+        <div className=" mb-16  mx-auto px-4 section-gap bg-white">
+        
           {isLoading ? (
             <Loader /> // Show loader while data is loading
           ) : (
             <>
+              <p className="text-end my-5 flex justify-end">
+             <Link href={"/jobSeeker/resume-download"}>
+            <button className="py-3 bg-neutral-600 px-4 rounded-lg text-white flex items-center gap-1 cursor-pointer hover:bg-neutral-800 transition-all duration-300">
+              Download Your Resume<GoDownload />
+            </button>
+             </Link>
+            </p>
               <ProfileHeader profileData={profileData} setProfileData={setProfileData} />
               <div className="space-y-12 mt-8">
                 <AboutSection profileData={profileData} setProfileData={setProfileData} />
