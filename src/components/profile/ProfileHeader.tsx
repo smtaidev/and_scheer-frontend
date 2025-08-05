@@ -44,7 +44,7 @@ const ProfileHeade = ({ profileData, setProfileData }: any) => {
         <div className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden shadow-lg ">
           <Image
             // src="/avatarPlaceholder.jpg"
-            src={user?.data.profilePic || "/avatarPlaceholder1.png"}
+            src={user?.data?.profilePic || "/avatarPlaceholder1.png"}
             alt="image"
             className="w-full h-full object-cover"
             height="200"
