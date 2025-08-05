@@ -44,8 +44,8 @@ const ProfileHeade = ({ profileData, setProfileData }: any) => {
         <div className="w-32 h-32 rounded-full flex items-center justify-center overflow-hidden shadow-lg ">
           <Image
             // src="/avatarPlaceholder.jpg"
-            src={user?.data.profilePic || "/avatarPlaceholder1.png"}
-            alt="Avatar"
+            src={user?.data?.profilePic || "/avatarPlaceholder1.png"}
+            alt="image"
             className="w-full h-full object-cover"
             height="200"
             width="200"
@@ -74,7 +74,7 @@ const ProfileHeade = ({ profileData, setProfileData }: any) => {
           </div>
           <button
             onClick={handleAboutMode}
-            className="bg-gray-800 text-white px-4 py-1 text-sm rounded-md hover:bg-gray-700"
+            className="bg-gray-800 text-white px-4 py-1 text-sm rounded-md hover:bg-gray-700 transition cursor-pointer "
           >
             <Edit2 size={14} className="inline-block mr-1 cursor-pointer" />
             Edit

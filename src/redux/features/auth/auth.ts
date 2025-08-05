@@ -7,6 +7,7 @@ const authApi = baseUrlApi.injectEndpoints({
         url: "/auth/me",
         method: "GET",
       }),
+      providesTags:["User"]
     }),
 
     getMyProfile: build.query({
@@ -60,6 +61,7 @@ const authApi = baseUrlApi.injectEndpoints({
         method: "PATCH",
         body: contactInfo,
       }),
+       invalidatesTags: ['User'],
     }),
 
     // Define an endpoint to refresh the token

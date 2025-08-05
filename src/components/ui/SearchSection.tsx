@@ -1,10 +1,21 @@
 import React from "react";
 import SearchField from "../shared/searchField/SearchField";
 import { animate } from "framer-motion";
+import Navbar from "../shared/Navbar/Navbar";
+
+// const navitem = [
+//   { name: "Home", href: "/" },
+//   { name: "For Job Seekers", href: "/jobSeeker/home" },
+//   { name: "For Employers", href: "/create-account" },
+//   { name: "Course", href: "#course" },
+//   { name: "Pricing", href: "#pricing" },
+// ];
 
 export default function SearchSection({setAnimate,animate}:any) {
   return (
     <div className=" max-w-[1420px] mx-auto flex justify-center">
+
+      {/* <Navbar navItem={navitem}/> */}
       <SearchField setAnimate={setAnimate} animate={animate} />
     </div>
   );

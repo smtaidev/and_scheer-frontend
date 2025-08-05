@@ -47,6 +47,7 @@ export default function ContactInfo({ setStep, formData, setFormData }: IPersona
       .string()
       .url({ message: "Social media URL must be a valid URL" })
       .optional()
+     .or(z.literal("")),
       
   });
   const {

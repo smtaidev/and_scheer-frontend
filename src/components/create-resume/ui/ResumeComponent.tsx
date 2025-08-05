@@ -7,6 +7,8 @@ import { TbMapPinCode } from "react-icons/tb";
 import { RefObject } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
+import { IoLocationOutline } from "react-icons/io5";
+
 
 interface ResumeComponentProps {
   downloadResume: () => void;
@@ -22,6 +24,8 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
   function formatDateRangeWithTillNow(start: string, end?: string): string {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : null;
+
+   
 
     if (isNaN(startDate.getTime()) || (end && isNaN(endDate!.getTime()))) {
       return "Invalid date";
@@ -40,6 +44,8 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
     return `${startFormatted} - ${endFormatted}`;
   }
 
+    const { data: myUser, refetch } = useGetMeQuery({})
+
   return (
     // <div ref={printRef} className="p-5 border-4 border-[#2B93DD] mx-auto bg-white min-h-screen overflow-hidden flex flex-col">
     // // <div ref={printRef} className="p-5 border-0 border-[#2B93DD] mx-auto bg-white  overflow-hidden">
@@ -51,43 +57,19 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
       <div className="p-2">
         <div className="p-2 flex gap-20">
           <div className="pr-0">
-            <div className="w-48 h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
-              {/* <Image
-                src={profileData?.profile?.user?.profilePic || "/man.png"} // Fallback image
-                alt="Saifur Rahman"
-                className="w-full h-full rounded-full justify-center object-center"
+            <div className="w-48  h-48 p-2 rounded-full border-0 border-[#7fbeeb] overflow-hidden">
+              <Image
+                src={myUser?.data.profilePic || "/avatarPlaceholder1.png"} // Fallback image
+                alt="image"
+                className="w-full h-full rounded-full justify-center object-cover"
                 height={200}
                 width={200}
-              /> */}
-              <div className="h-[150px] w-[150px] rounded-full bg-[#E5E7EB]  flex items-center justify-center"></div>
+              />
+              {/* <img src={myUser?.data.profilePic} alt="img"  /> */}
+              {/* <div className="h-[150px] w-[150px] rounded-full bg-[#E5E7EB]  flex items-center justify-center"></div> */}
             </div>
           </div>
-          {/* <div className="mt-0">
-            <h1 className="text-5xl font-bold text-[#323B4C] mb-2">
-              {profileData.profile?.firstName} {profileData.profile?.lastName}
-            </h1>
-            <p className="text-xl text-[#323B4C] mb-4">
-              {profileData?.profile?.JobTitle}
-            </p>
-            <div className="flex flex-row gap-16 justify-start items-center space-y-2 text-[#323B4C]">
-              <div className="flex items-center space-x-2">
-                <PiPhone className="w-4 h-4" />
-                <span>{profileData?.profile.phoneNumber}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CgMail className="w-4 h-4" />
-                <span>{profileData?.profile.email}</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 text-[#323B4C] ">
-              <TbMapPinCode className="w-4 h-4" />
-              <span>
-                {profileData.profile?.address},{profileData.profile?.city},
-                {profileData.profile?.state},
-                {profileData.profile?.countryRegion}.
-              </span>
-            </div>
-          </div> */}
+        
 
           <div className="mt-0">
             <h1 className="text-5xl font-bold text-[#323B4C] mb-2">
@@ -107,7 +89,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
               </div>
             </div>
             <div className="flex items-center space-x-2 text-[#323B4C] mt-2">
-              <TbMapPinCode className="w-4 h-4" />
+              <IoLocationOutline  className="w-4 h-4" />
               <p>
                 {profileData.profile?.address}, {profileData.profile?.city},
                 {profileData.profile?.state},{" "}
@@ -231,7 +213,7 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
           )}
 
           {/* Training */}
-          {profileData?.profile?.certifications && (
+          {profileData?.profile?.certifications.length>0 && (
             <div className="mb-8">
               <h2 className="text-lg font-bold text-black mb-4 border-b-0 border-black pb-2">
                 TRAINING / CERTIFICATION
