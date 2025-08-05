@@ -38,7 +38,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [isTrue, setIsTrue] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchView, setSearchView] = useState(false);
-  const [isLogned,setIsLogned]=useState(false)
+  const [isLogned, setIsLogned] = useState(false)
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   // ✅ Get auth state from Redux instead of API calls
   const { token } = useAppSelector((state) => state.auth);
   const user = myUser?.data
-// User is logged in if both user and token exist
+  // User is logged in if both user and token exist
   const hiddenMenuByClick = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,11 +74,11 @@ export default function Navbar({ navItem }: NavbarProps) {
       setSearchView(false);
     }
     refetch();
-    if(user){
+    if (user) {
 
       setIsLogned(true);
     }
-    
+
   }, [pathname, user]);
 
   const MenuItem = ({
@@ -190,22 +190,24 @@ export default function Navbar({ navItem }: NavbarProps) {
   const handleDelete = () => {
 
     Cookies.remove("accessToken");
-    refetch()
+    
     clearTokens();
-setIsLogned(false)
-  setTimeout(() => setIsLogned(false), 0);
+    setIsLogned(false)
+    setTimeout(() => setIsLogned(false), 0);
     // Clear Redux auth state
     dispatch(logOut());
-
+ 
     // Clear local component state
     setShowMenu(false);
     setShowDeleteModal(false);
 
 
     toast.success("Logged out successfully");
-    window.location.reload()
-   
-     setTimeout(()=> router.push("/"),100);
+    window.location.reload();
+    window.location.href = "/";
+
+    setTimeout(() => router.push("/"), 100);
+    
   };
 
   // Animation variants for profile dropdown
