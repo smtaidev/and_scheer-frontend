@@ -8,7 +8,7 @@ export default function ComponentHeader({
   return (
     <div className="flex justify-center flex-col items-center gap-4 max-w-4xl mx-auto">
       <h1 className={`${className}  font-bold `}>{title}</h1>
-      <p className="text-subtitle mb-4 text-center">{description}</p>
+      <p className="text-subtitle mb-4 text-center mt-1">{description}</p>
       {/* {children && <div className="mt-4">{children}</div>} */}
     </div>
   );
