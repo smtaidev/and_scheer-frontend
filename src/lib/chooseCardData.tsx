@@ -159,9 +159,9 @@ export const cardData = [
             y2="98.4375"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FEF156" />
-            <stop offset="0.4469" stop-color="#FFC242" />
-            <stop offset="1" stop-color="#FC753F" />
+            <stop stopColor="#FEF156" />
+            <stop offset="0.4469" stopColor="#FFC242" />
+            <stop offset="1" stopColor="#FC753F" />
           </linearGradient>
           <linearGradient
             id="paint1_linear_46_135"
@@ -171,10 +171,10 @@ export const cardData = [
             y2="60.4625"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0.6875" stop-color="#F99E0D" stop-opacity="0" />
-            <stop offset="0.7327" stop-color="#F49020" stop-opacity="0.078" />
-            <stop offset="0.8234" stop-color="#E86D50" stop-opacity="0.233" />
-            <stop offset="0.8622" stop-color="#E25D66" stop-opacity="0.3" />
+            <stop offset="0.6875" stopColor="#F99E0D" stopOpacity="0" />
+            <stop offset="0.7327" stopColor="#F49020" stopOpacity="0.078" />
+            <stop offset="0.8234" stopColor="#E86D50" stopOpacity="0.233" />
+            <stop offset="0.8622" stopColor="#E25D66" stopOpacity="0.3" />
           </linearGradient>
           <linearGradient
             id="paint2_linear_46_135"
@@ -184,9 +184,9 @@ export const cardData = [
             y2="98.4375"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#A4EEFF" />
-            <stop offset="0.7319" stop-color="#02C0FC" />
-            <stop offset="1" stop-color="#27A6FF" />
+            <stop stopColor="#A4EEFF" />
+            <stop offset="0.7319" stopColor="#02C0FC" />
+            <stop offset="1" stopColor="#27A6FF" />
           </linearGradient>
           <linearGradient
             id="paint3_linear_46_135"
@@ -196,9 +196,9 @@ export const cardData = [
             y2="57.7234"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0.2613" stop-color="#A4EEFF" stop-opacity="0" />
-            <stop offset="0.2961" stop-color="#66CAFF" stop-opacity="0.508" />
-            <stop offset="0.3297" stop-color="#27A6FF" />
+            <stop offset="0.2613" stopColor="#A4EEFF" stopOpacity="0" />
+            <stop offset="0.2961" stopColor="#66CAFF" stopOpacity="0.508" />
+            <stop offset="0.3297" stopColor="#27A6FF" />
           </linearGradient>
           <linearGradient
             id="paint4_linear_46_135"
@@ -208,9 +208,9 @@ export const cardData = [
             y2="16.1719"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FEF156" />
-            <stop offset="0.4469" stop-color="#FFC242" />
-            <stop offset="1" stop-color="#FC753F" />
+            <stop stopColor="#FEF156" />
+            <stop offset="0.4469" stopColor="#FFC242" />
+            <stop offset="1" stopColor="#FC753F" />
           </linearGradient>
           <linearGradient
             id="paint5_linear_46_135"
@@ -220,9 +220,9 @@ export const cardData = [
             y2="16.1719"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#A4EEFF" />
-            <stop offset="0.7319" stop-color="#02C0FC" />
-            <stop offset="1" stop-color="#27A6FF" />
+            <stop stopColor="#A4EEFF" />
+            <stop offset="0.7319" stopColor="#02C0FC" />
+            <stop offset="1" stopColor="#27A6FF" />
           </linearGradient>
           <linearGradient
             id="paint6_linear_46_135"
@@ -232,9 +232,9 @@ export const cardData = [
             y2="50.0008"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="1.1188e-07" stop-color="#A47AF4" />
-            <stop offset="0.4469" stop-color="#8954DD" />
-            <stop offset="1" stop-color="#6936BA" />
+            <stop offset="1.1188e-07" stopColor="#A47AF4" />
+            <stop offset="0.4469" stopColor="#8954DD" />
+            <stop offset="1" stopColor="#6936BA" />
           </linearGradient>
         </defs>
       </svg>

@@ -81,7 +81,7 @@ export default function PackageCard({
       {/* Action Button */}
       <button
         onClick={onButtonClick}
-        className="w-full px-4 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
+        className="w-full px-4 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:cursor-pointer hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
       >
         Get Started
       </button>

@@ -13,17 +13,12 @@ export default function EmployerPlan() {
     useGetSubscirptionPlansQuery("un");
 
   const { data: user } = useGetMeQuery({});
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const router = useRouter();
 
   // Filter the employer plans
   const SeekerPlan = JobSeekerPlans?.data.filter(
     (seeker: any) => seeker.description === "Employer_Plan"
   );
-
-  const router = useRouter();
 
   const handleClick = (id: string) => {
     const jobName = "frontend";
@@ -38,7 +33,9 @@ export default function EmployerPlan() {
 
     router.push(`/checkout/${id}`);
   };
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="bg-[#F8F8F8]">
       <Container>
