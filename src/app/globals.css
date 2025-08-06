@@ -55,10 +55,32 @@ body {
 
 @theme {
   --color-primary: #28C76F;
-  --color-subtitle: #777777;
+  --color-subtitle: #777;
   --color-secondary: #333;
   --color-card: #f8f8f8;
   --color-warning: #FF4C4C;
   --color-success: #00a63d;
   --color-info: #a2f026;
+}
+
+.container {
+  padding: 0 250px;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 20px;
+  }
 }
