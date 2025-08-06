@@ -27,7 +27,7 @@ export default function InfoSection({
 }: InfoSectionProps) {
   return (
     <div
-      className={`flex flex-col  items-center gap-10 md:gap-14 md:px-6 py-12 max-w-6xl mx-auto ${className}`}
+      className={`flex flex-col  items-center gap-10 md:gap-14 lg:gap-20 md:px-6 py-12  ${className}`}
     >
       {/* Left - Image */}
       <div className="w-full md:w-1/2">
@@ -43,11 +43,11 @@ export default function InfoSection({
       {/* Right - Content */}
       <div className="w-full md:w-1/2 space-y-8 md:space-y-12">
         <div className="space-y-4 ">
-          <h2 className="text-2xl md:text-4xl font-semibold ">
+          <h2 className="text-2xl md:text-5xl font-bold leading-tight">
             {title} <span className="text-primary">{title2}</span>
           </h2>
 
-          <p className="para-main">{description}</p>
+          <p className="text-subtitle md:text-lg text-base ">{description}</p>
         </div>
 
         {title === "Looking for" ? (
@@ -71,8 +71,6 @@ export default function InfoSection({
             </button>
           </Link>
         )}
-
-
       </div>
     </div>
   );
