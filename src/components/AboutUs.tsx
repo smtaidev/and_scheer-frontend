@@ -1,26 +1,19 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import Container from "./ui/Container";
 import Link from "next/link";
 import { useRefreshTokenMutation } from "@/redux/features/auth/auth";
 
+export default function AboutUs() {
+  const [refresh] = useRefreshTokenMutation();
 
-export default async function AboutUs() {
-
-
-  const [refresh]=useRefreshTokenMutation();
-
-  const token=async()=>{
-
+  const token = async () => {
     const res = await refresh({});
     console.log(res);
-
-  }
+  };
 
   // token();
-
-
 
   return (
     <div id="about" className="bg-[#F8F8F8]  ">
@@ -89,7 +82,6 @@ export default async function AboutUs() {
                   </li>
                 </ul>
               </div>
-
 
               {/* Button */}
               <Link href="#pricing">

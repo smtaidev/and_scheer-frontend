@@ -28,7 +28,6 @@ import {
 import axios from "axios";
 import { Loader } from "../shared/MainLoader";
 
-
 interface JobTitle {
   title: string;
 }
@@ -91,7 +90,11 @@ export default function RecentJob({ title }: JobTitle) {
             {title || "Recent Job"}{" "}
           </h1>
 
-          {jobDataLoading && <p><Loader/></p>}
+          {jobDataLoading && (
+            <div>
+              <Loader />
+            </div>
+          )}
 
           {!jobDataLoading && (
             <div className="relative">

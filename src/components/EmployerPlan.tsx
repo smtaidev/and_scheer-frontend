@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import Container from "./ui/Container";
 import ComponentHeader from "./shared/ComponentHeader";
@@ -39,7 +39,6 @@ export default function EmployerPlan() {
     router.push(`/checkout/${id}`);
   };
 
-
   return (
     <div>
       <Container>
@@ -58,12 +57,10 @@ export default function EmployerPlan() {
                 permissions={plan?.features}
                 // Button Text will be "Active" if the planId matches the user's planId
                 // buttonText={(user?.data.planId === plan?.id && user?.data.isSubscribed ==true) ? "Active" : "Get Started"}
-                buttonText={(user?.data.planId === plan?.id? "Active":"")}
-
+                buttonText={user?.data.planId === plan?.id ? "Active" : ""}
                 onButtonClick={() => {
-                  // Only allow navigation to checkout if the plan is not active    
-                    handleClick(plan?.id);
-  
+                  // Only allow navigation to checkout if the plan is not active
+                  handleClick(plan?.id);
                 }}
               />
             </div>
