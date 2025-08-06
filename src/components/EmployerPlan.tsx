@@ -40,7 +40,7 @@ export default function EmployerPlan() {
   };
 
   return (
-    <div>
+    <div className="bg-[#F8F8F8]">
       <Container>
         <ComponentHeader
           title="Employer Plans"

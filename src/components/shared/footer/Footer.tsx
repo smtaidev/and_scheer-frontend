@@ -5,7 +5,7 @@ import Logo from "../../ui/MainLogo";
 
 const Footer: React.FC = () => {
   return (
-    <div className="bg-neutral-50">
+    <div className="bg-white">
       <Container>
         <footer className=" py-10 px-3">
           <div className="mx-auto space-y-8">
@@ -13,46 +13,47 @@ const Footer: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start justify-between gap-6">
               {/* Navigation Links */}
               <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                <a href="/#" className="hover:text-green-400">
+                <a href="/#" className="hover:text-primary">
                   Home
                 </a>
-                <a href="/#about" className="hover:text-green-400">
+                <a href="/#about" className="hover:text-primary">
                   About Us
                 </a>
-                <a href="/#course" className="hover:text-green-400">
+                <a href="/#course" className="hover:text-primary">
                   Courses
                 </a>
-                <a href="/create-account" className="hover:text-green-400">
+                <a href="/create-account" className="hover:text-primary">
                   For Employers
                 </a>
-                <a href="/jobSeeker/home" className="hover:text-green-400">
+                <a href="/jobSeeker/home" className="hover:text-primary">
                   For Job Seekers
                 </a>
               </nav>
 
               {/* Social Icons */}
               <div className="flex space-x-4 text-lg">
-                <FaFacebookF className="hover:text-green-400 cursor-pointer" />
-                <FaVimeoV className="hover:text-green-400 cursor-pointer" />
-                <FaTwitter className="hover:text-green-400 cursor-pointer" />
-                <FaYoutube className="hover:text-green-400 cursor-pointer" />
+                <FaFacebookF className="hover:text-primary cursor-pointer" />
+                <FaVimeoV className="hover:text-primary cursor-pointer" />
+                <FaTwitter className="hover:text-primary cursor-pointer" />
+                <FaYoutube className="hover:text-primary cursor-pointer" />
               </div>
             </div>
 
+            <div className="border-[1px] border-gray-200" />
             {/* Bottom section: Logo + Terms */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-t border-gray-700 pt-6 text-sm">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-6 text-sm">
               {/* Logo and Copyright */}
               <div>
-                <p>© 2022 ABC. All rights reserved.</p>
+                <p>© 2025. All rights reserved.</p>
               </div>
-              <Logo height={20} width={140} />
+              <Logo height={40} width={240} />
 
               {/* Terms and Privacy */}
               <div className="flex space-x-6">
-                <a href="#" className="hover:text-green-400">
+                <a href="#" className="hover:text-primary">
                   Terms of Service
                 </a>
-                <a href="#" className="hover:text-green-400">
+                <a href="#" className="hover:text-primary">
                   Privacy Policy
                 </a>
               </div>
@@ -60,9 +61,7 @@ const Footer: React.FC = () => {
           </div>
         </footer>
       </Container>
-
     </div>
-
   );
 };
 

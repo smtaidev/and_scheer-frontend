@@ -13,8 +13,6 @@ export default function JobSeekerPlan() {
   const { data: JobSeekerPlans, isLoading } =
     useGetSubscirptionPlansQuery("un");
 
-
-
   const { data: user } = useGetMeQuery({});
 
   if (isLoading) {
@@ -46,7 +44,7 @@ export default function JobSeekerPlan() {
           description="Choose the Right Plan for Your Career."
         ></ComponentHeader>
 
-        <div className="flex justify-center flex-wrap gap-6 px-4 md:px-0">
+        <div className="flex justify-center flex-wrap gap-6 lg:mt-12 px-4 md:px-0">
           {SeekerPlan?.map((plan: any) => (
             <div key={plan?.id} className="md:flex justify-center">
               <PackageCard
@@ -56,11 +54,11 @@ export default function JobSeekerPlan() {
                 permissions={plan?.features}
                 // Button Text will be "Active" if the planId matches the user's planId
                 buttonText={
-                  user?.data.planId === plan?.id && new Date(user?.data.planExpiration) > new Date()
+                  user?.data.planId === plan?.id &&
+                  new Date(user?.data.planExpiration) > new Date()
                     ? "Active"
                     : ""
                 }
-
                 onButtonClick={() => {
                   // Only allow navigation to checkout if the plan is not active
                   if (user?.data.planId !== plan?.id) {
@@ -68,7 +66,6 @@ export default function JobSeekerPlan() {
                   }
                 }}
               />
-
             </div>
           ))}
         </div>

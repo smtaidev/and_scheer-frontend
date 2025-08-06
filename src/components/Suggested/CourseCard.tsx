@@ -8,7 +8,7 @@ export default function CourseCard({ course }: { course: Course }) {
     <div className="group w-full  bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col relative hover:shadow-md hover:border-gray-300 transition-all duration-500 ">
       {/* Course Image */}
       <span className="absolute inset-0 bg-primary/10 transition-all origin-top-left duration-300 ease-in-out scale-0 group-hover:scale-100 rounded-lg z-0"></span>
-      <div className="relative w-full h-[250px] overflow-hidden">
+      <div className="relative w-full h-[250px] overflow-hidden ">
         <Image
           src={course.image || "/placeholder.svg"}
           alt={course.title}
@@ -34,7 +34,7 @@ export default function CourseCard({ course }: { course: Course }) {
       </div>
 
       {/* Course Content */}
-      <div className="flex flex-col flex-grow p-5">
+      <div className="flex flex-col flex-grow p-5 z-20">
         <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-3 group-hover:text-primary transition-colors duration-300">
           {course.title}
         </h3>
