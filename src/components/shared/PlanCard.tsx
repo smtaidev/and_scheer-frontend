@@ -17,42 +17,49 @@ export default function PackageCard({
   permissions,
   onButtonClick,
   buttonText,
-}: // buttonText,
-
-PackageCardProps) {
+}: PackageCardProps) {
   return (
-    <div className="relative md:max-w-[457px] 2xl:min-w-[457px] w-full border border-gray-100  bg-white  rounded-lg  px-8 py-5 flex flex-col justify-between">
+    <div className="relative w-full max-w-[457px] min-w-0 border border-gray-100 bg-white rounded-lg px-6 py-5 flex flex-col sm:px-8 sm:py-6">
       <div>
-        {/* Price & Plan Type */}
-        <div className="text-center mb-12">
-          <div className=" ">
-            <span className="text-green-600 text-2xl md:text-5xl  font-semibold md:font-bold">
+        {/* Badge - Responsive Position */}
+        <div className="absolute -top-2 right-4 sm:right-6">
+          <span className="bg-green-300 text-xs font-medium px-3 py-1 rounded-full">
+            {buttonText}
+          </span>
+        </div>
+
+        {/* Price Section */}
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-baseline gap-1">
+            <span className="text-green-600 text-3xl sm:text-5xl font-bold">
               €{price}
             </span>
-            /month
+            <span className="text-gray-600 text-sm sm:text-base">/month</span>
           </div>
         </div>
-        <p className="absolute top-0 right-0 m-4 bg-green-300 px-3  rounded-2xl">
-          {buttonText}
-        </p>
 
-        {/* Package Name */}
-        <p className="text-sm text-gray-500">{planType}</p>
-        <h1 className="text-2xl md:text-5xl  font-semibold md:font-bold  mb-8">
+        {/* Package Name & Type */}
+        <p className="text-xs sm:text-sm text-gray-500 text-center mb-2">
+          {planType}
+        </p>
+        <h1 className="text-2xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 leading-tight">
           {packageName}
         </h1>
 
         {/* Permissions */}
-        <ul className="space-y-4 text-gray-700 mb-6">
-          <p className="text-sm text-gray-500">Permisssons :</p>
+        <ul className="space-y-3 sm:space-y-4 mb-6 text-gray-700">
+          <p className="text-xs sm:text-sm text-gray-500 font-medium">
+            Permissions:
+          </p>
           {permissions?.map((permission, index) => (
             <li key={index} className="flex items-start gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="25"
+                width="20"
+                height="21"
                 viewBox="0 0 24 25"
                 fill="none"
+                className="flex-shrink-0 mt-0.5"
               >
                 <path
                   d="M9.62388 22.029C14.1234 22.029 17.771 18.3814 17.771 13.8819C17.771 9.38243 14.1234 5.73486 9.62388 5.73486C5.12438 5.73486 1.47681 9.38243 1.47681 13.8819C1.47681 18.3814 5.12438 22.029 9.62388 22.029Z"
@@ -63,14 +70,18 @@ PackageCardProps) {
                   fill="#009045"
                 />
               </svg>
-              <span>{permission}</span>
+              <span className="text-xs sm:text-sm leading-tight">
+                {permission}
+              </span>
             </li>
           ))}
         </ul>
       </div>
+
+      {/* Action Button */}
       <button
         onClick={onButtonClick}
-        className="px-3 hover:cursor-pointer py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+        className="w-full px-4 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
       >
         Get Started
       </button>

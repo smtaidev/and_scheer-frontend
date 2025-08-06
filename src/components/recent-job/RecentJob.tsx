@@ -101,7 +101,7 @@ export default function RecentJob({ title }: JobTitle) {
               No jobs available at the moment.
             </p>
           ) : (
-            <div className="relative">
+            <div className="relative px-2">
               {/* Custom Navigation Arrows */}
               <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
               <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
