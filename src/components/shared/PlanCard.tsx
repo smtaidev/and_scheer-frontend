@@ -70,7 +70,7 @@ PackageCardProps) {
       </div>
       <button
         onClick={onButtonClick}
-        className="px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+        className="px-3 hover:cursor-pointer py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
       >
         Get Started
       </button>
