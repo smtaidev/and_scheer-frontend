@@ -1,39 +1,72 @@
-import { Job } from '@/types/AllTypes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react'
+import { Job } from "@/types/AllTypes";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
 interface RecentJobCardProps {
   job: Job;
 }
 
 export default function RecentJobCard({ job }: RecentJobCardProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+
+  // Optional: Format salary (e.g., add K, M suffixes)
+  const formatSalary = (salary: string) => {
+    return salary.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
-    <div className='w-full md:max-w-[457px]  border border-gray-100 rounded-lg shadow-md p-4 bg-white '>
-      <div className='flex gap-2 items-center'>
-        <Image src={"/company1.png"} alt="company" height={48} width={48} className=' rounded-3xl' />
-        <h1 className='text-md xl:text-xl font-semibold'>{job?.company?.companyName}</h1>
-      </div>
-      <h2 className='text-sm  mt-3 xl:text-lg  font-semibold'>{job?.title}</h2>
-      <p className='text-gray-500 text-xs xl:text-base'>{job?.location}</p>
-
-      <hr className="xl:my-3 my-2 border-t border-gray-200" />
-
-      <div className='flex items-center justify-between'>
-        <h1 className='text-xs xl:text-base'>
-          <span className='text-md 2xl:text-xl font-semibold text-nowrap'>{job?.salaryRange}</span>/Month
-        </h1>
-        {pathname.includes("/jobSeeker/job-details") ? <>
-          <p className='text-primary underline'>View Details</p>
-        </> : <>
-          <Link href={`/jobSeeker/job-details/${job?.id}`}>
-            <button className='2xl:px-6 px-2 py-2 2xl:py-3 bg-primary rounded xl:text-base 2xl:scale-75  3xl:scale-100 text-xs text-white cursor-pointer hover:bg-green-600 text-nowrap' >Apply Now</button>
-          </Link></>}
+    <div className="w-full max-w-[457px] border border-gray-100 rounded-lg shadow-sm p-4 bg-white transition-shadow duration-300 hover:shadow-md">
+      {/* Company Info */}
+      <div className="flex items-center gap-3">
+        <Image
+          src={job?.company?.logo || "/company1.png"}
+          alt={job?.company?.companyName || "Company"}
+          width={48}
+          height={48}
+          className="rounded-full object-cover"
+        />
+        <div>
+          <h3 className="text-sm md:text-base lg:text-xl font-semibold text-gray-900">
+            {job?.company?.companyName}
+          </h3>
+        </div>
       </div>
 
+      {/* Job Title */}
+      <h2 className="mt-3 text-sm xl:text-lg font-semibold text-gray-800 line-clamp-1">
+        {job?.title}
+      </h2>
+
+      {/* Location */}
+      <p className="text-xs xl:text-sm text-gray-500 mt-1">{job?.location}</p>
+
+      {/* Divider */}
+      <hr className="my-3 border-t border-gray-200" />
+
+      {/* Salary & Action */}
+      <div className="flex lg:flex-row flex-col lg:items-center gap-3 justify-between">
+        <div className="text-xs xl:text-sm text-gray-700">
+          <span className="font-bold text-2xl">
+            {formatSalary(job?.salaryRange)}
+          </span>
+          <span className="text-gray-500"> /month</span>
+        </div>
+
+        {/* Conditional Action Button or Text */}
+        {pathname.includes("/jobSeeker/job-details") ? (
+          <p className="text-primary text-xs font-medium underline hover:text-green-700 cursor-pointer transition-colors">
+            View Details
+          </p>
+        ) : (
+          <Link href={`/jobSeeker/job-details/${job?.id}`} passHref>
+            <button className="px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap">
+              Apply Now
+            </button>
+          </Link>
+        )}
+      </div>
     </div>
-  )
+  );
 }

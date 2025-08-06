@@ -47,14 +47,14 @@ export default function Banner() {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-[400px] lg:max-w-[450px]">
               <Link href={"/create-account"}>
-                <button className="w-full sm:w-auto sm:min-w-[140px] border text-xs sm:text-sm md:text-base px-4 sm:px-6 rounded py-3 hover:bg-gray-200 hover:shadow-md border-gray-200 transition-all duration-300 cursor-pointer">
+                <button className="w-full sm:w-auto sm:min-w-[140px] hover:bg-primary hover:border-transparent font-semibold hover:text-white border text-xs sm:text-sm md:text-base px-4 sm:px-6 rounded py-3 border-gray-400 transition-all duration-300 cursor-pointer">
                   For Employers
                 </button>
               </Link>
 
               <Link
                 href={"/jobSeeker/start-now"}
-                className="w-full sm:w-auto sm:min-w-[160px] text-white group text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 rounded py-3 flex items-center justify-center gap-2 bg-primary hover:bg-green-600 transition-all duration-300"
+                className="w-full sm:w-auto sm:min-w-[160px] text-white group text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 rounded py-3 flex items-center justify-center gap-2 bg-primary hover:bg-white hover:text-black hover:border-gray-400 border transition-all duration-300"
               >
                 Create AI Resume
                 <BsArrowRight className="transition-transform text-lg duration-300 group-hover:translate-x-1" />
