@@ -86,12 +86,12 @@ export default function RecentJob({ title }: JobTitle) {
 
   return (
     <div className="bg-card">
-      <div className="bg-[#f7f7f7] ml-0 2xl:ml-44">
-        <div className="py-15 px-11 md:px-15">
+      <div className="bg-[#f7f7f7] ml-0 2xl:ml-44 ">
+        <div className="section-gap px-2 relative">
           <h1 className="text-2xl md:text-5xl font-semibold mb-6">
             {title || "Recent Jobs"}
           </h1>
-
+          <div className="swiper-button-prev-custom custom-arrow left-[-50px] my-9 p-2" />
           {loading ? (
             <div className="flex justify-center items-center py-8">
               <Loader />
@@ -101,34 +101,35 @@ export default function RecentJob({ title }: JobTitle) {
               No jobs available at the moment.
             </p>
           ) : (
-            <div className="relative px-2">
+            <div className="relative overflow-hidden ">
               {/* Custom Navigation Arrows */}
-              <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
-              <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />
+              {/* <div className="swiper-button-prev-custom custom-arrow left-[-50px]" /> */}
 
-              <Swiper
-                spaceBetween={5}
-                freeMode
-                navigation={{
-                  nextEl: ".swiper-button-next-custom",
-                  prevEl: ".swiper-button-prev-custom",
-                }}
-                modules={[FreeMode, Navigation]}
-                className="mySwiper "
-                breakpoints={{
-                  320: { slidesPerView: 1 },
-                  640: { slidesPerView: 2 },
-                  768: { slidesPerView: 2.5 },
-                  1024: { slidesPerView: 3 },
-                  1280: { slidesPerView: 3.5 },
-                }}
-              >
-                {jobs.map((job, index) => (
-                  <SwiperSlide key={job.id || index} className="pb-2 px-2">
-                    <RecentJobCard job={job} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              <div className="">
+                <Swiper
+                  spaceBetween={5}
+                  freeMode
+                  navigation={{
+                    nextEl: ".swiper-button-next-custom",
+                    prevEl: ".swiper-button-prev-custom",
+                  }}
+                  modules={[FreeMode, Navigation]}
+                  className="mySwiper "
+                  breakpoints={{
+                    320: { slidesPerView: 1 },
+                    640: { slidesPerView: 2 },
+                    768: { slidesPerView: 2.5 },
+                    1024: { slidesPerView: 3 },
+                    1280: { slidesPerView: 3.5 },
+                  }}
+                >
+                  {jobs.map((job, index) => (
+                    <SwiperSlide key={job.id || index} className="pb-2 px-2">
+                      <RecentJobCard job={job} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
             </div>
           )}
         </div>

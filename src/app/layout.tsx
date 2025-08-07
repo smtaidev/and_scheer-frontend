@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import StoreProvider from "./StoreProvider";
 import { FormProvider } from "@/components/employer-account/FormContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleTranslateProvider from "@/components/context/GoogleLang";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,15 +36,17 @@ export default function RootLayout({
         data-new-gr-c-s-check-loaded="14.1244.0"
         data-gr-ext-installed=""
         cz-shortcut-listen="true"
-        className={openSans.variable}
+        className="relative! z-20 top-0!"
       >
         <StoreProvider>
           <GoogleOAuthProvider clientId="959795390198-ijbhg4ob84kgulhod8iauk56iu9s779h.apps.googleusercontent.com">
-            <FormProvider>
-              <Toaster position="top-center" expand={true} richColors />
-              <Suspense fallback={<Loading />}>{children}</Suspense>
-              {/* <Suspense>{children}</Suspense> */}
-            </FormProvider>
+            <GoogleTranslateProvider>
+              <FormProvider>
+                <Toaster position="top-center" expand={true} richColors />
+                <Suspense fallback={<Loading />}>{children}</Suspense>
+                {/* <Suspense>{children}</Suspense> */}
+              </FormProvider>
+            </GoogleTranslateProvider>
           </GoogleOAuthProvider>
         </StoreProvider>
       </body>
