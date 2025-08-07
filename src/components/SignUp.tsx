@@ -9,62 +9,59 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import LoadingButton from "./loading/LoadingButton";
-import Input from "./ui/Input";
 import Logo from "./ui/MainLogo";
 
 interface FormData {
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  confirmPassword?: string;
+  confirmPassword: string;
 }
 
 export default function SignUpForm() {
-  const { register, handleSubmit, reset } = useForm<FormData>();
-  const [isError, setIsError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: "onBlur",
+  });
 
   const router = useRouter();
-
-  const [createAcount, { isLoading }] = useSignUpMutation();
+  const [createAccount, { isLoading }] = useSignUpMutation();
 
   const onSubmit = async (data: FormData) => {
-    // router.push("/");
-
     if (data.password !== data.confirmPassword) {
-      return toast.error(
-        " your password and Confirm Password Not match . please try again ! "
-      );
+      return toast.error("Password and Confirm Password do not match");
     }
 
     const userData = {
-      firstName: data?.firstName,
-      lastName: data?.lastName,
-      email: data?.email,
-      password: data?.confirmPassword,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
     };
 
     try {
-      const response = await createAcount(userData).unwrap();
-      localStorage.setItem("myEmail",data?.email)
+      const response = await createAccount(userData).unwrap();
+      localStorage.setItem("myEmail", data.email);
       if (response?.success) {
-        // toast.success(response?.message);
         reset();
-        router.push("/email-verify")
+        router.push("/email-verify");
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.data.message);
+      console.error("Signup error:", error);
+      toast.error(
+        error.data?.message || "Registration failed. Please try again."
+      );
     }
   };
 
-  // google login
-
-  const handleSuccess = async (credentialResponse: any) => {
-    console.log("yesTonek= ", credentialResponse.credential);
-
+  const handleGoogleSuccess = async (credentialResponse: any) => {
     try {
-      // Send the credential to your server
       const response = await axios.post(
         `http://172.252.13.71:5005/api/v1/auth/google-login`,
         {
@@ -73,139 +70,223 @@ export default function SignUpForm() {
       );
 
       if (response?.data?.success) {
-        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        // Cookies.set("accessToken", response?.data?.accessToken);
         router.push("/");
         toast.success("Login successful");
       }
-
-      console.log("Login successful", response.data);
-      // Handle successful login (store tokens, redirect, etc.)
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Google login failed", error);
+      toast.error("Google login failed. Please try again.");
     }
   };
 
-  const handleError = () => {
-    console.log("Login Failed");
+  const handleGoogleError = () => {
+    toast.error("Google login failed. Please try another method.");
   };
 
   return (
-    <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center md:px-4 ">
-      <div className="flex flex-col lg:flex-row rounded-lg overflow-hidden ">
-        {/* Left: Image Section */}
-        <div className="lg:w-1/2 hidden md:flex items-center justify-center">
+    <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center px-4">
+      <div className="flex flex-col lg:flex-row w-full max-w-6xl bg-white rounded-xl overflow-hidden">
+        {/* Image Section */}
+        <div className="lg:w-1/2 hidden md:block relative">
           <Image
             src="/register.jpg"
-            alt="Login visual"
-            className=" rounded-lg -scale-x-100"
-            height={1000}
-            width={588}
-            layout="intrinsic"
+            alt="Registration visual"
+            fill
+            className="object-cover -scale-x-100"
+            priority
+            quality={90}
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
 
-        {/* Right: Form Section */}
-        <div className="w-full lg:w-1/2 px-8 flex flex-col justify-center ">
-          <div className="flex justify-center items-center flex-col">
-            {/* Logo */}
-            <div className="mb-6">
-              {/* <img src="/logo.svg" alt="Logo" className="h-10" /> */}
-              <Link href={"/"}>
-                <Logo height={120} width={268}></Logo>
-              </Link>
-            </div>
-
-            {/* Welcome Message */}
-
-            <h2 className="text-2xl md:text-4xl font-bold mb-8">
-              Create your account!
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10">
+          <div className="flex flex-col items-center mb-8">
+            <Link href="/" className="mb-6">
+              <Logo height={100} width={224} />
+            </Link>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Create your account
             </h2>
-            <p className="text-sm text-gray-600 mb-6 text-center">
-              Welcome, Please enter the information requested to create <br />{" "}
-              your account!
+            <p className="text-gray-600 text-sm md:text-base text-center">
+              Welcome! Please enter your details to register
             </p>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Input Fields */}
-            <div className="space-y-4 mb-8">
-              <div className="flex flex-col md:flex-row gap-5">
-                <Input
-                  label="First Name"
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  First Name
+                </label>
+                <input
+                  id="firstName"
                   type="text"
                   placeholder="John"
-                  {...register("firstName", { required: true })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                    errors.firstName
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-300 focus:ring-blue-200"
+                  }`}
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                 />
-                <Input
-                  label="Last Name"
-                  type="text"
-                  placeholder="Doe"
-                  {...register("lastName", { required: true })}
-                />
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.firstName.message}
+                  </p>
+                )}
               </div>
 
-              <Input
-                label="Email Address"
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  placeholder="Doe"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                    errors.lastName
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-300 focus:ring-blue-200"
+                  }`}
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
+                />
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.lastName.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email Address
+              </label>
+              <input
+                id="email"
                 type="email"
                 placeholder="you@example.com"
-                {...register("email", { required: true })}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.email
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:ring-blue-200"
+                }`}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
 
-              <Input
-                label="Password"
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Password
+              </label>
+              <input
+                id="password"
                 type="password"
-                placeholder="password"
-                {...register("password", { required: true })}
-              />
-              <Input
-                label="Confirm Password"
-                type="password"
-                placeholder=""
-                {...register("confirmPassword", { required: true })}
+                placeholder="••••••••"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.password
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:ring-blue-200"
+                }`}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
               />
             </div>
 
-            {/* Error Message */}
-            {isError && <p className="text-red-500 text-sm mb-1">{isError}</p>}
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.confirmPassword
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:ring-blue-200"
+                }`}
+                {...register("confirmPassword", {
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === watch("password") || "Passwords do not match",
+                })}
+              />
+            </div>
 
-            {/* Login Button */}
-            <button className="w-full py-3 px-6 cursor-pointer bg-green-600 text-white flex justify-center items-center  rounded-lg hover:bg-green-700 transition">
-              {isLoading ? (
-                <>
-                  <LoadingButton />{" "}
-                </>
-              ) : (
-                "Register"
-              )}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+            >
+              {isLoading ? <LoadingButton /> : "Register"}
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-8">
-            <hr className="flex-grow border-gray-300" />
-            <span className="mx-2 text-gray-400">or with</span>
-            <hr className="flex-grow border-gray-300" />
+          <div className="flex items-center my-6">
+            <hr className="flex-grow border-gray-200" />
+            <span className="mx-3 text-gray-500 text-sm">or continue with</span>
+            <hr className="flex-grow border-gray-200" />
           </div>
 
-          {/* Continue with Google */}
-          <div className="">
+          <div className="flex justify-center">
             <GoogleLogin
               size="large"
-              onSuccess={handleSuccess}
-              onError={handleError}
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              text="signup_with"
+              shape="rectangular"
+              theme="filled_blue"
             />
           </div>
-          <div className="flex justify-center items-center gap-2 text-gray-700   mt-3">
-            <p className="text-center">
-              If you don&apos;t have any account please
-            </p>
+
+          <p className="mt-6 text-center text-gray-600 text-sm">
+            Already have an account?{" "}
             <Link
-              href={"/signIn"}
-              className="text-primary underline font-semibold"
+              href="/signIn"
+              className="text-green-600 hover:text-green-800 font-semibold"
             >
-              Login
+              Sign in
             </Link>
-          </div>
+          </p>
         </div>
       </div>
     </section>

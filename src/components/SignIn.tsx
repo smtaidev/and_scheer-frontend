@@ -1,23 +1,17 @@
 "use client";
-// import FormInput from '@/components/FormInput';
+import { useSignInMutation } from "@/redux/features/auth/auth";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
-import Logo from "./ui/MainLogo";
-import Input from "./ui/Input";
-import {
-  useSignInMutation,
-  useSignUpMutation,
-} from "@/redux/features/auth/auth";
 import { toast } from "sonner";
-import LoadingButton from "./loading/LoadingButton";
 import ForgotPasswordModal from "./ForgetPasswordModal";
-import Cookies from "js-cookie";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import LoadingButton from "./loading/LoadingButton";
+import Logo from "./ui/MainLogo";
 
 interface FormData {
   email: string;
@@ -25,167 +19,222 @@ interface FormData {
 }
 
 export default function SignInForm() {
-  const { register, handleSubmit, reset } = useForm<FormData>();
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: "onBlur",
+  });
+
+  const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
   const [sigInUser, { isLoading }] = useSignInMutation();
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      const response = await sigInUser(data).unwrap();
-      console.log(response);
-      if (response?.success) {
-        // localStorage.setItem("accessToken", response?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
-        Cookies.set("refreshToken", response?.data?.refreshToken);
-        toast.success(response?.message);
-        router.push("/");
-        reset();
-      }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.data.message);
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      try {
+        const response = await sigInUser(data).unwrap();
 
-  const handleGoogleLogin = () => {
-    console.log("yes");
-  };
+        if (response?.success) {
+          Cookies.set("accessToken", response.data.accessToken, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: 7,
+          });
+          Cookies.set("refreshToken", response.data.refreshToken, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: 7,
+          });
 
-  const handleSuccess = async (credentialResponse: any) => {
-    console.log("yesTonek= ", credentialResponse.credential);
-
-    try {
-      // Send the credential to your server
-      const response = await axios.post(
-        `http://172.252.13.71:5005/api/v1/auth/google-login`,
-        {
-          googleToken: credentialResponse.credential,
+          toast.success(response.message);
+          router.push("/");
+          reset();
         }
-      );
+      } catch (error: any) {
+        console.error("Login error:", error);
+        toast.error(error.data?.message || "Login failed. Please try again.");
+      }
+    },
+    [sigInUser, router, reset]
+  );
 
-      if (response?.data?.success) {
-        // localStorage.setItem("accessToken", response?.data?.data?.accessToken);
-        Cookies.set("accessToken", response?.data?.accessToken);
-        router.push("/");
-        toast.success("Login successful");
+  const handleGoogleSuccess = useCallback(
+    async (credentialResponse: { credential?: string }) => {
+      if (!credentialResponse.credential) {
+        toast.error("Google authentication failed");
+        return;
       }
 
-      console.log("Login successful", response.data);
-      // Handle successful login (store tokens, redirect, etc.)
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
+      try {
+        const response = await axios.post("/api/v1/auth/google-login", {
+          googleToken: credentialResponse.credential,
+        });
 
-  const handleError = () => {
-    console.log("Login Failed");
-  };
+        if (response?.data?.success) {
+          Cookies.set("accessToken", response.data.data.accessToken, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+          });
+          router.push("/");
+          toast.success("Login successful");
+        }
+      } catch (error) {
+        console.error("Google login error:", error);
+        toast.error("Google login failed. Please try again.");
+      }
+    },
+    [router]
+  );
+
+  const handleGoogleError = useCallback(() => {
+    toast.error("Google login failed. Please try another method.");
+  }, []);
 
   return (
-    <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center md:px-4 ">
-      <div className="flex w-full  rounded-lg overflow-hidden ">
-        {/* Left: Image Section */}
-        <div className="w-1/2 hidden md:block my-9">
+    <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center px-4">
+      <div className="flex w-full max-w-6xl bg-white rounded-xl overflow-hidden">
+        {/* Image Section */}
+        <div className="hidden md:block md:w-1/2 relative">
           <Image
             src="/logingirl.jpg"
-            alt="Login visual"
-            className=" rounded-lg "
-            height={758}
-            width={588}
-            layout="intrinsic"
+            alt="Woman using laptop"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+            quality={85}
           />
-        </div> 
+        </div>
 
-        {/* Right: Form Section */}
-        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
-          <div className="flex justify-center items-center flex-col">
-            {/* Logo */}
-            <div className="mb-6">
-              <Link href={"/"}>
-                <Logo height={120} width={268}></Logo>
-              </Link>
-            </div>
-
-            {/* Welcome Message */}
-
-            <h2 className="text-2xl md:text-4xl text-primary-dark font-bold mb-2">
-              Hi, Welcome Back!
-            </h2>
-            <p className="text-sm text-gray-600 mb-8">
-              Please enter your email and password below!
+        {/* Form Section */}
+        <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10">
+          <div className="flex flex-col items-center mb-8">
+            <Link href="/" className="mb-6">
+              <Logo height={100} width={224} />
+            </Link>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600 text-sm md:text-base">
+              Sign in to access your account
             </p>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Input Fields */}
-            <div className="space-y-4 mb-2  ">
-              <Input
-                label="Email Address"
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email Address
+              </label>
+              <input
+                id="email"
                 type="email"
                 placeholder="you@example.com"
-                {...register("email", { required: true })}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.email
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:ring-blue-200"
+                }`}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
-              <Input
-                label="Password"
-                type="password"
-                placeholder="password"
-                {...register("password", { required: true })}
-              />
-            </div>
-            <button
-              type="button"
-              className="text-primary text-lg underline cursor-pointer mb-5"
-              onClick={() => setModalOpen(true)}
-            >
-              Forget Password
-            </button>
-
-            {/* Login Button */}
-            <button className="w-full cursor-pointer bg-primary text-white py-3 px-6 rounded-lg hover:bg-green-700 transition">
-              {isLoading ? (
-                <>
-                  <LoadingButton />
-                </>
-              ) : (
-                "Login"
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
+            </div>
+
+            <div className="space-y-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.password
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:ring-blue-200"
+                }`}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="text-primary hover:text-green-800 text-sm font-medium"
+              >
+                Forgot Password?
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+            >
+              {isLoading ? <LoadingButton /> : "Sign In"}
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-8">
-            <hr className="flex-grow border-gray-300" />
-            <span className="mx-2 text-gray-400">or with</span>
-            <hr className="flex-grow border-gray-300" />
+          <div className="my-6 flex items-center">
+            <hr className="flex-grow border-gray-200" />
+            <span className="mx-3 text-gray-500 text-sm">or continue with</span>
+            <hr className="flex-grow border-gray-200" />
           </div>
 
-          {/* Continue with Google */}
-          {/* <button
-            id="google"
-            onClick={handleGoogleLogin}
-            className="w-full border border-gray-300 py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition"
-          >
-            <FcGoogle className="size-6" />
-            Login with Google
-          </button> */}
-          <div className="">
+          <div className="flex justify-center">
             <GoogleLogin
               size="large"
-              onSuccess={handleSuccess}
-              onError={handleError}
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              text="signin_with"
+              shape="rectangular"
+              theme="filled_blue"
             />
           </div>
-          <div className="flex justify-center gap-2 text-gray-700  mt-3">
-            <p className="text-center">If you dont have any account please</p>
+
+          <p className="mt-6 text-center text-gray-600 text-sm">
+            Don't have an account?{" "}
             <Link
-              href={"/signUp"}
-              className="text-primary underline font-semibold"
+              href="/signUp"
+              className="text-primary hover:text-green-800 font-semibold"
             >
-              Create Account
+              Sign up
             </Link>
-          </div>
+          </p>
         </div>
       </div>
+
       <ForgotPasswordModal
         isModalOpen={isModalOpen}
         setModalOpen={setModalOpen}

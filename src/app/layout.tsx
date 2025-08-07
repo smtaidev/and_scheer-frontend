@@ -39,7 +39,9 @@ export default function RootLayout({
         className="relative! z-20 top-0!"
       >
         <StoreProvider>
-          <GoogleOAuthProvider clientId="959795390198-ijbhg4ob84kgulhod8iauk56iu9s779h.apps.googleusercontent.com">
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+          >
             <GoogleTranslateProvider>
               <FormProvider>
                 <Toaster position="top-center" expand={true} richColors />

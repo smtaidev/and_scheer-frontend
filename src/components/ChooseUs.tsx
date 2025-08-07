@@ -7,7 +7,7 @@ import { cardData } from "@/lib/chooseCardData";
 export default function ChooseUs() {
   return (
     <div>
-      <Container>
+      <div className="container section-gap">
         <div className="space-y-4">
           <ComponentHeader
             title="Why Choose Us?"
@@ -35,7 +35,7 @@ export default function ChooseUs() {
             ))}
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }
