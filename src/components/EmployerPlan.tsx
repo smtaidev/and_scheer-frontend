@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import Container from "./ui/Container";
 import ComponentHeader from "./shared/ComponentHeader";
@@ -13,17 +13,12 @@ export default function EmployerPlan() {
     useGetSubscirptionPlansQuery("un");
 
   const { data: user } = useGetMeQuery({});
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const router = useRouter();
 
   // Filter the employer plans
   const SeekerPlan = JobSeekerPlans?.data.filter(
     (seeker: any) => seeker.description === "Employer_Plan"
   );
-
-  const router = useRouter();
 
   const handleClick = (id: string) => {
     const jobName = "frontend";
@@ -38,10 +33,11 @@ export default function EmployerPlan() {
 
     router.push(`/checkout/${id}`);
   };
-
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
-    <div>
+    <div className="bg-[#F8F8F8]">
       <Container>
         <ComponentHeader
           title="Employer Plans"
@@ -58,12 +54,10 @@ export default function EmployerPlan() {
                 permissions={plan?.features}
                 // Button Text will be "Active" if the planId matches the user's planId
                 // buttonText={(user?.data.planId === plan?.id && user?.data.isSubscribed ==true) ? "Active" : "Get Started"}
-                buttonText={(user?.data.planId === plan?.id? "Active":"")}
-
+                buttonText={user?.data.planId === plan?.id ? "Active" : ""}
                 onButtonClick={() => {
-                  // Only allow navigation to checkout if the plan is not active    
-                    handleClick(plan?.id);
-  
+                  // Only allow navigation to checkout if the plan is not active
+                  handleClick(plan?.id);
                 }}
               />
             </div>

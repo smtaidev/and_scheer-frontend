@@ -27,7 +27,6 @@ const page = () => {
       <Navbar navItem={navitem}></Navbar>
       <Banner></Banner>
       <RecentJob title={"Recent Job"}></RecentJob>
-
       <ChooseUs></ChooseUs>
       <AboutUs></AboutUs>
       <PerfectJob></PerfectJob>

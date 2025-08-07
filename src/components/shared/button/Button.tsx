@@ -12,7 +12,7 @@ type ButtonProps = {
 export default function Button({
   name = "Submit",
   type = "button",
-  className = "w-full bg-primary text-white py-3 px-6 rounded-lg hover:bg-green-600 cursor-pointer transition",
+  className = "",
   onClick,
   disabled = false,
   ...props

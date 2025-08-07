@@ -6,66 +6,81 @@ import SearchField from "./shared/searchField/SearchField";
 
 export default function Banner() {
   return (
-    <div className="relative overflow-hidden w-full min-h-screen ">
-      <div className="absolute right-0">
-        <Image src="/Pattern.png" alt="Pattern" height={1146} width={1156} />
+    <div className="relative overflow-hidden w-full min-h-[90vh]">
+      {/* Background pattern - responsive positioning */}
+      <div className="absolute right-0 top-0 w-full h-full flex justify-end">
+        <Image
+          src="/Pattern.png"
+          alt="Pattern"
+          height={1146}
+          width={1156}
+          className="object-cover object-right h-full"
+        />
       </div>
 
-      <div className="flex py-15 md:py-28 md:justify-around px-5 ">
-        {/* Left side */}
-        <div className="flex flex-col gap-8  justify-center text-left z-30">
-          <div className="flex flex-col gap-5">
-            <h1 className="text-5xl md:text-7xl text-left font-semibold md:font-bold">
-              Your{" "}
-              <span className="text-primary">
-                AI-Powered <br /> Career
-              </span>{" "}
-              Platform
-            </h1>
-            <p className="text-scheer-body-gray text-sm md:text-base">
-              Discover your next opportunity with personalized AI job matching.
-              Apply with <br />a single click and explore new career paths
-              today.
-            </p>
+      {/* Main container with proper responsive padding */}
+      <div className="relative z-10 container h-full min-h-[90vh]">
+        <div className="flex items-center justify-between h-full min-h-[90vh] ">
+          {/* Left side - responsive content */}
+          <div className="flex flex-col gap-8 sm:gap-5 lg:gap-12 justify-center text-left z-30  lg:w-5/6 flex-shrink-0 ">
+            {/* Heading section */}
+            <div className="flex flex-col gap-4 sm:gap-5">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[80px] text-left font-semibold md:font-bold leading-tight">
+                Your{" "}
+                <span className="text-primary">
+                  AI-Powered <br /> Career
+                </span>{" "}
+                Platform
+              </h1>
+              <p className="text-sm md:text-base lg:text-lg font-normal text-subtitle max-w-[400px] lg:max-w-[620px]">
+                Discover your next opportunity with personalized AI job
+                matching. Apply with a single click and explore new career paths
+                today.
+              </p>
+            </div>
+
+            {/* Search Field */}
+            <div className="w-full max-w-[400px] lg:max-w-[620px]">
+              <SearchField />
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-[400px] lg:max-w-[450px]">
+              <Link href={"/create-account"}>
+                <button className="w-full sm:w-auto sm:min-w-[140px] hover:bg-primary hover:border-transparent font-semibold hover:text-white border text-xs sm:text-sm md:text-base px-4 sm:px-6 rounded py-3 border-gray-400 transition-all duration-300 cursor-pointer">
+                  For Employers
+                </button>
+              </Link>
+
+              <Link
+                href={"/jobSeeker/start-now"}
+                className="w-full sm:w-auto sm:min-w-[160px] text-white group text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 rounded py-3 flex items-center justify-center gap-2 bg-primary hover:bg-white hover:text-black hover:border-gray-400 border transition-all duration-300"
+              >
+                Create AI Resume
+                <BsArrowRight className="transition-transform text-lg duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
 
-          <SearchField />
+          {/* Right side image - properly positioned in flex */}
+          <div className="hidden sm:flex items-center justify-center w-full sm:w-[45%] md:w-[50%] lg:w-[55%] xl:w-[60%] flex-shrink-0">
+            <div className="relative w-full max-w-[626px] h-auto">
+              {/* White shadow/glow */}
+              <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[400px] absolute w-full bottom-0 z-10"></div>
+              <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[300px] absolute w-full bottom-0 z-10"></div>
+              <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[200px] absolute w-full bottom-0 z-10"></div>
+              <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[100px] absolute w-full bottom-0 z-10"></div>
+              <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[50px] absolute w-full bottom-0 z-10"></div>
 
-          <div className="flex gap-3 mt-4">
-            <Link href={"/create-account"}>
-              <button className="border px-3 text-xs md:text-base rounded py-2 hover:bg-gray-200 hover:shadow-md border-gray-200  transition-all duration-300 cursor-pointer">
-                For Employers
-              </button>
-            </Link>
-
-            <Link
-              href={"/jobSeeker/start-now"}
-              className="text-white group text-xs md:text-base font-semibold px-3 rounded py-2 flex gap-1 bg-primary hover:bg-green-600 transition-all duration-300"
-            >
-              Create AI Resume <BsArrowRight className="my-auto transition-transform text-xl mt-1 duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Right side */}
-        <div className="hidden md:block">
-          {/* Empty or add future content */}
-        </div>
-
-        {/* Positioned image */}
-        <div className="absolute left-1/2 top-80 md:top-96 md:left-3/5 lg:left-3/5  lg:top-48 xl:top-28 hidden sm:block">
-          <div className="relative ">
-            {/* White shadow/glow */}
-            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-transparent via-transparent to-white  z-10  "></div>
-
-            {/* Actual image on top */}
-            <Image
-              src="/bannerimage.png"
-              alt="AI Career"
-              height={884}
-              width={626}
-              className="relative  w-full object-contain"
-            />
+              {/* Actual image on top */}
+              <Image
+                src="/bannerimage.png"
+                alt="AI Career"
+                height={884}
+                width={626}
+                className="relative w-full h-auto object-contain"
+              />
+            </div>
           </div>
         </div>
       </div>
