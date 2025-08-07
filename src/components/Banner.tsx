@@ -17,7 +17,7 @@ export default function Banner() {
           <div className="flex flex-col gap-5">
             <h1 className="text-5xl md:text-7xl text-left font-semibold md:font-bold">
               Your{" "}
-              <span className="text-green-600">
+              <span className="text-primary">
                 AI-Powered <br /> Career
               </span>{" "}
               Platform

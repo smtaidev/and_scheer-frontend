@@ -78,7 +78,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 
               <button
                 type="submit"
-                className="w-full cursor-pointer bg-green-500 hover:bg-green-600 text-white py-2 rounded font-medium"
+                className="w-full cursor-pointer bg-primary hover:bg-green-600 text-white py-2 rounded font-medium"
               >
                 {isLoading ? (
                   <>

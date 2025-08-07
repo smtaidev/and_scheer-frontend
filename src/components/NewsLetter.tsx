@@ -19,7 +19,7 @@ export default function Newsletter() {
             />
             <button
               type="submit"
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-green-500 text-white     px-5 py-2 rounded-md hover:bg-green-600 transition"
+              className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary text-white     px-5 py-2 rounded-md hover:bg-green-600 transition"
             >
               SUBSCRIBE NOW
             </button>

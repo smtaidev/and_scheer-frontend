@@ -207,7 +207,7 @@ console.log(image)
                                     placeholder="+880 1567890747"
                                     value={localFormData.phoneNumber}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                 />
                             </div>
                             {/* Company Email */}
@@ -222,7 +222,7 @@ console.log(image)
                                     placeholder="ur.saifur.info@gmail.com"
                                     value={localFormData.email}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                 />
                             </div>
 
@@ -238,7 +238,7 @@ console.log(image)
                                     placeholder="www.smtechnology24.com"
                                     value={localFormData.website}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                 />
                             </div>
                         </div>
@@ -249,7 +249,7 @@ console.log(image)
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-4 cursor-pointer px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 group"
+                            className="w-full bg-primary hover:bg-green-600 text-white font-medium py-4 cursor-pointer px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 group"
                         >
                             <span>Next</span>
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

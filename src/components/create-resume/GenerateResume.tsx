@@ -59,7 +59,7 @@ export default function GenerateResume({
               </p>
               <div className="h-4 w-full bg-gray-200 rounded">
                 <div
-                  className="h-4  bg-green-500 rounded transition-all duration-150"
+                  className="h-4  bg-primary rounded transition-all duration-150"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>

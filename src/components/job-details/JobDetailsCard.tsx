@@ -91,7 +91,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
             </p>
 
-            <p className="text-xl py-3 md:py-8 border-b border-gray-200"><span className="text-2xl md:text-5xl font-bold text-green-500">{currentCompany?.salaryRange}</span>/ Month</p>
+            <p className="text-xl py-3 md:py-8 border-b border-gray-200"><span className="text-2xl md:text-5xl font-bold text-primary">{currentCompany?.salaryRange}</span>/ Month</p>
 
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Job Description</h3>

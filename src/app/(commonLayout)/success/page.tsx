@@ -64,7 +64,7 @@ export default function page() {
        {/* <div className="pt-6 flex flex-col items-center justify-center bg-white px-4"> */}
       {/* Success Icon */}
       {/* <div className="flex flex-col items-center mb-6 ">
-        <CheckCircle className="w-16 h-16 text-green-500 mb-2" />
+        <CheckCircle className="w-16 h-16 text-primary mb-2" />
         <h1 className="text-2xl font-bold text-gray-800">
           Your email is successfully verified
         </h1>

@@ -24,7 +24,7 @@ const cardData = [
   },
   {
     icon: (
-      <FaMousePointer className="text-3xl text-green-500 size-12 md:size-20" />
+      <FaMousePointer className="text-3xl text-primary size-12 md:size-20" />
     ),
     title: "1-Click Applications",
     description: (

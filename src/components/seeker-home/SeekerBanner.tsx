@@ -7,7 +7,7 @@ export default function SeekerBanner() {
         <div className='flex flex-col justify-center items-center my-20 mx-4'>
             <div className='max-w-[1179px]'>
                 <h1 className="text-5xl md:text-7xl text-left font-semibold md:font-bold">
-                   Find Your <span className="text-green-600">dream job</span> now
+                   Find Your <span className="text-primary">dream job</span> now
                 </h1>
                 <p className='text-xl text-scheer-body-gray font-medium text-center mt-4 mb-14' >5 lakh+ jobs for you to explore</p>
                 <SearchField/>

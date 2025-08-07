@@ -27,7 +27,7 @@ export default function PackageCard({
       {/* Price & Plan Type */}
       <div className="text-center mb-12">
         <div className=" ">
-          <span className="text-green-600 text-2xl md:text-5xl  font-semibold md:font-bold"  >
+          <span className="text-primary text-2xl md:text-5xl  font-semibold md:font-bold"  >
             €{price}
           </span>
           /month
@@ -48,7 +48,7 @@ export default function PackageCard({
           <p className="text-sm text-gray-500">Permisssons :</p>
           {permissions?.map((permission, index) => (
             <li key={index} className="flex items-start gap-2">
-              <FaCheckCircle className="text-green-500 mt-1" />
+              <FaCheckCircle className="text-primary mt-1" />
               <span>{permission}</span>
             </li>
           ))}

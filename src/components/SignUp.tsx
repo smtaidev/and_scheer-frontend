@@ -169,7 +169,7 @@ export default function SignUpForm() {
             {isError && <p className="text-red-500 text-sm mb-1">{isError}</p>}
 
             {/* Login Button */}
-            <button className="w-full py-3 px-6 cursor-pointer bg-green-600 text-white flex justify-center items-center  rounded-lg hover:bg-green-700 transition">
+            <button className="w-full py-3 px-6 cursor-pointer bg-primary text-white flex justify-center items-center  rounded-lg hover:bg-green-700 transition">
               {isLoading ? (
                 <>
                   <LoadingButton />{" "}
