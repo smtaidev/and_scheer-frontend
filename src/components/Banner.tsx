@@ -6,7 +6,7 @@ import SearchField from "./shared/searchField/SearchField";
 
 export default function Banner() {
   return (
-    <div className="relative overflow-hidden w-full min-h-[90vh]">
+    <div className="relative overflow-hidden w-full ">
       {/* Background pattern - responsive positioning */}
       <div className="absolute right-0 top-0 w-full h-full flex justify-end">
         <Image
@@ -19,10 +19,10 @@ export default function Banner() {
       </div>
 
       {/* Main container with proper responsive padding */}
-      <div className="relative z-10 container h-full min-h-[90vh]">
-        <div className="flex items-center justify-between h-full min-h-[90vh] ">
+      <div className="relative z-10 h-full container ">
+        <div className="flex items-center justify-between h-full ">
           {/* Left side - responsive content */}
-          <div className="flex flex-col gap-8 sm:gap-5 lg:gap-12 justify-center text-left z-30  lg:w-5/6 flex-shrink-0 ">
+          <div className="flex flex-col gap-8 sm:gap-5 lg:gap-12 justify-center text-left z-30  flex-shrink-0  lg:w-1/2">
             {/* Heading section */}
             <div className="flex flex-col gap-4 sm:gap-5">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[80px] text-left font-semibold md:font-bold leading-tight">
@@ -63,7 +63,7 @@ export default function Banner() {
           </div>
 
           {/* Right side image - properly positioned in flex */}
-          <div className="hidden sm:flex items-center justify-center w-full sm:w-[45%] md:w-[50%] lg:w-[55%] xl:w-[60%] flex-shrink-0">
+          <div className="hidden sm:flex items-center justify-center flex-shrink-0  w-1/2">
             <div className="relative w-full max-w-[626px] h-auto">
               {/* White shadow/glow */}
               <div className="bg-gradient-to-br from-transparent via-transparent to-white h-[400px] absolute w-full bottom-0 z-10"></div>

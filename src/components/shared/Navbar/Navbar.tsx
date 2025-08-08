@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import DeleteModal from "./DeleteModal";
 import { MenuItem } from "./MenuItem";
 import MobileMenu, { profileVariants } from "./MobileMenu";
+import { LanguageSwitcher } from "@/components/context/LanguageSwitcher";
 
 type NavItem = {
   name: string;
@@ -155,8 +156,8 @@ export default function Navbar({ navItem }: NavbarProps) {
   });
 
   return (
-    <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
-      <div className="max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40 ">
+      <div className="container py-4 flex justify-between items-center">
         {/* Logo */}
         <Link href={"/"}>
           <Logo
@@ -196,7 +197,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                 )}
               </React.Fragment>
             ))}
-
+          <LanguageSwitcher />
           <div className="relative" ref={menuRef}>
             <button
               onClick={toggleMenu}
@@ -217,7 +218,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                   <Link
                     onClick={() => setShowMenu(false)}
                     href={"/signIn"}
-                    className="w-full text-left hover:bg-green-600 bg-primary text-white rounded-md px-5 py-2 transition-all duration-200"
+                    className="px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
                   >
                     Sign In
                   </Link>
