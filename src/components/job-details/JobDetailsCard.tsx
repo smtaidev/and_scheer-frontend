@@ -19,19 +19,19 @@ type JobDetailsCardProps = {
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
     const { id } = useParams();
-    const [loading,setLoading]=useState(false)
-    const router=useRouter()
+    const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
-    const {data:user}=useGetMeQuery({})
+    const { data: user } = useGetMeQuery({})
 
     // const handleApplyNow = () => {
     //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
     // }
     const handleApplyJob = async () => {
         setLoading(true);
-        if(!user?.data) return router.push("/signIn");
-       
+        if (!user?.data) return router.push("/signIn");
+
         try {
             const jobId = currentCompany?.id;
             const response = await applyJob({ jobId });
@@ -40,7 +40,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             if (response && 'data' in response && response.data?.success) {
                 toast.success("Successfully applied for the job!");
                 setLoading(false)
-            }else{
+            } else {
                 const errorMessage =
                     response?.error && 'data' in response.error
                         ? (response.error as { data?: { message?: string } }).data?.message
@@ -53,7 +53,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             setLoading(false)
         }
     };
-
+    console.log(currentCompany)
 
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100">
@@ -70,8 +70,10 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                     {currentCompany?.createdAt && formatDistanceToNow(new Date(currentCompany.createdAt), { addSuffix: true })}
                 </span>
                 |
+                <span>
+                    {currentCompany?.noOfApplicants} applicants
+                </span>
 
-                100+ applicants
             </p>
 
             <p className="text-sm  dark: mt-2 flex  md:items-center md:mb-3 gap-2">
@@ -126,13 +128,13 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
             <footer className="mt-6 flex gap-3">
                 {
-                    loading? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton/></div>:<> <button
-                    onClick={handleApplyJob}
-                    className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
-                    Apply Now
-                </button></>
+                    loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
+                        onClick={handleApplyJob}
+                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                        Apply Now
+                    </button></>
                 }
-               
+
                 <Link href={'/jobSeeker/search-jobs'}>
                     <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
                         Back to Listing

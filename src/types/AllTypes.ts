@@ -50,6 +50,7 @@ export interface Job {
   location: string;
   salaryType: string;
   salaryRange: string;
+  noOfApplicants:number;
   skills: string[];
   features: {
     featureTitle: string;
