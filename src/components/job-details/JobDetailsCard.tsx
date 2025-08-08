@@ -56,7 +56,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
 
     return (
-        <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg">
+        <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100">
             <header className="flex justify-between items-center mb- 4">
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>

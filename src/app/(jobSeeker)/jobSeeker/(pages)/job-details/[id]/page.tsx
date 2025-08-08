@@ -10,6 +10,7 @@ import { Company, Job } from '@/types/AllTypes';
 import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { useParams } from 'next/navigation';
+import SearchField from '@/components/shared/searchField/SearchField';
 
 export default function JobDetailspage() {
     const [currentCompany, setCurrentCompany] = useState<Job | undefined>();
@@ -76,7 +77,10 @@ export default function JobDetailspage() {
     return (
         <div>
             <Container>
-                <AllFilterSection />
+                <SearchField/>
+                {/* <div className='border-b-2 border-primary bg-gradient-b from-primary to-white my-5'>
+                
+                </div> */}
 
                 <div className=" px-4 mt-5 md:mt-9">
                     {/* Mobile Header */}

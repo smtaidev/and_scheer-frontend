@@ -64,7 +64,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   }, []);
 
   useEffect(() => {
-    const targetRoutes = ["/", "/jobSeeker/home", "/jobs"];
+    const targetRoutes = ["/", "/jobSeeker/home", "/jobs","/jobSeeker/job-details"];
     if (targetRoutes.includes(pathname)) {
       setSearchView(true);
     } else {
