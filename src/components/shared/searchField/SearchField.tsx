@@ -1,17 +1,15 @@
-"use client";
-import { useGetMeQuery } from "@/redux/features/auth/auth";
-import { useGetCompanyNamesQuery } from "@/redux/features/filters/filterSlice";
-import { useGetAllJobPostsQuery } from "@/redux/features/job/jobSlice";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  FaBriefcase,
-  FaHashtag,
-  FaMapMarkerAlt,
-  FaSearch,
-} from "react-icons/fa";
+'use client';
+import { useGetMeQuery } from '@/redux/features/auth/auth';
+import { useGetCompanyNamesQuery } from '@/redux/features/filters/filterSlice';
+import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FaBriefcase, FaHashtag, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { RiUserLocationLine } from 'react-icons/ri';
+
+
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -22,25 +20,18 @@ export default function SearchField({ setAnimate, animate }: any) {
 
   const [searchJobs, setSearchJobs] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
-
-  const { register, handleSubmit } = useForm<SearchFormInputs>();
+  const { register, handleSubmit, setValue } = useForm<SearchFormInputs>();
   const { data: info } = useGetAllJobPostsQuery({});
-
   const { data: user } = useGetMeQuery({});
-
   const { data: comName } = useGetCompanyNamesQuery({});
   const allJobsPost = info?.data?.data || [];
-
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   const allCompany = comName?.data;
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const displayedCompanies = useMemo(() => {
     if (!Array.isArray(allCompany)) return [];
-    const sorted = [...allCompany].sort(
-      (a: any, b: any) => b.length - a.length
-    );
+    const sorted = [...allCompany].sort((a: any, b: any) => b.length - a.length);
     return showAllCompanies ? sorted : sorted.slice(0, 6);
   }, [allCompany, showAllCompanies]);
 
@@ -50,9 +41,7 @@ export default function SearchField({ setAnimate, animate }: any) {
         ? job.title.toLowerCase().includes(data.jobName.toLowerCase())
         : true;
       const companyMatch = data.zipCode
-        ? job.company?.companyName
-            .toLowerCase()
-            .includes(data.zipCode.toLowerCase())
+        ? job.company?.companyName.toLowerCase().includes(data.zipCode.toLowerCase())
         : true;
       const locationMatch = data.location
         ? job?.location.toLowerCase().includes(data.location.toLowerCase())
@@ -62,29 +51,54 @@ export default function SearchField({ setAnimate, animate }: any) {
     });
 
     setSearchJobs(filteredJobs);
-    setShowResults(true); // 👈 Show results after search
+    setShowResults(true); // Show results after search
   };
 
   const currentRoute = usePathname();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setShowResults(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+
+
+
+
+  const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        // Call your API route
+        const response = await fetch(`/api/geocode?lat=${latitude}&lon=${longitude}`);
+        const data = await response.json();
+         console.log(data)
+        if (data.error) {
+          console.error(data.error);
+          return;
+        }
+        
+        setValue('location', data.formattedAddress || `${data.city}, ${data.country}`);
+      },
+      (error) => {
+        alert('Unable to retrieve your location.');
+      }
+    );
+  } else {
+    alert('Geolocation is not supported by this browser.');
+  }
+};
 
   return (
     <div className="relative" ref={containerRef}>
-      <h1 className="text-xl text-secondary font-medium">
-        Find Your Favorite Job
-      </h1>
+      <h1 className="text-xl text-secondary font-medium">Find Your Favorite Job</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="bg-white p-4 rounded-lg shadow flex flex-col xl:flex-row items-stretch gap-4 mt-2">
           {/* Job Name Input */}
@@ -94,13 +108,11 @@ export default function SearchField({ setAnimate, animate }: any) {
               type="text"
               placeholder="Frontend"
               className="flex-1 bg-transparent focus:outline-none"
-              {...register("jobName")}
+              {...register('jobName')}
             />
           </div>
-          {user?.data?.role == "JOB_SEEKER" &&
-          currentRoute.includes("/jobSeeker") ? (
+          {user?.data?.role == 'JOB_SEEKER' && currentRoute.includes('/jobSeeker') ? (
             <>
-              {" "}
               {/* Location Input */}
               <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
                 <FaMapMarkerAlt className="text-gray-500" />
@@ -108,9 +120,18 @@ export default function SearchField({ setAnimate, animate }: any) {
                   type="text"
                   placeholder="Location (Germany)"
                   className="flex-1 bg-transparent focus:outline-none"
-                  {...register("location")}
+                  {...register('location')}
                 />
+                <button
+                  type="button"
+                  onClick={getCurrentLocation}
+                  className="ml-2 text-subtitle cursor-pointer px-3 py-1 rounded relative"
+                >
+                  <RiUserLocationLine />
+                  <p className='absolute hidden  hover:block'>Get your Location</p>
+                </button>
               </div>
+
               {/* Zip Code Input */}
               <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
                 <FaHashtag className="text-gray-500" />
@@ -118,7 +139,7 @@ export default function SearchField({ setAnimate, animate }: any) {
                   type="text"
                   placeholder="Zip code"
                   className="flex-1 bg-transparent focus:outline-none w-24"
-                  {...register("zipCode")}
+                  {...register('zipCode')}
                 />
               </div>
             </>
@@ -138,24 +159,6 @@ export default function SearchField({ setAnimate, animate }: any) {
       <p className="text-gray-600 mt-3 lg:text-base text-sm">
         Popular : Full Stack Developer, Frontend Developer, UI Designer
       </p>
-      {/* 
-      {showResults && searchJobs.length > 0 && (
-        <div className="mt-4 space-y-2 border rounded p-4 bg-gray-50 absolute">
-          {searchJobs.map((job: any, index) => (
-            <div key={index} className="p-2 border-b last:border-b-0 cursor-pointer hover:bg-primary/20 w-full">
-              <Link className="cursor-pointer" onClick={() => setAnimate(!animate)} href={`/jobSeeker/job-details/${job?.id}`}>
-                <button className="cursor-pointer flex flex-col justify-start">
-                  <h3 className="font-semibold text-gray-800">{job?.title}</h3>
-                  <p className="text-gray-600">
-                    {job.company?.companyName} — {job?.location}
-                  </p>
-                </button>
-
-              </Link>
-            </div>
-          ))}
-        </div>
-      )} */}
 
       {showResults && searchJobs.length > 0 && (
         <div className="h-[400px] w-md overflow-auto absolute scrollbar-none top-40 md:top-30">
@@ -173,7 +176,6 @@ export default function SearchField({ setAnimate, animate }: any) {
                   <h3 className="text-lg font-semibold text-gray-900 hover:text-primary transition-colors">
                     {job?.title}
                   </h3>
-
                   <div className="flex items-center text-gray-600">
                     <svg
                       className="w-4 h-4 mr-1"
@@ -224,7 +226,7 @@ export default function SearchField({ setAnimate, animate }: any) {
 
                   <div className="pt-2">
                     <span className="inline-block px-2 py-1 text-xs font-medium text-primary bg-green-100 rounded-full">
-                      {job.jobType || "Full-time"}
+                      {job.jobType || 'Full-time'}
                     </span>
                   </div>
                 </div>

@@ -36,7 +36,7 @@ export default function SignInForm() {
     async (data: FormData) => {
       try {
         const response = await sigInUser(data).unwrap();
-
+       console.log(response)
         if (response?.success) {
           Cookies.set("accessToken", response.data.accessToken, {
             secure: process.env.NODE_ENV === "production",

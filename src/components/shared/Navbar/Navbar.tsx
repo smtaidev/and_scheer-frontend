@@ -34,7 +34,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [searchView, setSearchView] = useState(false);
+  const [searchView, setSearchView] = useState(true);
   const [isLogned, setIsLogned] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -172,7 +172,7 @@ export default function Navbar({ navItem }: NavbarProps) {
           <button
             onClick={() => handleSearch()}
             className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${
-              searchView ? "hidden" : ""
+              searchView ? "hidden" : "block"
             }`}
           >
             <FaSearch />
