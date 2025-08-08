@@ -97,7 +97,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
               <ul className="  text-gray-700 space-y-4">
                 {planDetails?.features.map((perm: any, index: number) => (
                   <li key={index} className="flex items-start gap-2">
-                    <FaCheckCircle className="text-green-500 mt-1" />
+                    <FaCheckCircle className="text-primary mt-1" />
                     <span>{perm}</span>
                   </li>
                 ))}

@@ -303,7 +303,7 @@ function AboutCompany() {
                         <button
 
                             onClick={handleSubmit}
-                            className="w-full  bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md transition-colors duration-200 focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                            className="w-full  bg-primary hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md transition-colors duration-200 focus:ring-2 focus:ring-primary focus:ring-offset-2"
                         >
                             Next
                         </button>

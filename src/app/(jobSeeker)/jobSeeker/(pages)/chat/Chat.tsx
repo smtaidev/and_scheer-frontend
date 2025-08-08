@@ -135,7 +135,7 @@ export default function Chat() {
                             alt="Saifur Rahman"
                             className="w-10 h-10 rounded-full object-cover bg-teal-700"
                         />
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-white" />
                     </div>
                     <div>
                         <h3 className="font-semibold text-base md:text-xl ">Saifur Rahman</h3>
@@ -165,14 +165,14 @@ export default function Chat() {
 
                             <div
                                 className={`relative px-4 py-2 rounded-2xl ${message.sender === "user"
-                                        ? "bg-green-500 text-white"
+                                        ? "bg-primary text-white"
                                         : "bg-neutral-200 text-gray-800 border border-gray-200"
                                     }`}
                             >
                                 <p className="text-sm">{message.content}</p>
                                 {message.sender === "user" && (
                                     <div className="absolute -bottom-1 -right-1">
-                                        <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                                        <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                                             <span className="text-white text-xs font-bold">SAT</span>
                                         </div>
                                     </div>
@@ -212,7 +212,7 @@ export default function Chat() {
                     <button
                         onClick={handleSendMessage}
                         disabled={!newMessage.trim()}
-                        className="w-12 h-12 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 rounded-full flex items-center justify-center transition-colors"
+                        className="w-12 h-12 bg-primary hover:bg-green-600 disabled:bg-gray-300 rounded-full flex items-center justify-center transition-colors"
                     >
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path

@@ -29,7 +29,7 @@ const FilterSidebar = () => {
             <span className="text-gray-400 text-xs ml-auto">(267)</span>
           </label>
           <label className="flex items-center space-x-2">
-            <input type="checkbox" className="rounded text-green-500" defaultChecked />
+            <input type="checkbox" className="rounded text-primary" defaultChecked />
             <span className="text-sm">Hybrid</span>
             <span className="text-gray-400 text-xs ml-auto">(156)</span>
           </label>

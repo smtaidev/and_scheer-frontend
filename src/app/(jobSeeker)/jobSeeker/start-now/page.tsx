@@ -58,7 +58,7 @@ export default function ResumeCreate() {
               you <br /> noticed by top employers.
             </p>
             
-              <button onClick={()=>handleUser()} className="px-18 py-4 bg-[#28C76F] text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 transition cursor-pointer">
+              <button onClick={()=>handleUser()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 transition cursor-pointer">
                 Start Now
               </button>
          
