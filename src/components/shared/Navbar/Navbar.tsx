@@ -64,7 +64,7 @@ export default function Navbar({ navItem }: NavbarProps) {
   }, []);
 
   useEffect(() => {
-    const targetRoutes = ["/", "/jobSeeker/home", "/jobs","/jobSeeker/job-details"];
+    const targetRoutes = ["/", "/jobSeeker/home", "/jobs", "/jobSeeker/job-details"];
     if (targetRoutes.includes(pathname)) {
       setSearchView(true);
     } else {
@@ -171,17 +171,15 @@ export default function Navbar({ navItem }: NavbarProps) {
         <div className="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
           <button
             onClick={() => handleSearch()}
-            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${
-              searchView ? "hidden" : "block"
-            }`}
+            className={`flex items-center gap-2 px-6 py-3 bg-primary text-white rounded hover:bg-neutral-900 transition whitespace-nowrap cursor-pointer ${searchView ? "hidden" : "block"
+              }`}
           >
             <FaSearch />
             Search
           </button>
           <span
-            className={`w-0.5 h-6 bg-gray-300 ${
-              searchView ? "hidden" : "inline-block"
-            }`}
+            className={`w-0.5 h-6 bg-gray-300 ${searchView ? "hidden" : "inline-block"
+              }`}
           ></span>
           {Array.isArray(filteredNavItems) &&
             filteredNavItems.map((item, index) => (
@@ -199,32 +197,32 @@ export default function Navbar({ navItem }: NavbarProps) {
             ))}
           <LanguageSwitcher />
           <div className="relative" ref={menuRef}>
-            <button
+            {isLogned ? (<button
               onClick={toggleMenu}
               className="flex items-center gap-2 cursor-pointer"
             >
               <p className="flex items-center  transition-all duration-300">
-                {isLogned ? (
-                  <>
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white mr-2" />
-                    </motion.div>
-                    {user?.fullName}
-                  </>
-                ) : (
-                  <Link
-                    onClick={() => setShowMenu(false)}
-                    href={"/signIn"}
-                    className="px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+
+                <>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    Sign In
-                  </Link>
-                )}
+                    <LuUser className="size-9 bg-primary hover:bg-green-700 transition-all duration-300 cursor-pointer rounded-full p-2 text-white mr-2" />
+                  </motion.div>
+                  {user?.fullName}
+                </>
               </p>
-            </button>
+            </button>) : (
+              <Link
+
+                href={"/signIn"}
+                className="px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+              >
+                Sign In
+              </Link>
+            )}
+
 
             <AnimatePresence>
               {showMenu && (
@@ -235,7 +233,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                   variants={profileVariants}
                   className="absolute top-12 -right-0 min-w-[120px] bg-white/50 backdrop-blur-xl rounded-xl z-50 border border-gray-200"
                 >
-                  {isLogned ? (
+                  {isLogned && (
                     <motion.div
                       onClick={() => setShowMenu(false)}
                       className="w-72   p-4 space-y-2 "
@@ -268,7 +266,7 @@ export default function Navbar({ navItem }: NavbarProps) {
                         onClick={() => setShowDeleteModal(true)}
                       />
                     </motion.div>
-                  ) : null}
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -313,9 +311,8 @@ export default function Navbar({ navItem }: NavbarProps) {
         ></div>
       )}
       <div
-        className={`absolute bg-white border-t-2 border-gray-400 w-full py-12 transform transition-all duration-500 ease-out z-10 ${
-          animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"
-        }`}
+        className={`absolute bg-white border-t-2 border-gray-400 w-full py-12 transform transition-all duration-500 ease-out z-10 ${animate ? "translate-y-0 opacity-100" : "-translate-y-250 opacity-0"
+          }`}
       >
         <SearchSection setAnimate={setAnimate} animate={animate} />
       </div>

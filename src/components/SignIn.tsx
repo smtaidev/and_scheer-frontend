@@ -199,9 +199,9 @@ export default function SignInForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+              className={`w-full px-3 py-1.5 xl:px-6 xl:py-3 ${isLoading?"bg-white  border border-gray-400 ":"bg-primary hover:border-gray-400"}  text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap`}
             >
-              {isLoading ? <LoadingButton /> : "Sign In"}
+              {isLoading ? <LoadingButton color="#28C76F" className="" /> : "Sign In"}
             </button>
           </form>
 

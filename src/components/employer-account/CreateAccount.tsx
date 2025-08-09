@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import Link from "next/link";
+
 import React from "react";
 import Container from "../ui/Container";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
@@ -18,6 +18,7 @@ export default function CreateAccount() {
         if (!user) {
             router.push("/signIn")
             toast.warning("Please Login First!")
+            alert("Please Login First!")
         } else if (user?.data.companyName) {
             toast.warning("You already have a company account!")
         } else if (user?.data.role != "EMPLOYEE") {
