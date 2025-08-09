@@ -238,7 +238,7 @@ const ProfilePage: React.FC = () => {
               <p className="text-end my-5 flex justify-end">
              <Link href={"/jobSeeker/resume-download"}>
             <button className="py-3 bg-neutral-600 px-4 rounded-lg text-white flex items-center gap-1 cursor-pointer hover:bg-neutral-800 transition-all duration-300">
-              Download Your Resume<GoDownload />
+              Download Resume<GoDownload />
             </button>
              </Link>
             </p>

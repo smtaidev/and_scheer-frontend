@@ -92,7 +92,7 @@ const AboutSection = ({ profileData, setProfileData }: any) => {
             Career Summary
           </h2>
           <button
-            className={`text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300  "cursor-not-allowed opacity-70" : ""
+            className={`text-gray-500 hover:text-gray-800 flex items-center gap-1 transition-colors duration-300  "cursor-not-allowed opacity-70  cursor-pointer " : ""
             }`}
             onClick={() => setIsModalOpen(true)}
           >
@@ -153,7 +153,7 @@ const AboutSection = ({ profileData, setProfileData }: any) => {
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400  cursor-pointer "
                   >
                     Cancel
                   </button>

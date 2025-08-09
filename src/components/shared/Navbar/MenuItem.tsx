@@ -31,6 +31,11 @@ export const MenuItem = ({
         <div className="text-xl">{icon}</div>
         <span>{label}</span>
       </Link>
+    ) :label==="Wishlist"? (
+      <Link className="flex gap-3" href="/jobSeeker/saved-jobs">
+        <div className="text-xl">{icon}</div>
+        <span>{label}</span>
+      </Link>
     ) : label === "My Profile" ? (
       user?.role == "JOB_SEEKER" ? (
         <>

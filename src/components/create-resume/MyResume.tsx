@@ -9,6 +9,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Cookies from "js-cookie";
 import Lottie from 'react-lottie'; 
+import { useGetMyProfileQuery } from "@/redux/features/auth/auth";
 
 // Adjust path if different
 
@@ -91,8 +92,12 @@ export default function MyResume({ userId }: { userId: string | null }) {
     // Save the PDF
     pdf.save("my_resume.pdf");
   };
-  const storedUserId =
-    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+
+  const {data:userResume}=useGetMyProfileQuery({});
+  console.log(userResume?.data)
+  
+  // const token=localStorage.getItem("userId")
+  const storedUserId =  userResume?.data.profileId;
 
      const defaultOptions = {
     loop: true, // Whether the animation should loop
@@ -176,7 +181,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
           </button>
 
           <Link href={"/jobSeeker/home"} className="w-full">
-            <Button name="Find Your Favorite Job">
+            <Button className="w-full py-3 px-6 rounded-lg " name="Find Your Favorite Job">
               Find Your Favorite Job
             </Button>
           </Link>

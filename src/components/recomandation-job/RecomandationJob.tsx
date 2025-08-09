@@ -2,7 +2,8 @@
 import Cookies from 'js-cookie'; // Ensure you have js-cookie imported
 import React, { useEffect, useState } from "react";
 // import RecentJobCard from './RecentJobCard'
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -99,14 +100,22 @@ export default function RecomandationJob({ title }: JobTitle) {
                         title ? <> <h1 className="text-2xl md:text-5xl font-semibold ">
                             {title || "Recent Job"}{" "}
                         </h1>
-                        <p className='mb-4 mt-1 md:mt-3  text-secondary text-xs md:text-xl'>Jobs found for you based on your profile and application</p></> : <> <h1 className="text-2xl md:text-5xl font-semibold mb-4">
-                            {"Recent Job"}
-                        </h1></>
+                            <p className='mb-4 mt-1 md:mt-3  text-secondary text-xs md:text-xl'>Jobs found for you based on your profile and application</p></> : <> <h1 className="text-2xl md:text-5xl font-semibold mb-4">
+                                {"Recent Job"}
+                            </h1></>
                     }
 
 
                     {
-                        !jobLoading && <div className="relative">
+                        jobLoading ? <div className='flex gap-5  overflow-auto'>{
+                            ["f","f","f"].map(()=>    <div className=''>
+                        <div className='flex items-center gap-2'><Skeleton circle height={50} width={50} /><h2><Skeleton width={200} /></h2></div>
+                        <h2><Skeleton width={440} /></h2>
+                        <p><Skeleton height={100} width={440} /></p>
+                    </div>)
+                        }</div> 
+                        : 
+                        <div className="relative">
                             {/* Custom arrows */}
                             <div className="swiper-button-prev-custom custom-arrow left-[-50px]" />
                             <div className="swiper-button-next-custom custom-arrow md:right-[-50px] right-[-40px]" />

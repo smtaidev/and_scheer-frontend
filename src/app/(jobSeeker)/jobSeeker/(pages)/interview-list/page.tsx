@@ -1,9 +1,11 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CgArrowsV } from 'react-icons/cg';
 import { Link2Icon, MoreHorizontal } from 'lucide-react';
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
+import { useGetInterviewsQuery } from '@/redux/features/job/jobSlice';
+import { useGetMeQuery } from '@/redux/features/auth/auth';
 
 const aiLogData = [
   {
@@ -56,7 +58,12 @@ const ActionButton = () => (
 
 export default function InterviewSheduler() {
 
-  
+  const { data: info } = useGetInterviewsQuery({});
+  const { data: user } = useGetMeQuery({})
+
+
+
+
   return (
 
     <Container>
@@ -73,20 +80,8 @@ export default function InterviewSheduler() {
         <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
           {/* Force horizontal scroll */}
           {
-            aiLogData ? <><div className="flex justify-center items-center h-[400px] bg-gray-50">
-              <div className="text-center p-8 rounded-lg bg-white shadow-md">
-                <div className="text-gray-500 text-xl font-medium">
-                  No Interview Found
-                </div>
-                <p className="mt-2 text-gray-400">
-                  Check the applied jobs and wait for the interview.
-                </p>
-
-              </div>
-            </div>
-            </> : <>
-
-              {/* <div className="min-w-[600px]">
+            aiLogData ? <>
+              <div className="min-w-[600px]">
 
                 <div className="bg-primary px-6 rounded-t-lg">
                   <div className="grid grid-cols-12 gap-4 py-3 text-white text-md lg:text-xl ">
@@ -99,25 +94,49 @@ export default function InterviewSheduler() {
                   </div>
                 </div>
 
-            
+
                 <div className="divide-y divide-gray-200">
-                  {aiLogData?.map((row: any) => (
+                  {info?.data?.map((row: any) => (
                     <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
                       <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-scheer-primary-dark">
-                        <div className="col-span-2">{row.timestamp}</div>
-                        <div className="col-span-2">{row.userName}</div>
-                        <div className="col-span-2">{row.projectName}</div>
-                        <div className="col-span-2">{row.action}</div>
-                        <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
-                          <Link2Icon /> interview link
+                        <div className="col-span-2">{row.companyName}</div>
+                        <div className="col-span-2">{row.interviewerName}</div>
+                        <div className="col-span-2">{row.position}</div>
+                        <div className="col-span-2">
+                          {new Date(row.interviewDate).toLocaleDateString("en-GB")}{" "}
+                          {new Date(row.interviewDate).toLocaleTimeString("en-GB", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
-                        <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">Chat Now</div>
+                        <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
+                          <Link className='flex items-center' href={row.interviewLink}>
+                            <Link2Icon />Interview link
+                          </Link>
+                        </div>
+                        <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">
+                          <Link href={`/jobSeeker/chat/${row.id}`}>
+                            Chat Now
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div> */}
-              </>
+              </div>
+            </> : <><div className="flex justify-center items-center h-[400px] bg-gray-50">
+              <div className="text-center p-8 rounded-lg bg-white shadow-md">
+                <div className="text-gray-500 text-xl font-medium">
+                  No Interview Found
+                </div>
+                <p className="mt-2 text-gray-400">
+                  Check the applied jobs and wait for the interview.
+                </p>
+
+              </div>
+            </div>
+            </>
+
           }
 
         </div>

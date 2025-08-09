@@ -69,7 +69,7 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
               EDUCATIONS
             </h2>
             <button
-              className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300"
+              className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300  cursor-pointer "
               onClick={() => setIsModalOpen(true)}
             >
               <Plus className="w-4 h-4" />
@@ -95,7 +95,7 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
                 </div>
                 <button
                   onClick={() => handleEditEducation(edu, index)}
-                  className="text-subtitle hover:text-gray-700 mt-2"
+                  className="text-subtitle hover:text-gray-700 mt-2  cursor-pointer "
                 >
                   ✎ Edit
                 </button>
@@ -111,7 +111,7 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
               CERTIFICATIONS
             </h2>
             <button
-              className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300"
+              className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300  cursor-pointer "
               onClick={() => setIsCertificationAddModalOpen(true)}
             >
               <Plus className="w-4 h-4" />
@@ -142,7 +142,7 @@ const EducationSection = ({ profileData, onCertificationUpdate, onEducationUpdat
                 </div>
                 <button
                   onClick={() => handleEditCertification(certification, index)}
-                  className="text-subtitle hover:text-gray-700 mt-2"
+                  className="text-subtitle hover:text-gray-700 mt-2  cursor-pointer "
                 >
                   ✎ Edit
                 </button>

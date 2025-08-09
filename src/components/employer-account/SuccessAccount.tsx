@@ -20,11 +20,11 @@ export default function SuccessAccount() {
                 You’ve successfully set up your company profile. Now, you can start posting jobs and connecting with top talent!
             </p>
 
-            <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
+            <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-white hover:border hover:text-black cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
                 Check Your Email to Acccess Your Dashboard
             </button>
             <Link href={"/"}>
-                <button className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-800 cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
+                <button className="px-6 py-3 border  text-secondary rounded-lg hover:bg-primary hover:text-white hover:border-primary cursor-pointer transition-all duration-300 font-semibold flex items-center gap-2">
                     Go Home
                 </button>
             </Link>

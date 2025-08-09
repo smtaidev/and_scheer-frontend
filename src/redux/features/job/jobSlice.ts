@@ -64,6 +64,9 @@ const jobApi = baseUrlApi.injectEndpoints({
         getAppliedJobs: builder.query({
             query: () => '/apply/apply-job'
         }),
+        getInterviews: builder.query({
+            query: () => '/interviews/my'
+        }),
 
         recomandationJobs: builder.query({
             query: (profileId) => `/jobs/recommended-jobs/${profileId}`
@@ -117,5 +120,6 @@ export const {
     useApplyJobMutation,
     useGetAppliedJobsQuery,
     useRecomandationJobsQuery,
+    useGetInterviewsQuery
 } = jobApi;
 

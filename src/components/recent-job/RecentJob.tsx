@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import { Loader } from "../shared/MainLoader";
 import { Job } from "@/types/AllTypes";
+import Skeleton from "react-loading-skeleton";
 
 interface JobTitle {
   title: string;
@@ -86,21 +87,21 @@ export default function RecentJob({ title }: JobTitle) {
 
   return (
     <div className="bg-card">
-      <div className="bg-[#f7f7f7] ml-0 2xl:ml-44 ">
+      <div className=" ml-0 2xl:ml-44 ">
         <div className="section-gap px-2 relative">
           <h1 className="text-2xl md:text-5xl font-semibold mb-6">
             {title || "Recent Jobs"}
           </h1>
+         
           <div className="swiper-button-prev-custom custom-arrow left-[-50px] my-9 p-2" />
-          {loading ? (
-            <div className="flex justify-center items-center py-8">
-              <Loader />
-            </div>
-          ) : jobs.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
-              No jobs available at the moment.
-            </p>
-          ) : (
+
+          {loading ||allJobsLoading ? <div className='flex gap-5'>{
+            ["f", "f", "f"].map(() => <div>
+              <div className='flex items-center gap-2 '><Skeleton circle height={50} width={50} /><h2><Skeleton width={200} /></h2></div>
+              <h2><Skeleton width={440} /></h2>
+              <p><Skeleton height={100} width={440} /></p>
+            </div>)
+          }</div> : (
             <div className="relative overflow-hidden ">
               {/* Custom Navigation Arrows */}
               {/* <div className="swiper-button-prev-custom custom-arrow left-[-50px]" /> */}

@@ -4,13 +4,15 @@ import JobCard from '../jobCard/JobCard';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { Job } from '@/types/AllTypes';
 import { Loader } from '@/components/shared/MainLoader';
+import { usePathname } from 'next/navigation';
 
 
 export default function JobList({ filtersData }: any) {
 
 console.log(filtersData)
 
-    const [jobs, setJobs] = useState([])
+    const [jobs, setJobs] = useState([]);
+    const pathname=usePathname()
 
     const { data: info, isLoading, error } = useGetAllJobPostsQuery({});
 
@@ -34,7 +36,7 @@ console.log(filtersData)
     return (
 
         <div>
-            <div className=" w-full  ">
+            <div className={`w-full  ${pathname.includes("/jobSeeker/saved-jobs")?"grid grid-cols-1 lg:grid-cols-2 gap-6 px-5":""} `}>
                 {jobs?.map((job: Job, index) => (
                     <JobCard key={index} job={job} />
                 ))}

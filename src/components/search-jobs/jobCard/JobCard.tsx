@@ -7,14 +7,16 @@ import { PiBagSimpleFill } from 'react-icons/pi';
 import { LuDot } from 'react-icons/lu';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function JobCard({ job }: { job: Job }) {
 
     const { data: comInfo } = useGetAllCompaniesQuery();
     const company = comInfo?.data?.find(p => p.id == job?.companyId);
+    const pathname=usePathname()
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full md:min-w-[666px]">
+        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${pathname.includes("/jobSeeker/saved-jobs")?"":" md:min-w-[666px]"}`}>
             <div className="flex justify-between items-start mb-4">
 
 
@@ -22,13 +24,13 @@ export default function JobCard({ job }: { job: Job }) {
                     <h3 className="font-semibold text-lg md:text-[28px] text-gray-900">{company?.companyName}</h3>
                     <p className="text-gray-500 text-sm">Uploaded {company?.createdAt && formatDistanceToNow(new Date(company?.createdAt), { addSuffix: true })}</p>
                 </div>
-                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                    {/* <span className="text-white font-bold text-lg">SJ</span> */}
-                    {/* <Image src={company?.logo || ""} alt={company?.companyName.split(" ").slice(0, 2)
+                <div className=" rounded-full flex items-center justify-center">
+                   
+                    <Image src={company?.logo || ""} alt={company?.companyName.split(" ").slice(0, 2)
                         .map(word => word[0])
                         .join("")
-                        .toUpperCase() ||""} height={9} width={9}
-                    /> */}
+                        .toUpperCase() ||""} height={48} width={48}
+                    />
                 </div>
 
 
