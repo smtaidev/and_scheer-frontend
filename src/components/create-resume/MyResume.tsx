@@ -8,7 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Cookies from "js-cookie";
-import Lottie from 'react-lottie'; 
+import Lottie from 'react-lottie';
+import { useGetMyProfileQuery } from "@/redux/features/auth/auth";
 
 // Adjust path if different
 
@@ -91,9 +92,12 @@ export default function MyResume({ userId }: { userId: string | null }) {
     // Save the PDF
     pdf.save("my_resume.pdf");
   };
-  const storedUserId =typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
-     const defaultOptions = {
+  const { data: userResume } = useGetMyProfileQuery({});
+  console.log(userResume?.data)
+  const storedUserId = localStorage.getItem("userId") || userResume?.data.profileId;
+
+  const defaultOptions = {
     loop: true, // Whether the animation should loop
     autoplay: true, // Whether the animation should start automatically
     animationData: require('@/assets/banner/loading.json'), // Path to your animation file
@@ -105,9 +109,15 @@ export default function MyResume({ userId }: { userId: string | null }) {
 
 
   useEffect(() => {
-    setIsLoading(true);
+
     const fetchUserProfile = async () => {
-      if (!userId && !storedUserId) return;
+      if (!userId && !storedUserId && userResume?.data.profileId) {
+        setIsLoading(true);
+        setProfileData({ profile: userResume?.data });
+        setIsLoading(false);
+        return;
+      };
+      setIsLoading(true);
       const idToUse = userId || storedUserId;
       try {
         const response = await fetch(
@@ -175,7 +185,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
           </button>
 
           <Link href={"/jobSeeker/home"} className="w-full">
-            <Button name="Find Your Favorite Job">
+            <Button className="" name="Find Your Favorite Job">
               Find Your Favorite Job
             </Button>
           </Link>
