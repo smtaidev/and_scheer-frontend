@@ -91,8 +91,7 @@ export default function MyResume({ userId }: { userId: string | null }) {
     // Save the PDF
     pdf.save("my_resume.pdf");
   };
-  const storedUserId =
-    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const storedUserId =typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
      const defaultOptions = {
     loop: true, // Whether the animation should loop

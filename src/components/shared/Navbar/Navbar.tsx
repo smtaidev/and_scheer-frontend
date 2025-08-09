@@ -259,6 +259,12 @@ export default function Navbar({ navItem }: NavbarProps) {
                       <div className="border-b border-gray-300 my-2"></div>
                       <MenuItem
                         user={user}
+                        icon={<FaBriefcase />}
+                        label="Wishlist"
+                      />
+                      <div className="border-b border-gray-300 my-2"></div>
+                      <MenuItem
+                        user={user}
                         icon={<FaSignOutAlt />}
                         label="Log Out"
                         danger
