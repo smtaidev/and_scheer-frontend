@@ -72,7 +72,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
             Skills
           </h2>
           <button
-            className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300"
+            className="text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors duration-300  cursor-pointer "
             onClick={() => setIsModalOpen(true)}
           >
             <Plus className="w-4 h-4" />

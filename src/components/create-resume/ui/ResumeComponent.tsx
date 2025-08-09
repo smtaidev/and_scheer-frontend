@@ -279,3 +279,10 @@ const ResumeComponent: React.FC<ResumeComponentProps> = ({
 };
 
 export default ResumeComponent;
+
+
+{/* <Link href={"/jobSeeker/home"} className="w-full">
+            <Button className="w-full py-3 px-6 rounded-lg border border-primary hover:border-secondary hover:bg-white hover:text-secondary hover:border transition  font-medium cursor-pointer" name="Find Your Favorite Job">
+              Find Your Favorite Job
+            </Button>
+          </Link> */}

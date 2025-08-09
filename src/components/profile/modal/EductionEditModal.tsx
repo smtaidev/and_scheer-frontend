@@ -121,13 +121,13 @@ export const EductionEditModal = ({
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400  cursor-pointer "
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-white rounded hover:bg-green-600"
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-green-600  cursor-pointer "
                 >
                   Save
                 </button>

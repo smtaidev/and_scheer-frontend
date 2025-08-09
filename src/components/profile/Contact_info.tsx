@@ -62,7 +62,7 @@ const ContactInfoProfile = ({ profileData, onSocialMediaUpdate }: any) => {
             </div>
             <button
               onClick={() => handleEdit('github_url', profileData.socialMedia.github_url)}
-              className="text-subtitle hover:text-gray-700 mt-2"
+              className="text-subtitle hover:text-gray-700 mt-2  cursor-pointer "
             >
               ✎ Edit
             </button>
@@ -108,7 +108,7 @@ const ContactInfoProfile = ({ profileData, onSocialMediaUpdate }: any) => {
             </div>
             <button
               onClick={() => handleEdit('personal_website_url', profileData.socialMedia.personal_website_url)}
-              className="text-subtitle hover:text-gray-700 mt-2"
+              className="text-subtitle hover:text-gray-700 mt-2 cursor-pointer "
             >
               ✎ Edit
             </button>
@@ -131,7 +131,7 @@ const ContactInfoProfile = ({ profileData, onSocialMediaUpdate }: any) => {
             </div>
             <button
               onClick={() => handleEdit('portfolio_url', profileData.socialMedia.portfolio_url)}
-              className="text-subtitle hover:text-gray-700 mt-2"
+              className="text-subtitle hover:text-gray-700 mt-2 cursor-pointer "
             >
               ✎ Edit
             </button>
@@ -154,7 +154,7 @@ const ContactInfoProfile = ({ profileData, onSocialMediaUpdate }: any) => {
             </div>
             <button
               onClick={() => handleEdit('twitter_url', profileData.socialMedia.twitter_url)}
-              className="text-subtitle hover:text-gray-700 mt-2"
+              className="text-subtitle hover:text-gray-700 mt-2 cursor-pointer "
             >
               ✎ Edit
             </button>
@@ -177,7 +177,7 @@ const ContactInfoProfile = ({ profileData, onSocialMediaUpdate }: any) => {
             </div>
             <button
               onClick={() => handleEdit('other_social_media_url', profileData.socialMedia.other_social_media_url)}
-              className="text-subtitle hover:text-gray-700 mt-2"
+              className="text-subtitle hover:text-gray-700 mt-2  cursor-pointer "
             >
               ✎ Edit
             </button>
