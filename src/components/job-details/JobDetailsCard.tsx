@@ -11,6 +11,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
 import { useGetMeQuery } from '@/redux/features/auth/auth';
+import { BsBookmarkDashFill } from 'react-icons/bs';
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -60,9 +61,22 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             <header className="flex justify-between items-center mb- 4">
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
-            </header>
+                <p className='flex items-center gap-1 cursor-pointer'>
+                    <BsBookmarkDashFill className='text-gray-700 size-5 ' />Save</p>
 
-            <h2 className="text-xl md:text-3xl xl:text-[42px]  md:mt-8 dark:">{currentCompany?.title || "UI/UX Designer (Onsite)"} <span className='text-primary text-2xl'>({currentCompany?.jobType})</span></h2>
+            </header>
+            <div className='flex justify-between items-center'>
+                <h2 className="text-xl md:text-3xl xl:text-[42px]  md:mt-8 dark:">{currentCompany?.title || "UI/UX Designer (Onsite)"} <span className='text-primary text-2xl'>({currentCompany?.jobType})</span></h2>
+
+                {
+                    loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
+                        onClick={handleApplyJob}
+                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                        Apply Now
+                    </button></>
+                }
+            </div>
+
             <p className="text-sm  text-subtitle  flex flex-wrap gap-3 md:my-3">
                 <span className='flex items-center gap-1'><FaLocationDot className='text-blue-600' /> <p>{currentCompany?.location}</p></span>
                 | <span className='flex items-center gap-1'><PiBagSimpleFill className='text-purple-600' />{currentCompany?.experience}</span> |
@@ -77,7 +91,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             </p>
 
             <p className="text-sm  dark: mt-2 flex  md:items-center md:mb-3 gap-2">
-                <strong className="  mt-0.5 md:mt-0">Skills:</strong>
+                <p className="  mt-0.5 md:mt-0 md:text-lg">Skills Needed: </p>
                 <div className='flex gap-1 flex-wrap text-subtitle'>
                     {currentCompany?.skills?.map(skill => <div className='flex items-center'>{skill} <LuDot className='size-6' /></div>)}
                 </div>
