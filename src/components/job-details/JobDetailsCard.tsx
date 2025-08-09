@@ -71,7 +71,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 {
                     loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
                         onClick={handleApplyJob}
-                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer hidden lg:flex">
                         Apply Now
                     </button></>
                 }

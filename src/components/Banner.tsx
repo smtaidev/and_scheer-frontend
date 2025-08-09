@@ -40,7 +40,7 @@ export default function Banner() {
             </div>
 
             {/* Search Field */}
-            <div className="w-full max-w-[400px] lg:max-w-[620px]">
+            <div className="w-full ">
               <SearchField />
             </div>
 

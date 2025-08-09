@@ -61,8 +61,11 @@ const page = () => {
       <PerfectJob></PerfectJob>
       <TopTalent></TopTalent>
       <SuggestedCourses></SuggestedCourses>
+      <div >
+
       <JobSeekerPlan />
       <EmployerPlan />
+      </div>
       {/* <Newsletter /> */}
       <Footer />
       <ScrollTop />

@@ -70,6 +70,7 @@ export default function JobSeekerPlan() {
           ))}
         </div>
       </Container>
+      
     </div>
   );
 }

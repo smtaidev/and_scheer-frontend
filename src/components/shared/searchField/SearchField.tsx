@@ -10,7 +10,6 @@ import { FaBriefcase, FaHashtag, FaMapMarkerAlt, FaSearch } from 'react-icons/fa
 import { RiUserLocationLine } from 'react-icons/ri';
 
 
-
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
     jobName: string;
@@ -66,10 +65,6 @@ export default function SearchField({ setAnimate, animate }: any) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-
-
-
-
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -97,10 +92,10 @@ export default function SearchField({ setAnimate, animate }: any) {
   };
 
   return (
-    <div className={`relative ${(currentRoute.includes('/jobSeeker/job-details')) ? "bg-gradient-to-t from-primary/20 p-5 rounded-md to-white" : ""} `} ref={containerRef}>
+    <div className={`relative`} ref={containerRef}>
       <h1 className="text-xl text-secondary font-medium">Find Your Favorite Job</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="bg-white p-4 rounded-lg shadow flex flex-col xl:flex-row items-stretch gap-4 mt-2">
+        <div className="bg-white p-4 rounded-lg shadow flex flex-col 2xl:flex-row items-stretch gap-4 mt-2">
           {/* Job Name Input */}
           <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
             <FaBriefcase className="text-gray-500" />
@@ -111,34 +106,32 @@ export default function SearchField({ setAnimate, animate }: any) {
               {...register('jobName')}
             />
           </div>
-          {user?.data?.role == 'JOB_SEEKER' && currentRoute.includes('/jobSeeker') ? (
-            <>
-              {/* Location Input */}
-              <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
-                <FaMapMarkerAlt className="text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Location (Germany)"
-                  className="flex-1 bg-transparent focus:outline-none"
-                  {...register('location')}
-                />
-                <div className="relative group">
-                  <button
-                    type="button"
-                    onClick={getCurrentLocation}
-                    className="ml-2 text-subtitle cursor-pointer px-3 py-1 rounded relative"
-                  >
-                    <RiUserLocationLine />
-                    <p className="absolute  hidden group-hover:inline-block w-40 shadow-md bg-green-50 border border-green-50 transition duration-300 text-sm rounded px-2 py-1 -bottom-10 left-1/2 transform -translate-x-1/2">
-                      Use Current Location
-                    </p>
-                  </button>
-                 
-                </div>
-              </div>
 
-              {/* Zip Code Input */}
-              <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+          {/* Location Input */}
+          <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
+            <FaMapMarkerAlt className="text-gray-500" />
+            <input
+              type="text"
+              placeholder="Location (Germany)"
+              className="flex-1 bg-transparent focus:outline-none"
+              {...register('location')}
+            />
+            <div className="relative group">
+              <button
+                type="button"
+                onClick={getCurrentLocation}
+                className="ml-2 text-subtitle cursor-pointer px-3 py-1 rounded relative"
+              >
+                <RiUserLocationLine />
+                <p className="absolute hidden group-hover:inline-block w-40 shadow-md bg-green-50 border border-green-50 transition duration-300 text-sm rounded px-2 py-1 -bottom-10 left-1/2 transform -translate-x-1/2">
+                  Use Current Location
+                </p>
+              </button>
+            </div>
+          </div>
+
+                {/* Zip Code Input */}
+              {/* <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
                 <FaHashtag className="text-gray-500" />
                 <input
                   type="text"
@@ -146,11 +139,7 @@ export default function SearchField({ setAnimate, animate }: any) {
                   className="flex-1 bg-transparent focus:outline-none w-24"
                   {...register('zipCode')}
                 />
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+              </div> */}
 
           <button
             type="submit"
@@ -165,12 +154,18 @@ export default function SearchField({ setAnimate, animate }: any) {
         Popular : Full Stack Developer, Frontend Developer, UI Designer
       </p>
 
+      {showResults && searchJobs.length === 0 && (
+        <div className="w-md absolute top-40 md:top-30 bg-gray-50 shadow-md rounded-lg px-4 py-2">
+          <p className="text-center text-gray-600">No jobs found</p>
+        </div>
+      )}
+
       {showResults && searchJobs.length > 0 && (
-        <div className=" w-md overflow-auto absolute scrollbar-none top-40 md:top-30 bg-gray-50  shadow-md rounded-lg">
+        <div className="w-md overflow-auto absolute scrollbar-none top-40 md:top-30 bg-gray-50 shadow-md rounded-lg">
           {searchJobs.slice(0, 4).map((job: any, index) => (
             <div
               key={index}
-              className="px-4 py-2 mb-3   transition-shadow duration-200 cursor-pointer  hover:bg-green-100 last:mb-0 "
+              className="px-4 py-2 mb-3 transition-shadow duration-200 cursor-pointer hover:bg-green-100 last:mb-0"
             >
               <Link
                 onClick={() => setAnimate(!animate)}
@@ -181,8 +176,6 @@ export default function SearchField({ setAnimate, animate }: any) {
                   <h3 className="text-md font-semibold text-gray-900 hover:text-primary transition-colors">
                     {job?.title}
                   </h3>
-
-
                 </div>
               </Link>
             </div>
