@@ -65,7 +65,7 @@ const jobApi = baseUrlApi.injectEndpoints({
             query: () => '/apply/apply-job'
         }),
         getInterviews: builder.query({
-            query: () => '/interviews/company'
+            query: () => '/interviews/my'
         }),
 
         recomandationJobs: builder.query({

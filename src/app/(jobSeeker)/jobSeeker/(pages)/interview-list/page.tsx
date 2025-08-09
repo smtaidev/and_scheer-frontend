@@ -61,19 +61,8 @@ export default function InterviewSheduler() {
   const { data: info } = useGetInterviewsQuery({});
   const { data: user } = useGetMeQuery({})
 
-  const [matchedInterview, setMatchedInterview] = useState(null);
-  useEffect(() => {
-    if (info?.data && user?.data?.id) {
-      // Match the jobSeekerId from the info with the user id
-      const matched = info.data.find((interview: any) => interview.jobSeekerId === user.data.id);
 
-      if (matched) {
-        setMatchedInterview(matched); // Store the matched interview data
-      }
-    }
-  }, [info, user]);
 
-  console.log(matchedInterview)
 
   return (
 
@@ -107,17 +96,29 @@ export default function InterviewSheduler() {
 
 
                 <div className="divide-y divide-gray-200">
-                  {aiLogData?.map((row: any) => (
+                  {info?.data?.map((row: any) => (
                     <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
                       <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-scheer-primary-dark">
-                        <div className="col-span-2">{row.timestamp}</div>
-                        <div className="col-span-2">{row.userName}</div>
-                        <div className="col-span-2">{row.projectName}</div>
-                        <div className="col-span-2">{row.action}</div>
-                        <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
-                          <Link2Icon /> interview link
+                        <div className="col-span-2">{row.companyName}</div>
+                        <div className="col-span-2">{row.interviewerName}</div>
+                        <div className="col-span-2">{row.position}</div>
+                        <div className="col-span-2">
+                          {new Date(row.interviewDate).toLocaleDateString("en-GB")}{" "}
+                          {new Date(row.interviewDate).toLocaleTimeString("en-GB", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
-                        <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">Chat Now</div>
+                        <div className="col-span-2 flex gap-2 underline cursor-pointer text-blue-600 hover:text-blue-700 transition">
+                          <Link className='flex items-center' href={row.interviewLink}>
+                            <Link2Icon />Interview link
+                          </Link>
+                        </div>
+                        <div className="col-span-2  underline text-primary cursor-pointer hover:text-green-700 transition">
+                          <Link href={`/jobSeeker/chat/${row.id}`}>
+                            Chat Now
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   ))}

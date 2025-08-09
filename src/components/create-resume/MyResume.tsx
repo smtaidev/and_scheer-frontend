@@ -95,7 +95,9 @@ export default function MyResume({ userId }: { userId: string | null }) {
 
   const {data:userResume}=useGetMyProfileQuery({});
   console.log(userResume?.data)
-  const storedUserId =localStorage.getItem("userId") || userResume?.data.profileId;
+  
+  // const token=localStorage.getItem("userId")
+  const storedUserId =  userResume?.data.profileId;
 
      const defaultOptions = {
     loop: true, // Whether the animation should loop
