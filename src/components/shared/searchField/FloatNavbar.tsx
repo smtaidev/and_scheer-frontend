@@ -168,14 +168,14 @@ export default function FloatNavbar({ navItem }: NavbarProps) {
   }, [showMenu]);
 
   // ✅ Log current auth state for debugging
-  useEffect(() => {
-    console.log("🔍 Navbar auth state:", {
-      hasUser: !!user,
-      userName: user?.fullName,
-      hasToken: !!token,
-      isLogned,
-    });
-  }, [user, token, isLogned]);
+  // useEffect(() => {
+  //   console.log("🔍 Navbar auth state:", {
+  //     hasUser: !!user,
+  //     userName: user?.fullName,
+  //     hasToken: !!token,
+  //     isLogned,
+  //   });
+  // }, [user, token, isLogned]);
 
   const handleSearch = () => {
     setAnimate(!animate);
