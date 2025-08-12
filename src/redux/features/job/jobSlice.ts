@@ -105,6 +105,21 @@ const jobApi = baseUrlApi.injectEndpoints({
             }),
 
         }),
+        saveJobPost: builder.mutation({
+            query: ( data ) => ({
+                url: `/save-jobs/save`,
+                method: "PATCH",
+                body: data,
+            }),
+
+        }),
+                deleteSavedPost: builder.mutation({
+            query: (id) => ({
+                url: `/save-jobs/delete/${id}`,
+                method: "DELETE",
+            }),
+
+        }),
 
     }),
 });
@@ -120,6 +135,7 @@ export const {
     useApplyJobMutation,
     useGetAppliedJobsQuery,
     useRecomandationJobsQuery,
-    useGetInterviewsQuery
+    useSaveJobPostMutation,
+    useDeleteSavedPostMutation
 } = jobApi;
 

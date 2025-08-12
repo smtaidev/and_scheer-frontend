@@ -6,7 +6,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
-import { useApplyJobMutation } from '@/redux/features/job/jobSlice';
+import { useApplyJobMutation, useSaveJobPostMutation } from '@/redux/features/job/jobSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
@@ -25,6 +25,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
     const { data: user } = useGetMeQuery({})
+    const [saveJobPost] = useSaveJobPostMutation()
 
     // const handleApplyNow = () => {
     //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
@@ -56,13 +57,19 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     };
     console.log(currentCompany)
 
+    const handleSave = async (data:any) => {
+        const jobId=data;
+        saveJobPost(jobId)
+    }
+
+
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100">
             <header className="flex justify-between items-center mb- 4">
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
-                <p className='flex items-center gap-1 cursor-pointer'>
-                    <BsBookmarkDashFill className='text-gray-700 size-5 ' />Save</p>
+                <button onClick={() => handleSave(currentCompany?.id)} className='flex items-center gap-1 cursor-pointer'>
+                    <BsBookmarkDashFill className='text-gray-700 size-5 ' />Save</button>
 
             </header>
             <div className='flex justify-between items-center'>

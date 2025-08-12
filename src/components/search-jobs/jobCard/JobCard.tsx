@@ -8,15 +8,24 @@ import { LuDot } from 'react-icons/lu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MdDeleteOutline } from 'react-icons/md';
+import { useDeleteSavedPostMutation } from '@/redux/features/job/jobSlice';
 
 export default function JobCard({ job }: { job: Job }) {
 
     const { data: comInfo } = useGetAllCompaniesQuery();
     const company = comInfo?.data?.find(p => p.id == job?.companyId);
-    const pathname=usePathname()
+    const pathname=usePathname();
+        const current =pathname.includes("/jobSeeker/saved-jobs");
+        const [deleteSavedPost] = useDeleteSavedPostMutation()
+
+        const handleDeleteSave=(id:string)=>{
+       deleteSavedPost(id)
+        }
+
 
     return (
-        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${pathname.includes("/jobSeeker/saved-jobs")?"":" md:min-w-[666px]"}`}>
+        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${current?"":" md:min-w-[666px]"}`}>
             <div className="flex justify-between items-start mb-4">
 
 
@@ -31,6 +40,7 @@ export default function JobCard({ job }: { job: Job }) {
                         .join("")
                         .toUpperCase() ||""} height={48} width={48}
                     />
+                    <button onClick={()=>handleDeleteSave(job?.id)} className={` ${current?"":"hidden"} cursor-pointer `}><MdDeleteOutline className='text-red-600 size-8 ml-4 bg-red-200 rounded-full p-1 hover:bg-red-400 transition-all duration-300 hover:text-white' /></button>
                 </div>
 
 
