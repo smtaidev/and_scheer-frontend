@@ -9,16 +9,16 @@ import { usePathname } from 'next/navigation';
 
 export default function JobList({ filtersData }: any) {
 
-console.log(filtersData)
+    console.log(filtersData)
 
     const [jobs, setJobs] = useState([]);
-    const pathname=usePathname()
+    const pathname = usePathname()
 
     const { data: info, isLoading, error } = useGetAllJobPostsQuery({});
 
     const allJob = info?.data;
     console.log(allJob?.data)
-    const current =pathname.includes("/jobSeeker/saved-jobs")
+    const current = pathname.includes("/jobSeeker/saved-jobs")
 
     useEffect(() => {
         if (filtersData?.length > 0) {
@@ -26,21 +26,39 @@ console.log(filtersData)
         } else {
             setJobs(allJob?.data)
         }
-        // if (allJob?.data) {
-        //     setJobs(allJob?.data)
-        // }
-
     }, [allJob?.data, filtersData])
 
-    if (isLoading) return <p><Loader/></p>
+    if (isLoading) return <p><Loader /></p>
 
     return (
 
         <div>
-            <div className={`w-full  ${current?"grid grid-cols-1 lg:grid-cols-2 gap-6 px-5":""} `}>
-                {jobs?.map((job: Job, index) => (
+            <div className={`w-full`}>
+                {filtersData && jobs?.length > 0 ? <>{jobs?.map((job: Job, index) => (
                     <JobCard key={index} job={job} />
-                ))}
+                ))}</> : <>
+                    <div className="md:min-w-[666px] flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-sm text-center">
+                        <svg
+                            className="w-16 h-16 text-gray-400 mb-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={1.5}
+                                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        <h3 className="text-xl font-medium text-gray-900 mb-2">No Jobs Found</h3>
+                        <p className="text-gray-600 max-w-md">
+                            We couldn't find any jobs matching your criteria. Try adjusting your filters or search terms.
+                        </p>
+                        
+                    </div>
+                </>}
             </div>
         </div>
 

@@ -95,7 +95,7 @@ export default function EducationalBackground({ setStep, formData, setFormData, 
                   <FormInput
                     label="Institution Name"
                     type="text"
-                    placeholder="Dhaka University"
+                    placeholder="University of Munich"
                     {...register(`education.${index}.institution`, {
                       required: true,
                     })}

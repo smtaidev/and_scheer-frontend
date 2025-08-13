@@ -28,7 +28,6 @@ export default function JobCard({ job }: { job: Job }) {
        
     }
 
-    console.log(job)
 
     return (
         <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${current ? "" : " md:min-w-[666px]"}`}>

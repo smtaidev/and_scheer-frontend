@@ -236,7 +236,7 @@ function AboutCompany() {
                             id="companyAddress"
                             name="address"
                             type="text"
-                            placeholder="Section-06, Mirpur, Dhaka"
+                            placeholder="Road-06, Berlin"
                             value={formData.address}
                             onChange={handleInputChange}
                             className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -257,7 +257,7 @@ function AboutCompany() {
                                 id="cityName"
                                 name="city"
                                 type="text"
-                                placeholder="Dhaka"
+                                placeholder="Berlin"
                                 value={formData.city}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -276,7 +276,7 @@ function AboutCompany() {
                                 id="stateName"
                                 name="state"
                                 type="text"
-                                placeholder="Dhaka"
+                                placeholder="Berlin"
                                 value={formData.state}
                                 onChange={handleInputChange}
                                 className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

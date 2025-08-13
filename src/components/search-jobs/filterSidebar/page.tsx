@@ -10,7 +10,7 @@ import {
   useLazyGetAllJobPostsQuery,
 } from "@/redux/features/job/jobSlice";
 import { Department, WorkMode } from "@/types/categoryType/Category";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const allLocation = [
   { name: "Erdmannhausen", count: "" },
@@ -45,7 +45,7 @@ const educationQualifications = [
 ];
 
 // Filter Sidebar Component
-export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilterSidebarVisible }: any) => {
+export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFilterSidebarVisible }: any) => {
   const [experience, setExperience] = useState("0");
   const [showAll, setShowAll] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -172,8 +172,36 @@ export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilte
 
     const response = await filterJobPostsTrigger(formData);
     setFiltersData(response?.data?.data?.data);
-   setIsFilterSidebarVisible(!isFilterSidebarVisible)
+    setIsFilterSidebarVisible(!isFilterSidebarVisible)
   };
+
+  useEffect(() => {
+    const formData = {
+      jobType: selectedWorkModes,
+      // experience: Number(experience) > 0 && `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`,
+      experience: Number(experience) > 0
+        ? `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`
+        : undefined,
+      title: selectedDepartments,
+      locations: selectedLocations,
+      salaryRange: selectedSalaries,
+      educations: selectedEducations,
+      companyName: selectedCompanies,
+    };
+    console.log("Form Data printed:", formData);
+
+    // filterJobPostsTrigger(formData);
+    const fetchData=async()=>{
+
+   
+
+    const response =await filterJobPostsTrigger(formData);
+    setFiltersData(response?.data?.data?.data);
+    setIsFilterSidebarVisible(!isFilterSidebarVisible)
+     }
+
+     fetchData();
+  }, [selectedWorkModes,selectedDepartments,selectedCompanies,selectedEducations,selectedSalaries,experience])
 
   return (
     <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">
@@ -196,7 +224,7 @@ export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilte
                 checked={selectedWorkModes.includes(type.jobType)}
                 onChange={() => handleWorkModeChange(type.jobType)}
               />
-              <span className="text-sm">{type.jobType}</span>
+              <span className="text-sm">{type.jobType.charAt(0).toUpperCase() + type.jobType.slice(1).toLowerCase()}</span>
               <span className="text-gray-400 text-xs ml-auto">
                 ({type.length})
               </span>
@@ -376,7 +404,7 @@ export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilte
       </div>
 
       {/* Apply Button */}
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <button
           onClick={handleApply}
           className="px-3 py-1 border border-gray-200 rounded-md shadow-md bg-primary text-white hover:bg-green-600 cursor-pointer transition-all duration-300"
@@ -384,7 +412,7 @@ export const FilterSidebar = ({ setFiltersData,isFilterSidebarVisible,setIsFilte
         >
           {isFetching ? "Applying..." : "Apply"}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
