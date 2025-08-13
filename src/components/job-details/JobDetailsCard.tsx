@@ -1,17 +1,20 @@
 'use client'
 import { Job } from '@/types/AllTypes';
 import { toast } from "sonner";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
-import { useApplyJobMutation, useSaveJobPostMutation } from '@/redux/features/job/jobSlice';
+import { useApplyJobMutation, useGetSavedJobsQuery, useSaveJobPostMutation } from '@/redux/features/job/jobSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
 import { useGetMeQuery } from '@/redux/features/auth/auth';
 import { BsBookmarkDashFill } from 'react-icons/bs';
+import { IoCheckmarkCircle } from 'react-icons/io5';
+import Lottie from 'react-lottie';
+import animationData from "../../../public/Green Check.json"
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -20,16 +23,26 @@ type JobDetailsCardProps = {
 const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const company = currentCompany?.company;
     const { id } = useParams();
-    const [loading, setLoading] = useState(false)
-    const router = useRouter()
+    const [loading, setLoading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+    const router = useRouter();
+    const [isSave, setIsSaved] = useState(false);
+    const [isApplied, setIsApplied] = useState(false); // State to control Lottie display after application
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
-    const { data: user } = useGetMeQuery({})
-    const [saveJobPost] = useSaveJobPostMutation()
+    const { data: user } = useGetMeQuery({});
+    const [saveJobPost,] = useSaveJobPostMutation();
+    const { data: savedJobs } = useGetSavedJobsQuery({});
 
-    // const handleApplyNow = () => {
-    //     console.log("Job Applied Successfully: ", currentCompany?.id as string);
-    // }
+    const defaultOptions = {
+        loop: 1,             // Loop the animation
+        autoplay: true,         // Play automatically
+        animationData: animationData, // Your animation data
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
     const handleApplyJob = async () => {
         setLoading(true);
         if (!user?.data) return router.push("/signIn");
@@ -38,38 +51,63 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             const jobId = currentCompany?.id;
             const response = await applyJob({ jobId });
 
-
             if (response && 'data' in response && response.data?.success) {
                 toast.success("Successfully applied for the job!");
-                setLoading(false)
+                setIsApplied(true); // Set the flag to show Lottie animation
+                setLoading(false);
             } else {
                 const errorMessage =
                     response?.error && 'data' in response.error
                         ? (response.error as { data?: { message?: string } }).data?.message
                         : 'Failed to apply for the job.';
                 toast.warning(errorMessage);
-                setLoading(false)
+                setLoading(false);
             }
         } catch (error: any) {
-            toast.error(error.data.message)
-            setLoading(false)
+            toast.error(error.data.message);
+            setLoading(false);
         }
     };
-    console.log(currentCompany)
 
-    const handleSave = async (data:any) => {
-        const jobId=data;
-        saveJobPost(jobId)
-    }
+    const handleSave = async (data: any) => {
+        setLoading2(true);
+        const jobId = data;
 
+        const res = await saveJobPost({ jobId });
+        if (res) {
+            setLoading2(false);
+        }
+    };
+
+    useEffect(() => {
+        const avaiable = savedJobs?.data?.find((p: any) => p.jobId === currentCompany?.id);
+        if (avaiable) { setIsSaved(true); } else {
+            setIsSaved(false);
+        }
+    }, [savedJobs?.data, currentCompany]);
 
     return (
-        <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100">
+        <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100 relative">
+            {isApplied && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Lottie options={defaultOptions} height={200} width={200} />
+                </div>
+            )}
             <header className="flex justify-between items-center mb- 4">
                 <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold  flex items-center gap-3">
                     {currentCompany?.company?.companyName || "Superjob Technology"}</h1>
-                <button onClick={() => handleSave(currentCompany?.id)} className='flex items-center gap-1 cursor-pointer'>
-                    <BsBookmarkDashFill className='text-gray-700 size-5 ' />Save</button>
+                {
+                    isSave ? <> <div className="space-y-3">
+                        <div className="inline-flex items-center gap-2 px-2 py-1 border-l-4 border-green-500 bg-green-50">
+                            <span className="text-sm font-medium text-green-700">
+                                Saved
+                            </span>
+                        </div>
+                        <br />
+                    </div></> : <button onClick={() => handleSave(currentCompany?.id)} className='flex items-center gap-1 cursor-pointer'>
+                        <BsBookmarkDashFill className='text-gray-700 size-5 ' /> {loading2 ? "Saving..." : "Save"}</button>
+
+                }
 
             </header>
             <div className='flex justify-between items-center'>

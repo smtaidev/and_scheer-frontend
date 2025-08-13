@@ -15,32 +15,34 @@ export default function JobCard({ job }: { job: Job }) {
 
     const { data: comInfo } = useGetAllCompaniesQuery();
     const company = comInfo?.data?.find(p => p.id == job?.companyId);
-    const pathname=usePathname();
-        const current =pathname.includes("/jobSeeker/saved-jobs");
-        const [deleteSavedPost] = useDeleteSavedPostMutation()
+    const pathname = usePathname();
+    const current = pathname.includes("/jobSeeker/saved-jobs");
+    const [deleteSavedPost] = useDeleteSavedPostMutation()
 
-        const handleDeleteSave=(id:string)=>{
-       deleteSavedPost(id)
-        }
+    const handleDeleteSave = (id: string) => {
+        deleteSavedPost(id)
+       
+    }
 
+    console.log(job)
 
     return (
-        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${current?"":" md:min-w-[666px]"}`}>
+        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${current ? "" : " md:min-w-[666px]"}`}>
             <div className="flex justify-between items-start mb-4">
 
 
                 <div className='flex items-center gap-3'>
-                    <h3 className="font-semibold text-lg md:text-[28px] text-gray-900">{company?.companyName}</h3>
+                    <h3 className="font-semibold text-lg md:text-[28px] text-gray-900">{company?.companyName || job.company?.companyName}</h3>
                     <p className="text-gray-500 text-sm">Uploaded {company?.createdAt && formatDistanceToNow(new Date(company?.createdAt), { addSuffix: true })}</p>
                 </div>
                 <div className=" rounded-full flex items-center justify-center">
-                   
-                    <Image src={company?.logo || ""} alt={company?.companyName.split(" ").slice(0, 2)
+
+                    <Image src={company?.logo || job.company?.logo || ""} alt={company?.companyName.split(" ").slice(0, 2)
                         .map(word => word[0])
                         .join("")
-                        .toUpperCase() ||""} height={48} width={48}
+                        .toUpperCase() || ""} height={48} width={48}
                     />
-                    <button onClick={()=>handleDeleteSave(job?.id)} className={` ${current?"":"hidden"} cursor-pointer `}><MdDeleteOutline className='text-red-600 size-8 ml-4 bg-red-200 rounded-full p-1 hover:bg-red-400 transition-all duration-300 hover:text-white' /></button>
+                    <button onClick={() => handleDeleteSave(job?.id)} className={` ${current ? "" : "hidden"} cursor-pointer `}><MdDeleteOutline className='text-red-600 size-8 ml-4 bg-red-200 rounded-full p-1 hover:bg-red-400 transition-all duration-300 hover:text-white' /></button>
                 </div>
 
 
@@ -63,10 +65,10 @@ export default function JobCard({ job }: { job: Job }) {
                 </div>
             </div>
 
-            <div className="text-sm text-gray-600 mb-4 border-b-2 border-t-2  flex items-center gap-3 py-3 border-gray-200">
+            <div className={`text-sm text-gray-600 mb-4 border-b-2 border-t-2  flex items-center gap-3 py-3 border-gray-200 ${current? "hidden":""}`}>
                 <span className="font-medium ">Skill Needed:</span>
                 <div className='flex flex-wrap'>
-                    {job?.skills.slice(0, 5).map((skill, index, arr) => (
+                    {job?.skills?.slice(0, 5)?.map((skill, index, arr) => (
                         <div className='flex items-center' key={index}>
                             {skill}
                             {index < arr.length - 1 && <LuDot className='size-6' />}

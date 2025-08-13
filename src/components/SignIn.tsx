@@ -95,7 +95,7 @@ export default function SignInForm() {
 
   return (
     <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center px-4">
-      <div className="flex w-full max-w-6xl bg-white rounded-xl overflow-hidden">
+      <div className="flex w-full max-w-[1200px] bg-white rounded-xl overflow-hidden">
         {/* Image Section */}
         <div className="hidden md:block md:w-1/2 relative">
           <Image
@@ -104,13 +104,13 @@ export default function SignInForm() {
             fill
             priority
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+            className="object-cover rounded-lg"
             quality={85}
           />
         </div>
 
         {/* Form Section */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10">
+        <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center mb-8">
             <Link href="/" className="mb-6">
               <Logo height={100} width={224} />
@@ -135,7 +135,7 @@ export default function SignInForm() {
                 id="email"
                 type="email"
                 placeholder="you@example.com"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full px-4 py-[17px] border rounded-lg focus:outline-none focus:ring-2 ${
                   errors.email
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:ring-blue-200"
@@ -166,7 +166,7 @@ export default function SignInForm() {
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full px-4 py-[17px] border rounded-lg focus:outline-none focus:ring-2 ${
                   errors.password
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:ring-blue-200"
@@ -199,7 +199,7 @@ export default function SignInForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full px-3 py-1.5 xl:px-6 xl:py-3 ${isLoading?"bg-white  border border-gray-400 ":"bg-primary hover:border-gray-400"}  text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap`}
+              className={`w-full px-3 py-4 ${isLoading?"bg-white  border border-gray-400 ":"bg-primary hover:border-gray-400"}  text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap`}
             >
               {isLoading ? <LoadingButton color="#28C76F" className="" /> : "Sign In"}
             </button>

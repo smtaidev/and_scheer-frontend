@@ -44,6 +44,7 @@ export interface JobsListResponse {
 
 export interface Job {
   id: string;
+  jobId:string;
   title: string;
   experience: string;
   deadline: string;

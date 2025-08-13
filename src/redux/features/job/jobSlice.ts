@@ -15,7 +15,7 @@ export interface JobFilterType {
 const jobApi = baseUrlApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllJobPosts: builder.query({
-           
+
             query: (filters: JobFilterType) => {
 
                 const params = new URLSearchParams();
@@ -53,7 +53,7 @@ const jobApi = baseUrlApi.injectEndpoints({
                     method: "GET"
                 };
             },
-           
+
         }),
 
         getMyJobPosts: builder.query({
@@ -106,19 +106,24 @@ const jobApi = baseUrlApi.injectEndpoints({
 
         }),
         saveJobPost: builder.mutation({
-            query: ( data ) => ({
+            query: (data) => ({
                 url: `/save-jobs/save`,
-                method: "PATCH",
+                method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["SaveJob"]
 
         }),
-                deleteSavedPost: builder.mutation({
+        getSavedJobs: builder.query({
+            query: () => '/save-jobs', // This is the correct syntax
+            providesTags: ['SaveJob'],
+        }),
+        deleteSavedPost: builder.mutation({
             query: (id) => ({
                 url: `/save-jobs/delete/${id}`,
                 method: "DELETE",
             }),
-
+        invalidatesTags: ["SaveJob"]
         }),
 
     }),
@@ -136,6 +141,8 @@ export const {
     useGetAppliedJobsQuery,
     useRecomandationJobsQuery,
     useSaveJobPostMutation,
-    useDeleteSavedPostMutation
+    useDeleteSavedPostMutation,
+    useGetSavedJobsQuery,
+    useGetInterviewsQuery
 } = jobApi;
 

@@ -1,6 +1,6 @@
 'use client'
 import Container from "@/components/ui/Container";
-import { useGetMeQuery } from "@/redux/features/auth/auth";
+import { useGetMeQuery, useGetMyProfileQuery } from "@/redux/features/auth/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,15 +11,20 @@ export default function ResumeCreate() {
 
 
   const { data: user } = useGetMeQuery({})
+  const { data: myProfile } = useGetMyProfileQuery({})
   const router = useRouter()
 
-  const handleUser = () => {
+
+  const handleUser = async () => {
 
     if (!user) {
       router.push("/signIn")
       toast.warning("Please Login First!")
     } else if (user?.data.role != "JOB_SEEKER") {
       toast.warning(" Only Job Seeker can create resume!")
+
+    } else if (myProfile?.data.profileId) {
+      router.push("/jobSeeker/resume-download")
     }
     else {
       router.push("/jobSeeker/create-resume")
@@ -57,11 +62,11 @@ export default function ResumeCreate() {
               Follow these simple steps to create a standout resume that will get
               you <br /> noticed by top employers.
             </p>
-            
-              <button onClick={()=>handleUser()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 transition cursor-pointer">
-                Start Now
-              </button>
-         
+
+            <button onClick={() => handleUser()} className="px-18 py-4 bg-primary text-[#FCFCFC] font-semibold rounded-lg hover:bg-green-600 transition cursor-pointer">
+              Start Now
+            </button>
+
           </div>
         </div>
       </Container>

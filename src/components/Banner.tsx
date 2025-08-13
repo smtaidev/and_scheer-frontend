@@ -19,10 +19,10 @@ export default function Banner() {
       </div>
 
       {/* Main container with proper responsive padding */}
-      <div className="relative z-10 h-full container ">
-        <div className="flex items-center justify-between h-full ">
+      <div className="relative z-10 h-full container py-9 md:py-0">
+        <div className="flex items-center justify-center sm:justify-between h-full ">
           {/* Left side - responsive content */}
-          <div className="flex flex-col gap-8 sm:gap-5 lg:gap-12 justify-center text-left z-30  flex-shrink-0  lg:w-1/2">
+          <div className="flex flex-col gap-8 sm:gap-5 lg:gap-12 justify-center text-left z-30  flex-shrink-0 lg:w-1/2">
             {/* Heading section */}
             <div className="flex flex-col gap-4 sm:gap-5">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[80px] text-left font-semibold md:font-bold leading-tight">
@@ -47,14 +47,14 @@ export default function Banner() {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-[400px] lg:max-w-[450px]">
               <Link href={"/create-account"}>
-                <button className="w-full sm:w-auto sm:min-w-[140px] hover:bg-primary hover:border-transparent font-semibold hover:text-white border text-xs sm:text-sm md:text-base px-4 sm:px-6 rounded py-3 border-gray-400 transition-all duration-300 cursor-pointer">
+                <button className="w-full sm:w-auto md:min-w-[140px] hover:bg-primary hover:border-transparent font-semibold hover:text-white border text-xs sm:text-sm md:text-base px-4 sm:px-6 rounded py-3 border-gray-400 transition-all duration-300 cursor-pointer">
                   For Employers
                 </button>
               </Link>
 
               <Link
                 href={"/jobSeeker/start-now"}
-                className="w-full sm:w-auto sm:min-w-[160px] text-white group text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 rounded py-3 flex items-center justify-center gap-2 bg-primary hover:bg-white hover:text-black hover:border-gray-400 border transition-all duration-300"
+                className="w-full sm:w-auto md:min-w-[160px] text-white group text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 rounded py-3 flex items-center justify-center gap-2 bg-primary hover:bg-white hover:text-black hover:border-gray-400 border transition-all duration-300"
               >
                 Create AI Resume
                 <BsArrowRight className="transition-transform text-lg duration-300 group-hover:translate-x-1" />

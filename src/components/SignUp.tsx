@@ -85,14 +85,14 @@ export default function SignUpForm() {
 
   return (
     <section className="max-w-[1420px] mx-auto min-h-screen flex items-center justify-center px-4">
-      <div className="flex flex-col lg:flex-row w-full max-w-6xl bg-white rounded-xl overflow-hidden">
+      <div className="flex flex-col lg:flex-row w-full max-w-[1200px] bg-white rounded-xl overflow-hidden">
         {/* Image Section */}
         <div className="lg:w-1/2 hidden md:block relative">
           <Image
             src="/register.jpg"
             alt="Registration visual"
             fill
-            className="object-cover -scale-x-100"
+            className="object-cover -scale-x-100 rounded-lg"
             priority
             quality={90}
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -100,7 +100,7 @@ export default function SignUpForm() {
         </div>
 
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10">
+        <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center mb-8">
             <Link href="/" className="mb-6">
               <Logo height={100} width={224} />
@@ -126,7 +126,7 @@ export default function SignUpForm() {
                   id="firstName"
                   type="text"
                   placeholder="John"
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full py-[17px] px-4 border rounded-lg focus:outline-none focus:ring-2 ${
                     errors.firstName
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300 focus:ring-blue-200"
@@ -153,7 +153,7 @@ export default function SignUpForm() {
                   id="lastName"
                   type="text"
                   placeholder="Doe"
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full py-[17px] px-4 border rounded-lg focus:outline-none focus:ring-2 ${
                     errors.lastName
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300 focus:ring-blue-200"
@@ -181,10 +181,10 @@ export default function SignUpForm() {
                 id="email"
                 type="email"
                 placeholder="you@example.com"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full py-[17px] px-4 border rounded-lg focus:outline-none focus:ring-2 ${
                   errors.email
                     ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
+                     : "border-gray-300 focus:ring-blue-200"
                 }`}
                 {...register("email", {
                   required: "Email is required",
@@ -212,7 +212,7 @@ export default function SignUpForm() {
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full py-[17px] px-4 border rounded-lg focus:outline-none focus:ring-2 ${
                   errors.password
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:ring-blue-200"
@@ -238,7 +238,7 @@ export default function SignUpForm() {
                 id="confirmPassword"
                 type="password"
                 placeholder="••••••••"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full py-[17px] px-4 border rounded-lg focus:outline-none focus:ring-2 ${
                   errors.confirmPassword
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:ring-blue-200"
@@ -254,7 +254,7 @@ export default function SignUpForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-3 py-1.5 xl:px-6 xl:py-3 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
+              className="w-full px-3 py-4 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
             >
               {isLoading ? <LoadingButton /> : "Register"}
             </button>
