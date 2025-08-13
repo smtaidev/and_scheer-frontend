@@ -18,6 +18,7 @@ console.log(filtersData)
 
     const allJob = info?.data;
     console.log(allJob?.data)
+    const current =pathname.includes("/jobSeeker/saved-jobs")
 
     useEffect(() => {
         if (filtersData?.length > 0) {
@@ -36,7 +37,7 @@ console.log(filtersData)
     return (
 
         <div>
-            <div className={`w-full  ${pathname.includes("/jobSeeker/saved-jobs")?"grid grid-cols-1 lg:grid-cols-2 gap-6 px-5":""} `}>
+            <div className={`w-full  ${current?"grid grid-cols-1 lg:grid-cols-2 gap-6 px-5":""} `}>
                 {jobs?.map((job: Job, index) => (
                     <JobCard key={index} job={job} />
                 ))}
