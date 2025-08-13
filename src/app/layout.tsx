@@ -4,11 +4,12 @@ import "./globals.css";
 import { openSans } from "@/fonts/fonts";
 import { Suspense } from "react";
 import Loading from "@/components/Others/Loading";
-import { Toaster } from "sonner";
+
 import StoreProvider from "./StoreProvider";
 import { FormProvider } from "@/components/employer-account/FormContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleTranslateProvider from "@/components/context/GoogleLang";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,12 +45,13 @@ export default function RootLayout({
           >
             <GoogleTranslateProvider>
               <FormProvider>
-                <Toaster position="top-center" expand={true} richColors />
+                
                 <Suspense fallback={<Loading />}>{children}</Suspense>
                 {/* <Suspense>{children}</Suspense> */}
               </FormProvider>
             </GoogleTranslateProvider>
           </GoogleOAuthProvider>
+          <Toaster/>
         </StoreProvider>
       </body>
     </html>

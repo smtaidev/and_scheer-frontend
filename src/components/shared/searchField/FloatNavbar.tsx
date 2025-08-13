@@ -18,7 +18,7 @@ import { X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
 import Cookies from "js-cookie";

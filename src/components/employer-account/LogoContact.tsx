@@ -4,7 +4,7 @@ import { Upload, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from './FormContext';
 import { useCreateCompanyMutation } from '@/redux/features/company/companySlice';
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 function LogoContact() {
     const router = useRouter();

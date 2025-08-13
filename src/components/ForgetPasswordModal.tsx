@@ -3,7 +3,7 @@
 import { useForgetPasswordMutation } from "@/redux/features/auth/auth";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import LoadingButton from "./loading/LoadingButton";
 
 interface ForgotPasswordModalProps {

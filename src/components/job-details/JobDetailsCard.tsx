@@ -1,6 +1,5 @@
 'use client'
 import { Job } from '@/types/AllTypes';
-import { toast } from "sonner";
 import React, { useEffect, useState } from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
@@ -15,6 +14,8 @@ import { BsBookmarkDashFill } from 'react-icons/bs';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import Lottie from 'react-lottie';
 import animationData from "../../../public/Green Check.json"
+import toast, { Toaster } from 'react-hot-toast';
+
 
 type JobDetailsCardProps = {
     currentCompany: Job | undefined;
@@ -56,11 +57,11 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 setIsApplied(true); // Set the flag to show Lottie animation
                 setLoading(false);
             } else {
-                const errorMessage =
+                const errorMessage:any =
                     response?.error && 'data' in response.error
                         ? (response.error as { data?: { message?: string } }).data?.message
                         : 'Failed to apply for the job.';
-                toast.warning(errorMessage);
+                toast.error(errorMessage);
                 setLoading(false);
             }
         } catch (error: any) {
@@ -74,6 +75,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         const jobId = data;
 
         const res = await saveJobPost({ jobId });
+         toast.success('Job Saved.')
         if (res) {
             setLoading2(false);
         }
@@ -88,6 +90,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
 
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100 relative">
+             <Toaster />
             {isApplied && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Lottie options={defaultOptions} height={200} width={200} />

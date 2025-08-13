@@ -14,7 +14,7 @@ import { FaBriefcase, FaSearch, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
 import { useDispatch } from "react-redux";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import DeleteModal from "./DeleteModal";
 import { MenuItem } from "./MenuItem";
 import MobileMenu, { profileVariants } from "./MobileMenu";

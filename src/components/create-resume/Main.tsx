@@ -12,7 +12,7 @@ import PersonalInformation from "./personalInfo";
 import SkillsExperience from "./SkillnExp";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 const MainComponents = () => {
   const [step, setStep] = useState(1);

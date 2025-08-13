@@ -8,7 +8,7 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 import { useState } from "react";
 

@@ -2,7 +2,7 @@
 import { FileText, Plus, X } from "lucide-react";
 import React, { useState } from "react";
 import { LuPencilLine } from "react-icons/lu";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import ExperienceAddModal from "./modal/ExperienceAddModal";
 import ExperienceEditModal from "./modal/ExperienceEditModal";
 import Cookies from "js-cookie";

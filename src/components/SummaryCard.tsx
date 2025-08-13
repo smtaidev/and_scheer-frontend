@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FaCheckCircle } from "react-icons/fa";
 import Loading from "./Others/Loading";
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import LoadingButton from "./loading/LoadingButton";
 import { useDispatch } from "react-redux";
 import { setSubscriptionData } from "@/redux/features/Subscription/subscriptionDataSlice";

@@ -5,7 +5,7 @@ import React from "react";
 import Container from "../ui/Container";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
 
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export default function CreateAccount() {
@@ -17,12 +17,12 @@ export default function CreateAccount() {
 
         if (!user) {
             router.push("/signIn")
-            toast.warning("Please Login First!")
+            toast.error("Please Login First!")
             alert("Please Login First!")
         } else if (user?.data.companyName) {
-            toast.warning("You already have a company account!")
+            toast.error("You already have a company account!")
         } else if (user?.data.role != "EMPLOYEE") {
-            toast.warning(" Only Employer can create a company account!")
+            toast.error(" Only Employer can create a company account!")
         }
         else {
             router.push("/company-details")

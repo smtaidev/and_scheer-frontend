@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import ForgotPasswordModal from "./ForgetPasswordModal";
 import LoadingButton from "./loading/LoadingButton";
 import Logo from "./ui/MainLogo";

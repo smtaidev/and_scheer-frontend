@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 export default function ResumeCreate() {
 
@@ -19,9 +19,9 @@ export default function ResumeCreate() {
 
     if (!user) {
       router.push("/signIn")
-      toast.warning("Please Login First!")
+      toast.error("Please Login First!")
     } else if (user?.data.role != "JOB_SEEKER") {
-      toast.warning(" Only Job Seeker can create resume!")
+      toast.error(" Only Job Seeker can create resume!")
 
     } else if (myProfile?.data.profileId) {
       router.push("/jobSeeker/resume-download")

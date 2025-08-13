@@ -2,7 +2,7 @@
 import { Plus, X } from "lucide-react";
 import React, { useState } from "react";
 
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import EductionAddModal from "./modal/EductionAddModal";
 // import EductionEditModal from "./modal/EductionEditModal";
 import { ProfileData } from "./SkillsSection";

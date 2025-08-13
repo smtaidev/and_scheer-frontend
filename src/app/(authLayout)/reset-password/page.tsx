@@ -5,7 +5,7 @@ import { useResetPasswordMutation } from "@/redux/features/auth/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 interface PasswordFormData {
   email: string;

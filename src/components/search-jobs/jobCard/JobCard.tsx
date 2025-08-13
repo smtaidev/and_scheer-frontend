@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MdDeleteOutline } from 'react-icons/md';
 import { useDeleteSavedPostMutation } from '@/redux/features/job/jobSlice';
+import toast from 'react-hot-toast';
 
 export default function JobCard({ job }: { job: Job }) {
 
@@ -19,8 +20,11 @@ export default function JobCard({ job }: { job: Job }) {
     const current = pathname.includes("/jobSeeker/saved-jobs");
     const [deleteSavedPost] = useDeleteSavedPostMutation()
 
-    const handleDeleteSave = (id: string) => {
-        deleteSavedPost(id)
+    const handleDeleteSave = async(id: string) => {
+       const res =await deleteSavedPost(id);
+       if(res.data){
+        toast.success("Delete save job successfully!")
+       }
        
     }
 
