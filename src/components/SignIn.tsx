@@ -37,22 +37,22 @@ export default function SignInForm() {
       try {
         const response = await sigInUser(data).unwrap();
        console.log(response)
-        // if (response?.success) {
-        //   Cookies.set("accessToken", response.data.accessToken, {
-        //     secure: process.env.NODE_ENV === "production",
-        //     sameSite: "strict",
-        //     expires: 7,
-        //   });
-        //   Cookies.set("refreshToken", response.data.refreshToken, {
-        //     secure: process.env.NODE_ENV === "production",
-        //     sameSite: "strict",
-        //     expires: 7,
-        //   });
+        if (response?.success) {
+          Cookies.set("accessToken", response.data.accessToken, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: 7,
+          });
+          Cookies.set("refreshToken", response.data.refreshToken, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: 7,
+          });
 
-        //   toast.success(response.message);
+          toast.success(response.message);
           router.push("/");
-        //   reset();
-        // }
+          reset();
+        }
       } catch (error: any) {
         console.error("Login error:", error);
         toast.error(error.data?.message || "Login failed. Please try again.");

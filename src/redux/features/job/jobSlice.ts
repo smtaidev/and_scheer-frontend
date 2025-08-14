@@ -16,7 +16,7 @@ const jobApi = baseUrlApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllJobPosts: builder.query({
 
-            query: (filters: JobFilterType) => {
+            query: (filters: JobFilterType & { page?: number; limit?: number }) => {
 
                 const params = new URLSearchParams();
 
@@ -47,6 +47,8 @@ const jobApi = baseUrlApi.injectEndpoints({
                 if (filters.companyName?.length) {
                     filters.companyName.forEach(comp => params.append('companyName', comp));
                 }
+                if (filters.page) params.append('page', filters.page.toString());
+                if (filters.limit) params.append('limit', filters.limit.toString());
 
                 return {
                     url: `/jobs/posts?${params.toString()}`,
@@ -123,7 +125,7 @@ const jobApi = baseUrlApi.injectEndpoints({
                 url: `/save-jobs/delete/${id}`,
                 method: "DELETE",
             }),
-        invalidatesTags: ["SaveJob"]
+            invalidatesTags: ["SaveJob"]
         }),
 
     }),
