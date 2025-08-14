@@ -6,8 +6,9 @@ export const baseUrlApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://31.97.216.98:5000/api/v1",
+    credentials:"include",
     prepareHeaders: (headers) => {
-      // const token  = localStorage.getItem("accessToken")
+
       const token = Cookies.get("accessToken");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);

@@ -243,8 +243,9 @@ export default function Navbar({ navItem }: NavbarProps) {
                         icon={<FaUser />}
                         label="My Profile"
                       />
-                      <div className="border-b border-gray-300 my-2"></div>
-                      <MenuItem
+                        <div className="border-b border-gray-300 my-2"></div>
+                      {
+                      user?.role === "JOB_SEEKER" && <div>     <MenuItem
                         user={user}
                         icon={<FaSearch />}
                         label="Find Your Job"
@@ -262,7 +263,9 @@ export default function Navbar({ navItem }: NavbarProps) {
                         icon={<FaBriefcase />}
                         label="Wishlist"
                       />
-                      <div className="border-b border-gray-300 my-2"></div>
+                      <div className="border-b border-gray-300 my-2"></div></div>
+                      }
+                 
                       <MenuItem
                         user={user}
                         icon={<FaSignOutAlt />}
