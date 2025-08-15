@@ -16,7 +16,7 @@ export default function SearchField({ setAnimate, animate }: any) {
   const watchFields = watch(); // watch the input fields
   const [searchJobs, setSearchJobs] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const { data: info } = useGetAllJobPostsQuery({});
+  const { data: info } = useGetAllJobPostsQuery({page:1,limit:1000});
   const allJobsPost = info?.data?.data || [];
   const containerRef = useRef<HTMLDivElement>(null);
 

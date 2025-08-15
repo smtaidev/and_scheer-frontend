@@ -37,7 +37,7 @@ export default function EmployerPlan() {
     return <Loading />;
   }
   return (
-    <div className="bg-[#F8F8F8]   rounded-b-[300px]">
+    <div className="bg-[#F8F8F8] md:rounded-b-[100px] rounded-b-[50px]  lg:rounded-b-[300px] pb-12">
       <Container>
         <ComponentHeader
           title="Employer Plans"
