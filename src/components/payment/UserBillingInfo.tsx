@@ -6,6 +6,7 @@ import { UserBillingType } from "@/app/(commonLayout)/payment/[id]/page";
 import React from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "../ui/FormInput";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 
 interface UserBillingInfoProps {
   userBillingInfo: UserBillingType;
@@ -18,15 +19,20 @@ export default function UserBillingInfo({
 }: UserBillingInfoProps) {
   const { register, handleSubmit } = useForm<UserBillingType>();
 
+  const {data:user}=useGetMeQuery({});
+  console.log(user?.data)
+
   const onSubmit = (data: UserBillingType) => {
     console.log("first", data);
   };
 
   const handleInputChange = (field: string, value: string) => {
+   if (field !== "email") {
     setUserBillingInfo({
       ...userBillingInfo,
       [field]: value,
     });
+  }
   };
 
   // const roleOptions = [
@@ -48,7 +54,7 @@ export default function UserBillingInfo({
               <FormInput
                 label="First Name"
                 type="text"
-                placeholder="John"
+                placeholder={user?.data?.firstName}
                 {...register("firstName", { required: true })}
                 onChange={(e) => handleInputChange("firstName", e.target.value)}
               />
@@ -57,7 +63,7 @@ export default function UserBillingInfo({
               <FormInput
                 label="Last Name"
                 type="text"
-                placeholder="Doe"
+                placeholder={user?.data?.lastName}
                 {...register("lastName", { required: true })}
                 onChange={(e) => handleInputChange("lastName", e.target.value)}
               />
@@ -78,9 +84,10 @@ export default function UserBillingInfo({
               <FormInput
                 label="Email Address"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={user?.data?.email}
                 {...register("email", { required: true })}
-                onChange={(e) => handleInputChange("email", e.target.value)}
+                value={user?.data?.email}
+                disabled
               />
             </div>
           </div>
@@ -93,14 +100,30 @@ export default function UserBillingInfo({
             register={register("country", { required: true })} // ✅ FIXED
             onChange={(value) => handleInputChange('country', value)}
           /> */}
+          <div className="flex justify-between gap-4">
 
-          <FormInput
-            label="Address"
-            type="text"
-            placeholder="Provide your address"
-            {...register("address", { required: true })}
-            onChange={(e) => handleInputChange("address", e.target.value)}
-          />
+            <div className="flex-1">
+
+              <FormInput
+                label="Address"
+                type="text"
+                placeholder="Provide your address"
+                {...register("address", { required: true })}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+              />
+
+            </div>
+            <div className="flex-1">
+              <FormInput
+                label="Country"
+                type="text"
+                placeholder="Provide your address"
+                {...register("country", { required: true })}
+                onChange={(e) => handleInputChange("country", e.target.value)}
+              />
+
+            </div>
+          </div>
 
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -120,8 +143,8 @@ export default function UserBillingInfo({
             <div className="flex-1">
               <FormInput
                 placeholder="ZIP Code"
-                {...register("zipcode", { required: true })}
-                onChange={(e) => handleInputChange("zipcode", e.target.value)}
+                {...register("zipCode", { required: true })}
+                onChange={(e) => handleInputChange("zipCode", e.target.value)}
               />
             </div>
           </div>

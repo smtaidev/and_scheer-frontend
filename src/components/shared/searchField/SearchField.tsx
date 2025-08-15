@@ -96,7 +96,7 @@ export default function SearchField({ setAnimate, animate }: any) {
 
         <button
           type="button"
-          className="flex items-center gap-2 px-6 py-2 bg-primary-dark text-white rounded cursor-pointer"
+          className="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded cursor-pointer"
           onClick={() => setShowResults(true)}
         >
           <FaSearch />

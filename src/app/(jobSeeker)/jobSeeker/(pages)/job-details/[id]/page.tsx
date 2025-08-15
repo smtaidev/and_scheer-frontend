@@ -23,8 +23,9 @@ export default function JobDetailspage() {
     console.log("Job ID: ", id);
 
     const [allJobs, setAllJobs] = useState<Job[]>([])
-    const { data: jobs, isLoading: isAllJobsLoading } = useGetAllJobPostsQuery({});
+    const { data: jobs, isLoading: isAllJobsLoading } = useGetAllJobPostsQuery({ page: 1, limit: 1000 });
 
+    console.log("Tis the lkadl ", jobs)
     useEffect(() => {
         if (jobs?.data) {
             setAllJobs(jobs?.data.data)
@@ -47,7 +48,7 @@ export default function JobDetailspage() {
         }
     }, [res?.data]);
 
- 
+
     if (isLoading || isAllJobsLoading) {
         return (
             <div className="h-screen">
@@ -60,11 +61,21 @@ export default function JobDetailspage() {
 
     console.log(companies)
 
-
     const handleCompanySelect = (company: Job) => {
-        setCurrentCompany(company)
-        setShowCompanies(false)
-    }
+        setCurrentCompany(company);
+        setShowCompanies(false);
+
+        // Reorder the jobs to move the selected company to the top
+        const updatedJobs = [...allJobs];
+        const selectedJobIndex = updatedJobs.findIndex(job => job.id === company.id);
+
+        if (selectedJobIndex > -1) {
+            // Remove the selected job and add it to the top
+            const selectedJob = updatedJobs.splice(selectedJobIndex, 1);
+            updatedJobs.unshift(selectedJob[0]);
+            setAllJobs(updatedJobs);
+        }
+    };
 
     const toggleView = () => {
         setShowCompanies(!showCompanies)
@@ -77,7 +88,7 @@ export default function JobDetailspage() {
     return (
         <div>
             <Container>
-                <SearchField/>
+                <SearchField />
                 {/* <div className='border-b-2 border-primary bg-gradient-b from-primary to-white my-5'>
                 
                 </div> */}

@@ -16,6 +16,8 @@ import axios from "axios";
 import { constructNow } from "date-fns";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { UserBillingType } from "@/app/(commonLayout)/payment/[id]/page";
+import { useCreateBillingInfoMutation } from "@/redux/features/Subscription/subscriptionSlice";
 
 interface FormData {
   phone: string;
@@ -30,7 +32,15 @@ interface FormData {
   additionalInfo: string;
 }
 
-function PaymentForm() {
+interface UserBillingInfoProps {
+  userBillingInfo: UserBillingType;
+  setUserBillingInfo: React.Dispatch<React.SetStateAction<UserBillingType>>;
+}
+
+function PaymentForm({
+  userBillingInfo,
+  setUserBillingInfo,
+}: UserBillingInfoProps) {
   const router = useRouter();
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -47,6 +57,9 @@ function PaymentForm() {
     reset,
     formState: { errors },
   } = useForm<FormData>();
+
+
+  const [createBilling]=useCreateBillingInfoMutation()
 
   const subData: any = useSelector(
     (state: RootState) => state.subscriptionData.subscription
@@ -119,7 +132,8 @@ function PaymentForm() {
       );
 
       console.log("Payment Confirmed:", confirmRes.data);
-
+      const res = await createBilling(userBillingInfo)
+      console.log(res)
       toast.success("Payment successful!");
       reset();
       setPaymentProcessing(false);

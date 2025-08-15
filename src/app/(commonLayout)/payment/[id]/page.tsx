@@ -5,6 +5,7 @@ import PassPayment from "@/components/payment/stripePayment/Checkout";
 
 import UserBillingInfo from "@/components/payment/UserBillingInfo";
 import Container from "@/components/ui/Container";
+import { useGetMeQuery } from "@/redux/features/auth/auth";
 import React, { useState } from "react";
 
 export interface UserBillingType {
@@ -16,7 +17,7 @@ export interface UserBillingType {
   address: string;
   city: string;
   state: string;
-  zipcode: string;
+  zipCode: string;
   additionalInfo: string;
 }
 
@@ -30,16 +31,19 @@ export interface PaymentInfoType {
 }
 
 export default function Billing() {
+
+    const {data:user}=useGetMeQuery({});
+
   const [userBillingInfo, setUserBillingInfo] = useState<UserBillingType>({
     firstName: "",
     lastName: "",
     phone: "",
-    email: "",
+    email: user?.data?.email,
     country: "",
     address: "",
     city: "",
     state: "",
-    zipcode: "",
+    zipCode: "",
     additionalInfo: "",
   });
 
@@ -58,6 +62,7 @@ export default function Billing() {
     setPaymentInfo(paymentInfo);
     console.log(userBillingInfo, paymentInfo, "Hr is user info");
   };
+   console.log(userBillingInfo, paymentInfo, "Hr is user info");
 
   return (
     <div className="md:mx-3">
@@ -71,7 +76,10 @@ export default function Billing() {
             setUserBillingInfo={setUserBillingInfo}
           />
 
-          <PassPayment />
+          <PassPayment 
+            userBillingInfo={userBillingInfo}
+            setUserBillingInfo={setUserBillingInfo}
+          />
         </div>
       </Container>
     </div>
