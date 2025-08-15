@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function LanguageSwitcher() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [isOpen, setIsOpen] = useState(false);
+
+  // Create a reference to the language switcher button and dropdown
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     // Fetch stored language from localStorage and set default language if not available
@@ -22,6 +26,25 @@ export function LanguageSwitcher() {
     } else {
       document.cookie = `googtrans=/en/${storedLang}; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/`;
     }
+
+    // Close the dropdown when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        buttonRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleChange = (newLang: string) => {
@@ -63,7 +86,8 @@ export function LanguageSwitcher() {
   return (
     <div className="flex items-center gap-2 relative">
       <button
-        className="w-auto h-6 md:h-auto px-3 py-1 rounded-full border-none font-bold text-black/70 bg-white flex items-center justify-between"
+        ref={buttonRef} // Attach ref to the button
+        className="w-auto h-6 md:h-auto px-3 py-1 rounded-full border-none font-bold text-black/70 bg-white flex items-center justify-between cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         {languageNames[selectedLanguage] || "Select a language"}
@@ -86,12 +110,15 @@ export function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-1 w-full min-w-[150px] bg-white rounded-md shadow-lg z-10">
+        <div
+          ref={dropdownRef} // Attach ref to the dropdown
+          className="absolute top-10 -right-13 mt-1 w-full min-w-[150px] bg-white rounded-md shadow-lg z-10 border border-gray-200 "
+        >
           <ul className="py-1">
             {Object.entries(languageNames).map(([code, name]) => (
               <li key={code}>
                 <button
-                  className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
+                  className={`w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer  ${
                     selectedLanguage === code ? "font-bold bg-gray-50" : ""
                   }`}
                   onClick={() => handleChange(code)}

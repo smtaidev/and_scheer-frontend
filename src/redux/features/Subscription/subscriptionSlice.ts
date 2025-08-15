@@ -29,12 +29,20 @@ const subscriptionPlanApi = baseUrlApi.injectEndpoints({
         },
       }),
     }),
-    //  create Subscirption Plans
+    //  create BillingInfo Plans
     createBillingInfo: build.mutation({
       query: ( billingInfo ) => ({
         url: `/billing/create-billing-info`,
         method: "POST",
         body: billingInfo  
+      }),
+    }),
+    //  create Subscirption Plans
+    createNewslatter: build.mutation({
+      query: ( email ) => ({
+        url: `/newsletters/subscribe`,
+        method: "POST",
+        body: email  
       }),
     }),
     // payment Method
@@ -57,5 +65,6 @@ export const {
   useGetSubscirptionSinglePlansQuery,
   // usePaymentMethodMutation,
   useCreateSubscirptionPlansMutation,
-  useCreateBillingInfoMutation
+  useCreateBillingInfoMutation,
+  useCreateNewslatterMutation
 } = subscriptionPlanApi;

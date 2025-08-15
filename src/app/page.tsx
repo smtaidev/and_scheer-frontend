@@ -32,9 +32,15 @@ const page = () => {
       <PerfectJob></PerfectJob>
       <TopTalent></TopTalent>
       <SuggestedCourses></SuggestedCourses>
+      <div className="relative">
+        
       <JobSeekerPlan />
       <EmployerPlan />
-      {/* <Newsletter /> */}
+
+      <div className="absolute -bottom-30 md:-bottom-15 w-full">
+      <Newsletter />
+      </div>
+      </div>
       <Footer />
       <ScrollTop />
     </div>

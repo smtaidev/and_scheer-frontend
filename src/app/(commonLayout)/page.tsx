@@ -66,7 +66,7 @@ const page = () => {
       <JobSeekerPlan />
       <EmployerPlan />
       </div>
-      {/* <Newsletter /> */}
+      <Newsletter />
       <Footer />
       <ScrollTop />
     </div>

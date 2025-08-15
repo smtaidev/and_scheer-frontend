@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FiPhone, FiMail, FiCalendar } from "react-icons/fi";
 import { FiEdit, FiX, FiCheck } from "react-icons/fi";
 import { useGetMeQuery, useUpdateContactInfoMutation } from "@/redux/features/auth/auth";
+import Link from "next/link";
 
 export default function UserProfileCard() {
   const { data: info } = useGetMeQuery({});
@@ -225,9 +226,14 @@ export default function UserProfileCard() {
                 </button>
               </>
             )}
-            <button className="border border-gray-300 text-gray-600 px-8 py-3 rounded-sm hover:bg-gray-100 transition-colors font-medium cursor-pointer">
+            {
+              user?.role ==="EMPLOYEE"? <Link href={"http://172.252.13.69:1004/"} className="border border-gray-300 text-gray-600 px-8 py-3 rounded-sm hover:bg-gray-100 transition-colors font-medium cursor-pointer">
               Go to Dashboard
-            </button>
+            </Link>:<Link href={"http://172.252.13.69:1001/"} className="border border-gray-300 text-gray-600 px-8 py-3 rounded-sm hover:bg-gray-100 transition-colors font-medium cursor-pointer">
+              Go to Dashboard
+            </Link>
+            }
+            
           </div>
         </div>
       </div>

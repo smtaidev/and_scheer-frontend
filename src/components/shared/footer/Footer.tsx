@@ -5,7 +5,7 @@ import Logo from "../../ui/MainLogo";
 
 const Footer: React.FC = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white mt-36 md:mt-12">
       <Container>
         <footer className=" py-10 px-3">
           <div className="mx-auto space-y-8">
