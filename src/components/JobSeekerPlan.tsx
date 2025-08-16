@@ -7,6 +7,7 @@ import { useGetSubscirptionPlansQuery } from "@/redux/features/Subscription/subs
 import Loading from "./Others/Loading";
 import { useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/features/auth/auth";
+import toast from "react-hot-toast";
 
 export default function JobSeekerPlan() {
   const router = useRouter();
@@ -23,6 +24,15 @@ export default function JobSeekerPlan() {
   );
 
   const handleClick = (id: string) => {
+
+      if (!user?.data) {
+      router.push("signIn")
+      toast.error("Please login first!")
+    } else {
+
+      router.push(`/checkout/${id}`);
+    }
+
     const jobName = "frontend";
     const company = "Google";
     const location = "New York";
@@ -33,7 +43,7 @@ export default function JobSeekerPlan() {
       location,
     }).toString();
 
-    router.push(`/checkout/${id}`);
+ 
   };
 
   return (

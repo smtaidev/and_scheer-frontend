@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { RiUserLocationLine } from 'react-icons/ri';
+import toast from 'react-hot-toast';
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -60,10 +61,10 @@ export default function SearchField({ setAnimate, animate }: any) {
           const data = await response.json();
           setValue('location', data.location.name || "Germany");
         },
-        () => alert('Unable to retrieve your location.')
+        () => toast.error('Unable to retrieve your location.')
       );
     } else {
-      alert('Geolocation is not supported by this browser.');
+      toast.error('Geolocation is not supported by this browser.');
     }
   };
 

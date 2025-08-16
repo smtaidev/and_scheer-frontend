@@ -1,11 +1,17 @@
+'use client'
 import React from "react";
 import { FaFacebookF, FaTwitter, FaVimeoV, FaYoutube } from "react-icons/fa";
 import Container from "../../ui/Container";
 import Logo from "../../ui/MainLogo";
+import { usePathname } from "next/navigation";
 
 const Footer: React.FC = () => {
+
+  const pathname=usePathname();
+
+
   return (
-    <div className="bg-white mt-36 md:mt-12">
+    <div className={`${pathname.includes("/jobSeeker")?"bg-card":"bg-white mt-36 md:mt-12"} `}>
       <Container>
         <footer className=" py-10 px-3">
           <div className="mx-auto space-y-8">

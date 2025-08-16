@@ -98,7 +98,7 @@ export default function InterviewSheduler() {
                 <div className="divide-y divide-gray-200">
                   {info?.data?.map((row: any) => (
                     <div key={row.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-                      <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-scheer-primary-dark">
+                      <div className="grid grid-cols-12 gap-4 items-center text-sm md:text-[16px] text-secondary">
                         <div className="col-span-2">{row.companyName}</div>
                         <div className="col-span-2">{row.interviewerName}</div>
                         <div className="col-span-2">{row.position}</div>

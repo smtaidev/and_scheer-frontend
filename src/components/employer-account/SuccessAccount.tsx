@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function SuccessAccount() {
     return (
-        <div className="max-w-[1420px] mx-auto px-4 py-10 flex flex-col items-center space-y-6 min-h-screen justify-center text-scheer-primary-dark">
+        <div className="max-w-[1420px] mx-auto px-4 py-10 flex flex-col items-center space-y-6 min-h-screen justify-center text-secondary">
             {/* Party Icon Placeholder */}
             <div className="w-16 h-16" />
             <Image
@@ -16,7 +16,7 @@ export default function SuccessAccount() {
             <h1 className="text-2xl md:text-[56px] font-bold text-center">
                 Your Company Profile <br /> is Almost Ready!
             </h1>
-            <p className="text-center text-scheer-body-gray text-xl max-w-[785px]">
+            <p className="text-center text-subtitle text-xl max-w-[785px]">
                 You’ve successfully set up your company profile. Now, you can start posting jobs and connecting with top talent!
             </p>
 

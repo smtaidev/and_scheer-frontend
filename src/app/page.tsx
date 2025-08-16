@@ -17,8 +17,8 @@ const navitem = [
   { name: "Home", href: "/" },
   { name: "For Job Seekers", href: "/jobSeeker/home" },
   { name: "For Employers", href: "/create-account" },
-  { name: "Course", href: "#course" },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Course", href: "/#course" },
+  { name: "Pricing", href: "/#pricing" },
 ];
 
 const page = () => {

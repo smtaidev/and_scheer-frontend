@@ -1,5 +1,4 @@
-import { FaCheckCircle } from "react-icons/fa";
-import Button from "./button/Button";
+
 
 interface PackageCardProps {
   price: string;
@@ -18,6 +17,10 @@ export default function PackageCard({
   onButtonClick,
   buttonText,
 }: PackageCardProps) {
+
+
+
+
   return (
     <div className="relative w-full max-w-[457px]  2xl:min-w-[457px] border border-gray-100 bg-white rounded-lg px-6 py-5 flex flex-col justify-between sm:px-8 sm:py-6">
       <div>

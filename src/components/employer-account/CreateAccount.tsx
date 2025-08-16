@@ -18,7 +18,7 @@ export default function CreateAccount() {
         if (!user) {
             router.push("/signIn")
             toast.error("Please Login First!")
-            alert("Please Login First!")
+       
         } else if (user?.data.companyName) {
             toast.error("You already have a company account!")
         } else if (user?.data.role != "EMPLOYEE") {
@@ -44,7 +44,7 @@ export default function CreateAccount() {
                     />
                 </div>
 
-                <div className="text-left flex flex-col  justify-between mt-6 md:mt-0 text-scheer-primary-dark">
+                <div className="text-left flex flex-col  justify-between mt-6 md:mt-0 text-secondary">
                     <h1 className="text-4xl md:text-5xl xl:text-7xl font-bold  mb-4 leading-[1.24]">
                         <span className="">Create Your</span> <br />
                         Employee Account

@@ -7,7 +7,7 @@ export default function SuggestedCourses() {
 
 
   return (
-    <div>
+    <div className="bg-card">
       <Container>
         <div id="course" className="space-y-12">
           <ComponentHeader
