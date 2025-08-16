@@ -9,8 +9,10 @@ import {
   useGetAllJobPostsQuery,
   useLazyGetAllJobPostsQuery,
 } from "@/redux/features/job/jobSlice";
+import { RootState } from "@/redux/store";
 import { Department, WorkMode } from "@/types/categoryType/Category";
 import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 
 const allLocation = [
   { name: "Erdmannhausen", count: "" },
@@ -102,8 +104,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   }, [allCompany, showAllCompanies]);
   const hasMoreCompanies = Array.isArray(allCompany) && allCompany.length > 5;
 
-  console.log(allCompany);
-  // Handlers for checkbox changes
+
   const handleWorkModeChange = (jobType: string) => {
     setSelectedWorkModes((prev) =>
       prev.includes(jobType)
@@ -152,28 +153,29 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
     );
   };
 
-  // Handle Apply button click
-  const handleApply = async () => {
-    const formData = {
-      jobType: selectedWorkModes,
-      // experience: Number(experience) > 0 && `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`,
-      experience: Number(experience) > 0
-        ? `${Number(experience) === 1 ? `${experience}-year` : `${experience}-years`}`
-        : undefined,
-      title: selectedDepartments,
-      locations: selectedLocations,
-      salaryRange: selectedSalaries,
-      educations: selectedEducations,
-      companyName: selectedCompanies,
-    };
-    console.log("Form Data printed:", formData);
+  const searchConfig = useSelector((state:RootState) =>
+    state.search.find((config:any) => config.id === 1)
+  );
 
-    // filterJobPostsTrigger(formData);
+  const { searchFilters } = searchConfig
+console.log(searchFilters,"Here si the filters")
+  useEffect(() => {
+     setSelectedDepartments((prev) =>
+      prev.includes(searchFilters[0])
+        ? prev.filter((item) => item !== searchFilters[0])
+        : [...prev, searchFilters[0]]
+    );
 
-    const response = await filterJobPostsTrigger(formData);
-    setFiltersData(response?.data?.data?.data);
-    setIsFilterSidebarVisible(!isFilterSidebarVisible)
-  };
+    if(searchFilters[1] !=""){
+
+      setSelectedLocations((prev) =>
+        prev.includes(searchFilters[1])
+      ? prev.filter((item) => item !== searchFilters[1])
+      : [...prev, searchFilters[1]]
+    );
+  }
+
+  }, [searchFilters])
 
   useEffect(() => {
     const formData = {
@@ -191,17 +193,17 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
     console.log("Form Data printed:", formData);
 
     // filterJobPostsTrigger(formData);
-    const fetchData=async()=>{
+    const fetchData = async () => {
 
-   
 
-    const response =await filterJobPostsTrigger(formData);
-    setFiltersData(response?.data?.data?.data);
-    setIsFilterSidebarVisible(!isFilterSidebarVisible)
-     }
 
-     fetchData();
-  }, [selectedWorkModes,selectedDepartments,selectedCompanies,selectedEducations,selectedSalaries,experience])
+      const response = await filterJobPostsTrigger(formData);
+      setFiltersData(response?.data?.data?.data);
+      setIsFilterSidebarVisible(!isFilterSidebarVisible)
+    }
+
+    fetchData();
+  }, [selectedWorkModes, selectedDepartments, selectedCompanies, selectedEducations, selectedSalaries, experience,searchFilters])
 
   return (
     <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">

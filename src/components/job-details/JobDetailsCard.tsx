@@ -75,10 +75,12 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         const jobId = data;
 
         const res = await saveJobPost({ jobId });
-         toast.success('Job Saved.')
-        if (res) {
+        
+        if (res?.data) {
             setLoading2(false);
+             toast.success('Job Saved.')
         }
+        setLoading2(false);
     };
 
     useEffect(() => {

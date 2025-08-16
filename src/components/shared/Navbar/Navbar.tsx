@@ -64,8 +64,9 @@ export default function Navbar({ navItem }: NavbarProps) {
   }, []);
 
   useEffect(() => {
-    const targetRoutes = ["/", "/jobSeeker/home", "/jobs", "/jobSeeker/job-details"];
-    if (targetRoutes.includes(pathname)) {
+    const targetRoutes = ["/", "/jobSeeker/home", "/jobs", "/jobSeeker/job-details", "/jobSeeker/job-details/:id"];
+    const isDynamicRoute = /^\/jobSeeker\/job-details\/.+$/.test(pathname);
+    if (targetRoutes.includes(pathname) || isDynamicRoute) {
       setSearchView(true);
     } else {
       setSearchView(false);
@@ -243,29 +244,29 @@ export default function Navbar({ navItem }: NavbarProps) {
                         icon={<FaUser />}
                         label="My Profile"
                       />
-                        <div className="border-b border-gray-300 my-2"></div>
+                      <div className="border-b border-gray-300 my-2"></div>
                       {
-                      user?.role === "JOB_SEEKER" && <div>     <MenuItem
-                        user={user}
-                        icon={<FaSearch />}
-                        label="Find Your Job"
-                        active
-                      />
-                      <div className="border-b border-gray-300 my-2"></div>
-                      <MenuItem
-                        user={user}
-                        icon={<FaBriefcase />}
-                        label="Applied Job"
-                      />
-                      <div className="border-b border-gray-300 my-2"></div>
-                      <MenuItem
-                        user={user}
-                        icon={<FaBriefcase />}
-                        label="Wishlist"
-                      />
-                      <div className="border-b border-gray-300 my-2"></div></div>
+                        user?.role === "JOB_SEEKER" && <div>     <MenuItem
+                          user={user}
+                          icon={<FaSearch />}
+                          label="Find Your Job"
+                          active
+                        />
+                          <div className="border-b border-gray-300 my-2"></div>
+                          <MenuItem
+                            user={user}
+                            icon={<FaBriefcase />}
+                            label="Applied Job"
+                          />
+                          <div className="border-b border-gray-300 my-2"></div>
+                          <MenuItem
+                            user={user}
+                            icon={<FaBriefcase />}
+                            label="Wishlist"
+                          />
+                          <div className="border-b border-gray-300 my-2"></div></div>
                       }
-                 
+
                       <MenuItem
                         user={user}
                         icon={<FaSignOutAlt />}

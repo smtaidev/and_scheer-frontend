@@ -30,7 +30,8 @@ export default function JobCard({ job }: { job: Job }) {
 
 
     return (
-        <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full ${current ? "" : " md:min-w-[666px]"}`}>
+         <Link href={`/jobSeeker/job-details/${job.id}`}>
+        <div className={`bg-white border-2 border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow w-full hover:border-primary hover:border-2 ${current ? "" : " md:min-w-[666px]"}`}>
             <div className="flex justify-between items-start mb-4">
 
 
@@ -93,5 +94,6 @@ export default function JobCard({ job }: { job: Job }) {
 
             </div>
         </div>
+            </Link>
     )
 }

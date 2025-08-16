@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseUrlApi } from "./api/baseUrlApi";
 import subscriptionDataReducer from "./features/Subscription/subscriptionDataSlice";
 import authReducer from "./features/auth/authSlice";
+import searchReducer from "./features/search/searchSlice";
 
 // const persistMiddleware = (store) => (next) => (action) => {
 //   const result = next(action);
@@ -22,6 +23,7 @@ export const makeStore = () => {
       auth: authReducer,
       subscriptionData: subscriptionDataReducer,
       [baseUrlApi.reducerPath]: baseUrlApi.reducer,
+      search: searchReducer
     },
 
     middleware: (getDefaultMiddleware) =>

@@ -8,7 +8,7 @@ import { BsArrowRight } from 'react-icons/bs'
 
 export default function RecentUpload() {
     return (
-        <div className='bg-cardj mx-4'>
+        <div className='bg-card mx-4'>
             <Container>
 
                 <h1 className='text-2xl md:text-5xl font-semibold text-center mb-12'>Recent Uploaded Jobs</h1>

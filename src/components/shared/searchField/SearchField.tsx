@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { RiUserLocationLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { setFilters, setSearchTerm } from '@/redux/features/search/searchSlice';
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -23,6 +25,8 @@ export default function SearchField({ setAnimate, animate }: any) {
 
     const watchedJobName = watch('jobName');
   const watchedLocation = watch('location');
+ 
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const filteredJobs = allJobsPost.filter((job: any) => {
@@ -68,6 +72,14 @@ export default function SearchField({ setAnimate, animate }: any) {
     }
   };
 
+  const handleSearch=()=>{
+ setShowResults(true);
+  dispatch(setSearchTerm({ id: 1, searchTerm: "jobName"}));
+  // dispatch(setFilters({filters:[watchedJobName,watchedLocation]}));
+  dispatch(setFilters({id: 1, searchFilters: [watchedJobName, watchedLocation]}))
+
+  }
+
   return (
     <div className="relative" ref={containerRef}>
       <h1 className="text-xl text-secondary font-medium">Find Your Favorite Job</h1>
@@ -98,7 +110,7 @@ export default function SearchField({ setAnimate, animate }: any) {
         <button
           type="button"
           className="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded cursor-pointer"
-          onClick={() => setShowResults(true)}
+          onClick={() =>handleSearch()}
         >
           <FaSearch />
           Search
