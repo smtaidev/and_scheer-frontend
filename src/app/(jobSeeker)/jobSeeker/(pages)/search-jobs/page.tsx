@@ -4,29 +4,44 @@ import JobList from "@/components/search-jobs/jobList/page";
 import SerachRightSideBar from "@/components/search-jobs/rightSearchBar/page";
 import JobSeekerNavbar from "@/components/seeker-home/SeekerNavbar";
 import AllCategory from "@/components/seeker-home/TopCategory/AllCategory";
+import Container from "@/components/ui/Container";
+import { setFilters } from "@/redux/features/search/searchSlice";
+import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 
 export default function SearchJobPage() {
 
-
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(true);
-
     const [filtersData, setFiltersData] = useState([]);
-    // console.log(isFilterSidebarVisible)
+    const searchConfig = useSelector((state: RootState) =>
+        state.search.find((config: any) => config.id === 1)
+    );
+      const dispatch=useDispatch()
 
-    // console.log("Filter Data: ", filtersData);
-    console.log("Filter Data: ", filtersData);
+    const { searchFilters }: any = searchConfig
 
     useEffect(() => {
         console.log(filtersData)
         console.log("Filter Data Updated: ", filtersData?.length);
     }, [filtersData])
 
+    const handleCross=()=>{
+       dispatch(setFilters({ id: 1, searchFilters: [] }));
+    }
 
     return (
         <div className="mt-8">
             {/* <AllCategory /> */}
+           {
+            searchFilters && searchFilters.length >0 && <div className="max-w-[1320px] mx-5 xl:mx-auto mb-7 flex gap-4 items-center">
+                <p className=" md:text-2xl">Search :</p>
+            <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">{searchFilters[0]} <button onClick={()=>handleCross()} className="mt-1 text-sm ">✕</button> </p>
+            
+            </div>
+           }
+            
 
             {/* Toggle Button for FilterSidebar */}
             <button

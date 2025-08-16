@@ -15,47 +15,51 @@ export interface JobFilterType {
 const jobApi = baseUrlApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllJobPosts: builder.query({
-
             query: (filters: JobFilterType & { page?: number; limit?: number }) => {
-
                 const params = new URLSearchParams();
 
-                if (filters.title?.length) {
-                    filters.title.forEach(dep => params.append('title', dep));
+                // Handling jobType array and joining with commas
+                if (filters.jobType?.length) {
+                    params.append('jobType', filters.jobType.join(','));  // Join job types with commas
                 }
 
+                // Handling title array and joining with commas
+                if (filters.title?.length) {
+                    params.append('title', filters.title.join(','));  // Join titles with commas
+                }
+
+                // Handling location array and joining with commas
+                if (filters.locations?.length) {
+                    params.append('location', filters.locations.join(','));  // Join locations with commas
+                }
+
+                // Handling other fields (if applicable)
                 if (filters.educations?.length) {
-                    filters.educations.forEach(edu => params.append('educations', edu));
+                    params.append('educations', filters.educations.join(','));  // Join educations with commas
                 }
 
                 if (filters.experience) {
-                    params.append('experience', filters.experience.toString());
-                }
-
-                if (filters.locations?.length) {
-                    filters.locations.forEach(loc => params.append('location', loc));
+                    params.append('experience', filters.experience.toString()); // Single value
                 }
 
                 if (filters.salaryRange?.length) {
-                    filters.salaryRange.forEach(salary => params.append('salaryRange', salary));
-                }
-
-                if (filters.jobType?.length) {
-                    filters.jobType.forEach(mode => params.append('jobType', mode));
+                    params.append('salaryRange', filters.salaryRange.join(','));  // Join salary range values with commas
                 }
 
                 if (filters.companyName?.length) {
-                    filters.companyName.forEach(comp => params.append('companyName', comp));
+                    params.append('companyName', filters.companyName.join(','));  // Join company names with commas
                 }
+
+                // Pagination fields (single value)
                 if (filters.page) params.append('page', filters.page.toString());
                 if (filters.limit) params.append('limit', filters.limit.toString());
 
+                // Return the final URL with query parameters
                 return {
-                    url: `/jobs/posts?${params.toString()}`,
-                    method: "GET"
+                    url: `/jobs/posts?${params.toString()}`,  // Automatically constructs the query string
+                    method: "GET",
                 };
             },
-
         }),
 
         getMyJobPosts: builder.query({

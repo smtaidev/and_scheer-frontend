@@ -153,28 +153,30 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
     );
   };
 
-  const searchConfig = useSelector((state:RootState) =>
-    state.search.find((config:any) => config.id === 1)
+  const searchConfig = useSelector((state: RootState) =>
+    state.search.find((config: any) => config.id === 1)
   );
 
-  const { searchFilters } = searchConfig
-console.log(searchFilters,"Here si the filters")
+  const { searchFilters }: any = searchConfig
+  console.log(searchFilters, "Here si the filters")
+
   useEffect(() => {
-     setSelectedDepartments((prev) =>
-      prev.includes(searchFilters[0])
-        ? prev.filter((item) => item !== searchFilters[0])
-        : [...prev, searchFilters[0]]
-    );
+    if (searchFilters.length > 0) {
+      setSelectedDepartments((prev) =>
+        prev.includes(searchFilters[0])
+          ? prev.filter((item) => item !== searchFilters[0])
+          : [...prev, searchFilters[0]]
+      );
 
-    if(searchFilters[1] !=""){
+      if (searchFilters[1] != "") {
 
-      setSelectedLocations((prev) =>
-        prev.includes(searchFilters[1])
-      ? prev.filter((item) => item !== searchFilters[1])
-      : [...prev, searchFilters[1]]
-    );
-  }
-
+        setSelectedLocations((prev) =>
+          prev.includes(searchFilters[1])
+            ? prev.filter((item) => item !== searchFilters[1])
+            : [...prev, searchFilters[1]]
+        );
+      }
+    }
   }, [searchFilters])
 
   useEffect(() => {
@@ -203,7 +205,7 @@ console.log(searchFilters,"Here si the filters")
     }
 
     fetchData();
-  }, [selectedWorkModes, selectedDepartments, selectedCompanies, selectedEducations, selectedSalaries, experience,searchFilters])
+  }, [selectedWorkModes, selectedDepartments, selectedCompanies, selectedEducations, selectedSalaries, experience, searchFilters,selectedLocations])
 
   return (
     <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">
