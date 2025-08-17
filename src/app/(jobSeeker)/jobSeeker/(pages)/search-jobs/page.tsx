@@ -5,7 +5,7 @@ import SerachRightSideBar from "@/components/search-jobs/rightSearchBar/page";
 import JobSeekerNavbar from "@/components/seeker-home/SeekerNavbar";
 import AllCategory from "@/components/seeker-home/TopCategory/AllCategory";
 import Container from "@/components/ui/Container";
-import { setFilters } from "@/redux/features/search/searchSlice";
+import { resetStore, setFilters } from "@/redux/features/search/searchSlice";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +39,7 @@ export default function SearchJobPage() {
     }, [urlParams]); // This will run only once when the component mounts
 
     const handleCross = (query: string) => {
+        dispatch(resetStore())
         const urlParams = new URLSearchParams(window.location.search);
 
         // Conditionally remove either 'jobName' or 'location' based on the passed argument

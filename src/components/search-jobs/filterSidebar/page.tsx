@@ -157,6 +157,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const searchConfig = useSelector((state: RootState) =>
     state.search.find((config: any) => config.id === 1)
   );
+  const { searchFilters }: any = searchConfig
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -165,15 +166,9 @@ const urlParams = new URLSearchParams(window.location.search);
     console.log(urlParams);
     console.log(searchQuery,"Location",locationQuery)
 
-  const { searchFilters }: any = searchConfig
 
   
   useEffect(() => {
-    // Getting the query parameters from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("jobName");
-    const locationQuery = urlParams.get("location");
-
     // Update selectedDepartments based on the searchQuery
     if (searchQuery) {
       setSelectedDepartments((prev) =>
@@ -197,24 +192,24 @@ const urlParams = new URLSearchParams(window.location.search);
   }, [searchQuery]);
 
 
-  useEffect(() => {
-    if (searchFilters.length > 0) {
-      setSelectedDepartments((prev) =>
-        prev.includes(searchFilters[0])
-          ? prev.filter((item) => item !== searchFilters[0])
-          : [...prev, searchFilters[0]]
-      );
+  // useEffect(() => {
+  //   if (searchFilters.length > 0) {
+  //     setSelectedDepartments((prev) =>
+  //       prev.includes(searchFilters[0])
+  //         ? prev.filter((item) => item !== searchFilters[0])
+  //         : [...prev, searchFilters[0]]
+  //     );
 
-      if (searchFilters[1] != "") {
+  //     if (searchFilters[1] != "") {
 
-        setSelectedLocations((prev) =>
-          prev.includes(searchFilters[1])
-            ? prev.filter((item) => item !== searchFilters[1])
-            : [...prev, searchFilters[1]]
-        );
-      }
-    }
-  }, [searchFilters,locationQuery])
+  //       setSelectedLocations((prev) =>
+  //         prev.includes(searchFilters[1])
+  //           ? prev.filter((item) => item !== searchFilters[1])
+  //           : [...prev, searchFilters[1]]
+  //       );
+  //     }
+  //   }
+  // }, [searchFilters,locationQuery])
 
   useEffect(() => {
     const formData = {

@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { RiUserLocationLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFilters, setSearchTerm } from '@/redux/features/search/searchSlice';
 import { useRouter } from 'next/navigation';
+import { RootState } from '@/redux/store';
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -181,6 +182,10 @@ export default function SearchField({ setAnimate, animate }: any) {
     setValue(inputType, '');
     setActiveInput(inputType);
   };
+    const searchConfig = useSelector((state: RootState) =>
+      state.search.find((config: any) => config.id === 1)
+    );
+    const { searchFilters }: any = searchConfig
 
   return (
     <div className="relative" ref={containerRef}>
@@ -202,6 +207,7 @@ export default function SearchField({ setAnimate, animate }: any) {
             onBlur={handleInputBlur}
             onKeyDown={(e) => handleKeyDown(e, 'jobName')}
             autoComplete="off"
+            defaultValue={searchFilters[0]}
           />
           {watchedJobName && (
             <button
@@ -230,6 +236,7 @@ export default function SearchField({ setAnimate, animate }: any) {
             onBlur={handleInputBlur}
             onKeyDown={(e) => handleKeyDown(e, 'location')}
             autoComplete="off"
+            defaultValue={searchFilters[1]}
           />
           {watchedLocation && (
             <button

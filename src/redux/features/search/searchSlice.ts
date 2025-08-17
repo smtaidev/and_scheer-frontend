@@ -52,9 +52,12 @@ const searchSlice = createSlice({
         searchConfig.page = page;
       }
     },
+      resetStore: () => {
+      return initialState;
+    },
   },
 });
 
-export const { setSearchTerm, setFilters, resetSearch, setPage } = searchSlice.actions;
+export const { setSearchTerm, setFilters, resetSearch, setPage,resetStore } = searchSlice.actions;
 
 export default searchSlice.reducer;
