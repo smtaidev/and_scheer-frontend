@@ -5,6 +5,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import LoadingButton from "./loading/LoadingButton";
+import { MdArrowBackIosNew } from "react-icons/md";
 
 interface ForgotPasswordModalProps {
   isModalOpen: boolean;
@@ -44,13 +45,22 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     }
   };
   return (
-    isModalOpen && (
+    (
       <>
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-[500px] p-6 shadow-lg">
-            <h2 className="text-lg font-semibold mb-4 text-center">
-              Forgot Password
-            </h2>
+        <div className="border-gray-200 border rounded z-50">
+          <div className="bg-white rounded-lg w-[500px] p-6 ">
+            <div>
+              <button className="cursor-pointer p-3 flex items-center gap-1 hover:underline" onClick={() => {
+                setModalOpen(true)
+                console.log("dora")
+              }
+              }>
+                <MdArrowBackIosNew />Back</button>
+
+              <h2 className="text-lg font-semibold mb-4 text-center">
+                Forgot Password
+              </h2>
+            </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
@@ -91,8 +101,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
             </form>
 
             <button
-              onClick={() => setModalOpen(false)}
-              className="mt-4 w-full text-sm text-gray-500 hover:underline text-center"
+              onClick={() =>   setModalOpen(true)}
+              className="mt-4 w-full text-sm text-gray-500 hover:underline text-center cursor-pointer"
             >
               Cancel
             </button>

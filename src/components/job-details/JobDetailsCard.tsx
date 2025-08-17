@@ -5,7 +5,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { formatDistanceToNow, format } from 'date-fns'
 import { LuDot } from 'react-icons/lu';
-import { useApplyJobMutation, useGetSavedJobsQuery, useSaveJobPostMutation } from '@/redux/features/job/jobSlice';
+import { useApplyJobMutation, useGetAppliedJobsQuery, useGetSavedJobsQuery, useSaveJobPostMutation } from '@/redux/features/job/jobSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoadingButton from '../loading/LoadingButton';
@@ -28,12 +28,15 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const [loading2, setLoading2] = useState(false);
     const router = useRouter();
     const [isSave, setIsSaved] = useState(false);
-    const [isApplied, setIsApplied] = useState(false); // State to control Lottie display after application
+    const [isApplied, setIsApplied] = useState(false);
+    const [applied, setApplied] = useState(false)
+
 
     const [applyJob, { isLoading }] = useApplyJobMutation();
     const { data: user } = useGetMeQuery({});
     const [saveJobPost,] = useSaveJobPostMutation();
-    const { data: savedJobs } = useGetSavedJobsQuery({});
+    const { data: savedJobs,refetch } = useGetSavedJobsQuery({});
+    const { data: appliedJobs } = useGetAppliedJobsQuery({})
 
     const defaultOptions = {
         loop: 1,             // Loop the animation
@@ -57,7 +60,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 setIsApplied(true); // Set the flag to show Lottie animation
                 setLoading(false);
             } else {
-                const errorMessage:any =
+                const errorMessage: any =
                     response?.error && 'data' in response.error
                         ? (response.error as { data?: { message?: string } }).data?.message
                         : 'Failed to apply for the job.';
@@ -75,10 +78,10 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         const jobId = data;
 
         const res = await saveJobPost({ jobId });
-        
+
         if (res?.data) {
             setLoading2(false);
-             toast.success('Job Saved.')
+            toast.success('Job Saved.')
         }
         setLoading2(false);
     };
@@ -88,11 +91,20 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         if (avaiable) { setIsSaved(true); } else {
             setIsSaved(false);
         }
-    }, [savedJobs?.data, currentCompany]);
+        const application = appliedJobs?.data.find((job:any) => job.jobId === currentCompany?.id);
+        if (application) {
+            setApplied(true)
+        } else {
+            setApplied(false)
+        }
+        refetch()
+        console.log("Appicatons is here", application)
+    }, [savedJobs?.data, currentCompany,isSave]);
+    console.log(applied)
 
     return (
         <section className="max-w-[939px] mx-auto p-6 bg-white text-secondary shadow-md rounded-lg border border-gray-100 relative">
-             <Toaster />
+            <Toaster />
             {isApplied && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Lottie options={defaultOptions} height={200} width={200} />
@@ -119,11 +131,17 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 <h2 className="text-xl md:text-3xl xl:text-[42px]  md:mt-8 dark:">{currentCompany?.title || "UI/UX Designer (Onsite)"} <span className='text-primary text-2xl'>({currentCompany?.jobType})</span></h2>
 
                 {
-                    loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
+                    applied ? <button
                         onClick={handleApplyJob}
-                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer hidden lg:flex">
-                        Apply Now
-                    </button></>
+                        className="text-xs md:text-base inline-flex items-center gap-2 px-2 py-1 border-l-4 border-green-500 bg-green-50">
+                        Application Submited
+                    </button> : <>{
+                        loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
+                            onClick={handleApplyJob}
+                            className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer hidden lg:flex">
+                            Apply Now
+                        </button> </>
+                    } </>
                 }
             </div>
 
@@ -191,13 +209,16 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             </section>
 
             <footer className="mt-6 flex gap-3">
-                {
-                    loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
-                        onClick={handleApplyJob}
-                        className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
-                        Apply Now
-                    </button></>
-                }
+                <div className={`${applied ? "hidden" : ""}`}>
+
+                    {
+                        loading ? <div className='bg-primary text-white  px-4 py-2 rounded'><LoadingButton /></div> : <> <button
+                            onClick={handleApplyJob}
+                            className="bg-primary text-white  px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                            Apply Now
+                        </button></>
+                    }
+                </div>
 
                 <Link href={'/jobSeeker/search-jobs'}>
                     <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-subtitle  transition cursor-pointer">
