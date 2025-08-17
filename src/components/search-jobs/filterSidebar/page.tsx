@@ -48,6 +48,7 @@ const educationQualifications = [
 
 // Filter Sidebar Component
 export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFilterSidebarVisible }: any) => {
+
   const [experience, setExperience] = useState("0");
   const [showAll, setShowAll] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -157,8 +158,44 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
     state.search.find((config: any) => config.id === 1)
   );
 
+
+const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("jobName");
+    const locationQuery = urlParams.get("location");
+    console.log(urlParams);
+    console.log(searchQuery,"Location",locationQuery)
+
   const { searchFilters }: any = searchConfig
-  console.log(searchFilters, "Here si the filters")
+
+  
+  useEffect(() => {
+    // Getting the query parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("jobName");
+    const locationQuery = urlParams.get("location");
+
+    // Update selectedDepartments based on the searchQuery
+    if (searchQuery) {
+      setSelectedDepartments((prev) =>
+        prev.includes(searchQuery)
+          ? prev
+          : [...prev, searchQuery]
+      );
+    } else {
+      setSelectedDepartments([]); // Reset when searchQuery is null
+    }
+
+
+    // Update selectedLocations based on the locationQuery
+    if (locationQuery) {
+      setSelectedLocations((prev) =>
+        prev.includes(locationQuery)
+          ? prev
+          : [...prev, locationQuery]
+      );
+    }
+  }, [searchQuery]);
+
 
   useEffect(() => {
     if (searchFilters.length > 0) {
@@ -177,7 +214,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
         );
       }
     }
-  }, [searchFilters])
+  }, [searchFilters,locationQuery])
 
   useEffect(() => {
     const formData = {

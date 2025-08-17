@@ -139,7 +139,7 @@ export default function SearchField({ setAnimate, animate }: any) {
     setActiveInput(null);
     dispatch(setSearchTerm({ id: 1, searchTerm: "jobName" }));
     dispatch(setFilters({ id: 1, searchFilters: [watchedJobName, watchedLocation] }));
-    router.push('/jobSeeker/search-jobs')
+    router.push(`/jobSeeker/search-jobs/?jobName=${encodeURIComponent(watchedJobName)}&&location=${encodeURIComponent(watchedLocation)}`)
     setAnimate(!animate);
   };
 
