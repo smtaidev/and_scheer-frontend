@@ -143,14 +143,14 @@ const MainComponents = () => {
 
       // 🚀 Send request
       const res = await fetch(
-        "http://172.252.13.71:5005/api/v1/profiles/create",
+        "http://31.97.216.98:5000/api/v1/profiles/create",
         {
           method: "POST",
           body: sendForm,
-          // credentials: "include",
+          
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`, // Use Cookies.get if using cookies
-          }, // if using HttpOnly cookie
+          }, 
         }
       );
 
