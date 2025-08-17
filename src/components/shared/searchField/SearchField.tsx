@@ -1,10 +1,14 @@
 'use client';
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { RiUserLocationLine } from 'react-icons/ri';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilters, setSearchTerm } from '@/redux/features/search/searchSlice';
+import { useRouter } from 'next/navigation';
+import { RootState } from '@/redux/store';
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -13,117 +17,292 @@ export default function SearchField({ setAnimate, animate }: any) {
   }
 
   const { register, setValue, watch } = useForm<SearchFormInputs>();
-  const watchFields = watch(); // watch the input fields
-  const [searchJobs, setSearchJobs] = useState<any[]>([]);
+  const watchFields = watch();
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const { data: info } = useGetAllJobPostsQuery({page:1,limit:1000});
+  const { data: info } = useGetAllJobPostsQuery({ page: 1, limit: 1000 });
   const allJobsPost = info?.data?.data || [];
   const containerRef = useRef<HTMLDivElement>(null);
 
-    const watchedJobName = watch('jobName');
+  const watchedJobName = watch('jobName');
   const watchedLocation = watch('location');
 
+  const [focusedInput, setFocusedInput] = useState<'jobName' | 'location' | null>(null);
+  const [activeInput, setActiveInput] = useState<'jobName' | 'location' | null>(null);
+
+  const dispatch = useDispatch();
+
+  // Get unique job titles and locations for better suggestions
+  const getUniqueJobTitles = () => {
+    const titles = allJobsPost.map((job: any) => job.title);
+    return [...new Set(titles)].sort();
+  };
+
+  const getUniqueLocations = () => {
+    const locations = allJobsPost.map((job: any) => job.location);
+    return [...new Set(locations)].sort();
+  };
+
+  // Enhanced filtering logic based on focused input
   useEffect(() => {
-    const filteredJobs = allJobsPost.filter((job: any) => {
-      const titleMatch = watchFields.jobName
-        ? job.title.toLowerCase().includes(watchFields.jobName.toLowerCase())
-        : true;
-      const locationMatch = watchFields.location
-        ? job.location.toLowerCase().includes(watchFields.location.toLowerCase())
-        : true;
-      return titleMatch && locationMatch;
-    });
+    if (!activeInput) {
+      setSuggestions([]);
+      setShowResults(false);
+      return;
+    }
 
-    setSearchJobs(filteredJobs);
-    setShowResults(!!watchFields.jobName || !!watchFields.location); 
-  }, [watchedJobName,watchedLocation, allJobsPost]);
+    const inputValue = activeInput === 'jobName' ? watchedJobName : watchedLocation;
+    
+    if (!inputValue || inputValue.trim() === '') {
+      setSuggestions([]);
+      setShowResults(false);
+      return;
+    }
 
+    let filteredSuggestions: any[] = [];
 
+    if (activeInput === 'jobName') {
+      // Filter unique job titles
+      const uniqueTitles = getUniqueJobTitles();
+      filteredSuggestions = uniqueTitles
+        .filter((title:any) => 
+          title.toLowerCase().includes(inputValue.toLowerCase())
+        )
+        .slice(0, 8) // Limit to 8 suggestions
+        .map(title => ({
+          type: 'title',
+          value: title,
+          displayText: title
+        }));
+    } else if (activeInput === 'location') {
+      // Filter unique locations
+      const uniqueLocations = getUniqueLocations();
+      filteredSuggestions = uniqueLocations
+        .filter((location:any) => 
+          location.toLowerCase().includes(inputValue.toLowerCase())
+        )
+        .slice(0, 8) // Limit to 8 suggestions
+        .map(location => ({
+          type: 'location',
+          value: location,
+          displayText: location
+        }));
+    }
+
+    setSuggestions(filteredSuggestions);
+    setShowResults(filteredSuggestions.length > 0);
+  }, [watchedJobName, watchedLocation, activeInput, allJobsPost]);
+
+  // Handle click outside to close suggestions
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setShowResults(false);
+        setActiveInput(null);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const router = useRouter()
+
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          const response = await fetch(
-            `http://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&q=${latitude},${longitude}&aqi=yes`
-          );
-          const data = await response.json();
-          setValue('location', data.location.name || "Germany");
+          try {
+            const response = await fetch(
+              `http://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&q=${latitude},${longitude}&aqi=yes`
+            );
+            const data = await response.json();
+            setValue('location', data.location.name || "Germany");
+          } catch (error) {
+            toast.error('Unable to fetch location data.');
+            setValue('location', "Germany");
+          }
         },
-        () => alert('Unable to retrieve your location.')
+        () => toast.error('Unable to retrieve your location.')
       );
     } else {
-      alert('Geolocation is not supported by this browser.');
+      toast.error('Geolocation is not supported by this browser.');
     }
   };
+
+  const handleSearch = () => {
+    if (!watchedJobName && !watchedLocation) {
+      toast.error('Please enter a job title or location to search.');
+      return;
+    }
+
+    setShowResults(false);
+    setActiveInput(null);
+    dispatch(setSearchTerm({ id: 1, searchTerm: "jobName" }));
+    dispatch(setFilters({ id: 1, searchFilters: [watchedJobName, watchedLocation] }));
+    router.push(`/jobSeeker/search-jobs/?jobName=${encodeURIComponent(watchedJobName)}&&location=${encodeURIComponent(watchedLocation)}`)
+    setAnimate(!animate);
+  };
+
+  const handleSuggestionSelect = (suggestion: any) => {
+    if (suggestion.type === 'title') {
+      setValue('jobName', suggestion.value);
+    } else if (suggestion.type === 'location') {
+      setValue('location', suggestion.value);
+    }
+    
+    setShowResults(false);
+    setActiveInput(null);
+  };
+
+  const handleInputFocus = (inputType: 'jobName' | 'location') => {
+    setFocusedInput(inputType);
+    setActiveInput(inputType);
+  };
+
+  const handleInputBlur = () => {
+    // Delay hiding results to allow for click on suggestions
+    setTimeout(() => {
+      setFocusedInput(null);
+    }, 150);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, inputType: 'jobName' | 'location') => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch();
+    } else if (e.key === 'Escape') {
+      setShowResults(false);
+      setActiveInput(null);
+    }
+  };
+
+  // Clear individual input
+  const clearInput = (inputType: 'jobName' | 'location') => {
+    setValue(inputType, '');
+    setActiveInput(inputType);
+  };
+    const searchConfig = useSelector((state: RootState) =>
+      state.search.find((config: any) => config.id === 1)
+    );
+    const { searchFilters }: any = searchConfig
 
   return (
     <div className="relative" ref={containerRef}>
       <h1 className="text-xl text-secondary font-medium">Find Your Favorite Job</h1>
       <div className="bg-white p-4 rounded-lg shadow flex flex-col 2xl:flex-row items-stretch gap-4 mt-2">
-        <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
-          <FaBriefcase className="text-gray-500" />
+        {/* Job Name Input */}
+        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${
+          focusedInput === 'jobName' ? 'border-secondary' : 'border-gray-300'
+        }`}>
+          <FaBriefcase className={`transition-colors ${
+            focusedInput === 'jobName' ? 'text-secondary' : 'text-gray-500'
+          }`} />
           <input
             type="text"
-            placeholder="Frontend"
+            placeholder="e.g. Frontend Developer, Software Engineer"
             className="flex-1 bg-transparent focus:outline-none"
             {...register('jobName')}
+            onFocus={() => handleInputFocus('jobName')}
+            onBlur={handleInputBlur}
+            onKeyDown={(e) => handleKeyDown(e, 'jobName')}
+            autoComplete="off"
+            defaultValue={searchFilters[0]}
           />
+          {watchedJobName && (
+            <button
+              type="button"
+              onClick={() => clearInput('jobName')}
+              className="text-gray-400 hover:text-gray-600 text-sm"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center border-b border-gray-300 px-3 py-2 flex-1 gap-2">
-          <FaMapMarkerAlt className="text-gray-500" />
+        {/* Location Input */}
+        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${
+          focusedInput === 'location' ? 'border-secondary' : 'border-gray-300'
+        }`}>
+          <FaMapMarkerAlt className={`transition-colors ${
+            focusedInput === 'location' ? 'text-secondary' : 'text-gray-500'
+          }`} />
           <input
             type="text"
-            placeholder="Location (Germany)"
+            placeholder="e.g. Berlin, Munich, Hamburg"
             className="flex-1 bg-transparent focus:outline-none"
             {...register('location')}
+            onFocus={() => handleInputFocus('location')}
+            onBlur={handleInputBlur}
+            onKeyDown={(e) => handleKeyDown(e, 'location')}
+            autoComplete="off"
+            defaultValue={searchFilters[1]}
           />
-          <button type="button" onClick={getCurrentLocation} className="ml-2 text-subtitle">
+          {watchedLocation && (
+            <button
+              type="button"
+              onClick={() => clearInput('location')}
+              className="text-gray-400 hover:text-gray-600 text-sm mr-2"
+            >
+              ✕
+            </button>
+          )}
+          <button 
+            type="button" 
+            onClick={getCurrentLocation} 
+            className="text-subtitle hover:text-secondary transition-colors"
+            title="Use current location"
+          >
             <RiUserLocationLine />
           </button>
         </div>
 
+        {/* Search Button */}
         <button
           type="button"
-          className="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded cursor-pointer"
-          onClick={() => setShowResults(true)}
+          className="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded cursor-pointer hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={handleSearch}
+         
         >
           <FaSearch />
           Search
         </button>
       </div>
 
-      {showResults && searchJobs.length === 0 && (
-        <div className="absolute top-28 bg-gray-50 shadow-md rounded-lg px-4 py-2 w-full z-10">
-          <p className="text-center text-primary">No jobs found</p>
+      {/* Enhanced Search Suggestions */}
+      {showResults && suggestions.length === 0 && activeInput && (
+        <div className="absolute top-28 bg-white shadow-lg rounded-lg px-4 py-3 w-full z-10 border">
+          <p className="text-center text-gray-500">
+            No {activeInput === 'jobName' ? 'job titles' : 'locations'} found
+          </p>
         </div>
       )}
 
-      {showResults && searchJobs.length > 0 && (
-        <div className="absolute top-28 bg-gray-50 shadow-md rounded-lg w-full max-h-60 overflow-auto z-10">
-          {searchJobs.slice(0, 5).map((job: any, index) => (
-            <div key={index} className="px-4 py-2 hover:bg-green-100 cursor-pointer border-b border-gray-200">
-              <Link className='flex gap-2' onClick={() => setAnimate(!animate)} href={`/jobSeeker/job-details/${job?.id}`}>
-                <h3 className="text-md font-semibold text-gray-900 hover:text-primary transition-colors">
-                  {job?.title}
-                </h3>
-                <p className='text-sm flex items-end'>
-                    - {job.location}
-                </p>
-              </Link>
+      {showResults && suggestions.length > 0 && (
+        <div className="absolute top-28 bg-white shadow-lg rounded-lg w-full max-h-64 overflow-auto z-10 border border-gray-300">
+          <div className="py-2">
+            <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide border-b">
+              {activeInput === 'jobName' ? 'Job Titles' : 'Locations'}
             </div>
-          ))}
+            {suggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                onClick={() => handleSuggestionSelect(suggestion)}
+                className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  {suggestion.type === 'title' ? (
+                    <FaBriefcase className="text-gray-400 text-sm" />
+                  ) : (
+                    <FaMapMarkerAlt className="text-gray-400 text-sm" />
+                  )}
+                  <span className="text-gray-900 font-medium">
+                    {suggestion.displayText}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

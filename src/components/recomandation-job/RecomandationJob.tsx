@@ -31,10 +31,10 @@ interface JobTitle {
 
 
 export default function RecomandationJob({ title }: JobTitle) {
+    
+     const { data: currentUser } = useGetMeQuery({});
+     if(currentUser?.data?.role != "JOB_SEEKER")   return;
 
-    // const [recomandationAllJobs, setRecomandationAllJobs] = useState<Job[]>([])
-    // const { data: jobs } = useGetAllJobPostsQuery({});
-    const { data: currentUser } = useGetMeQuery({});
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
     const profileId = myProfile?.data?.profileId;
 

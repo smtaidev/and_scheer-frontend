@@ -75,10 +75,12 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         const jobId = data;
 
         const res = await saveJobPost({ jobId });
-         toast.success('Job Saved.')
-        if (res) {
+        
+        if (res?.data) {
             setLoading2(false);
+             toast.success('Job Saved.')
         }
+        setLoading2(false);
     };
 
     useEffect(() => {
@@ -89,7 +91,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     }, [savedJobs?.data, currentCompany]);
 
     return (
-        <section className="max-w-[939px] mx-auto p-6 bg-white text-scheer-primary-dark shadow-md rounded-lg border border-gray-100 relative">
+        <section className="max-w-[939px] mx-auto p-6 bg-white text-secondary shadow-md rounded-lg border border-gray-100 relative">
              <Toaster />
             {isApplied && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -198,7 +200,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 }
 
                 <Link href={'/jobSeeker/search-jobs'}>
-                    <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-scheer-body-gray  transition cursor-pointer">
+                    <button className="border border-gray-300   dark: px-4 py-2 rounded hover:bg-gray-300 text-subtitle  transition cursor-pointer">
                         Back to Listing
                     </button>
                 </Link>

@@ -78,7 +78,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
           <div className="flex flex-col border border-gray-50 lg:flex-row gap-6 lg:w-[800px] xl:w-[941px]  rounded-xl">
             {/* Plan Details Section */}
             <div className="bg-white p-6 rounded-lg shadow w-full">
-              <h3 className=" md:text-2xl text-subtitle  font-semibold text-scheer-body-gray">
+              <h3 className=" md:text-2xl text-subtitle  font-semibold text-subtitle">
                 {planDetails?.description}
               </h3>
               <h2 className="text-2xl md:text-5xl font-semibold text-gray-800">
@@ -86,7 +86,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
               </h2>
               <p className="text-3xl font-bold text-primary mt-2">
                 €{planDetails?.amount.toFixed(2)}{" "}
-                <span className="text-base text-scheer-body-gray font-normal">
+                <span className="text-base text-subtitle font-normal">
                   /month
                 </span>{" "}
               </p>
@@ -115,7 +115,7 @@ const PlanSummaryCard: React.FC<PlanSummaryProps> = ({
             </p>
             <p className="text-3xl font-bold text-primary mt-2">
               €{planDetails?.amount.toFixed(2)}{" "}
-              <span className="text-base text-scheer-body-gray font-normal">
+              <span className="text-base text-subtitle font-normal">
                 /month
               </span>{" "}
             </p>

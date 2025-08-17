@@ -33,7 +33,7 @@ export default function AllFilterSection() {
         <div className='flex gap-2 md:gap-8 justify-center flex-wrap' >
             {
                 filters?.map((filter) =>
-                    <div key={filter.name} onClick={() => setCurrentFilter(filter.name)} className={`${currentFilter === filter.name ? "bg-scheer-primary rounded-lg" : ""}`}>
+                    <div key={filter.name} onClick={() => setCurrentFilter(filter.name)} className={`${currentFilter === filter.name ? "bg-sprimary rounded-lg" : ""}`}>
                       <Link href={"/jobSeeker/search-jobs"}>
                        <AllfinterCard key={filter.name} name={filter.name} />
                       </Link>  

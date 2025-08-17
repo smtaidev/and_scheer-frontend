@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import SkillsAddModal from "./modal/SkillsAddModal";
+import toast from "react-hot-toast";
 
 interface JobExperience {
   title: string;
@@ -56,7 +57,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
 
     // Check if skill already exists
     if (allSkills.includes(newSkill.trim())) {
-      alert("This skill already exists in your profile");
+      toast.error("This skill already exists in your profile");
       return;
     }
 

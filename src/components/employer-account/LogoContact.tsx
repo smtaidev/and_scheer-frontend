@@ -180,7 +180,7 @@ function LogoContact() {
                     <h1 className="text-3xl md:text-5xl text-center font-semibold text-gray-900 mb-4">
                         Add Logo & Contact Information
                     </h1>
-                    <p className="text-scheer-body-gray text-base leading-relaxed mx-auto">
+                    <p className="text-subtitle text-base leading-relaxed mx-auto">
                         Branding your profile with your logo helps candidates recognize and connect with your company. Plus, providing contact details makes it easy for candidates to reach out.
                     </p>
                 </div>

@@ -9,7 +9,7 @@ export default function SeekerBanner() {
                 <h1 className="text-5xl md:text-7xl text-left font-semibold md:font-bold">
                    Find Your <span className="text-primary">dream job</span> now
                 </h1>
-                <p className='text-xl text-scheer-body-gray font-medium text-center mt-4 mb-14' >5 lakh+ jobs for you to explore</p>
+                <p className='text-xl text-subtitle font-medium text-center mt-4 mb-14' >5 lakh+ jobs for you to explore</p>
                 <SearchField/>
             </div>
         </div>

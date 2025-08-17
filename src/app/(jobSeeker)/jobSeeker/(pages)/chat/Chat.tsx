@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 
 interface Message {
@@ -473,7 +474,7 @@ export default function ChatConversation() {
     }
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       console.error("❌ WebSocket is not connected. Cannot send message.");
-      alert("Not connected to chat server. Please refresh.");
+      toast.error("Not connected to chat server. Please refresh.");
       return;
     }
 

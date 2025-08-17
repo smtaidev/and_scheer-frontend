@@ -70,10 +70,8 @@ export default function JobDetailspage() {
         const selectedJobIndex = updatedJobs.findIndex(job => job.id === company.id);
 
         if (selectedJobIndex > -1) {
-            // Remove the selected job and add it to the top
-            const selectedJob = updatedJobs.splice(selectedJobIndex, 1);
-            updatedJobs.unshift(selectedJob[0]);
-            setAllJobs(updatedJobs);
+
+            window.scrollTo({ top: 200, behavior: 'smooth' });
         }
     };
 
@@ -126,8 +124,18 @@ export default function JobDetailspage() {
 
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Companies List Section */}
-                        <div className={` space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1440px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
+                        <div
+                            className={`space-y-2 md:space-y-6 w-full md:w-[300px] xl:w-[457px] max-h-[1300px] overflow-auto ${showCompanies ? "block" : "hidden md:block"}`}
+                            style={{
+                                scrollbarWidth: "none", // For Firefox
+                            }}
                         >
+                            <style jsx>{`
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `}</style>
                             {allJobs?.length > 0 ? (
                                 allJobs?.map((company) => (
                                     <div
