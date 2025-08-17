@@ -1,5 +1,6 @@
 "use client";
 import {
+  useGetAllLocationsQuery,
   useGetCompanyNamesQuery,
   useGetDepartmentsQuery,
   useGetWorkModesQuery,
@@ -11,21 +12,22 @@ import {
 } from "@/redux/features/job/jobSlice";
 import { RootState } from "@/redux/store";
 import { Department, WorkMode } from "@/types/categoryType/Category";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
-const allLocation = [
-  { name: "Erdmannhausen", count: "" },
-  { name: "München", count: "" },
-  { name: "Wembach", count: "" },
-  { name: "Malgersdorf", count: "" },
-  { name: "Neustetten", count: "" },
-  { name: "The Black Forest", count: "" },
-  { name: "Cologne Cathedral", count: "" },
+// const allLocation = [
+//   { name: "Erdmannhausen", count: "" },
+//   { name: "München", count: "" },
+//   { name: "Wembach", count: "" },
+//   { name: "Malgersdorf", count: "" },
+//   { name: "Neustetten", count: "" },
+//   { name: "The Black Forest", count: "" },
+//   { name: "Cologne Cathedral", count: "" },
 
-  // { name: 'In velit eu est co', count: '(98)' },
-  // { name: 'Exercitation sapient', count: '(87)' },
-];
+//   // { name: 'In velit eu est co', count: '(98)' },
+//   // { name: 'Exercitation sapient', count: '(87)' },
+// ];
 
 const salaryRanges = [
   { range: "$1000-$2000", count: "" },
@@ -80,9 +82,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const { data: type } = useGetWorkModesQuery({});
   const { data: department } = useGetDepartmentsQuery({});
   const { data: comName } = useGetCompanyNamesQuery({});
-  // const [filterJobPostsTrigger, { isFetching }] = useGetAllJobPostsQuery({});
-  // const { data: info, isFetching } = useGetAllJobPostsQuery({ filters });
-  // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
+  const {data:location}=useGetAllLocationsQuery({})
   const [filterJobPostsTrigger, { data: info, isFetching }] =
     useLazyGetAllJobPostsQuery();
   // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
@@ -90,6 +90,8 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const workType = type?.data;
   const allDepartment = department?.data || [];
   const allCompany = comName?.data;
+  const allLocation=location?.data
+
 
   // Sort departments by length (highest to lowest) and slice based on showAll state
   const displayedDepartments = useMemo(() => {
@@ -159,37 +161,42 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   );
   const { searchFilters }: any = searchConfig
 
-
-const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("jobName");
-    const locationQuery = urlParams.get("location");
-    console.log(urlParams);
-    console.log(searchQuery,"Location",locationQuery)
-
-
+const  searchParams= useSearchParams()
   
-  useEffect(() => {
-    // Update selectedDepartments based on the searchQuery
-    if (searchQuery) {
-      setSelectedDepartments((prev) =>
-        prev.includes(searchQuery)
-          ? prev
-          : [...prev, searchQuery]
-      );
-    } else {
-      setSelectedDepartments([]); // Reset when searchQuery is null
-    }
+useEffect(() => {
+    // Ensure the code runs only in the browser (client-side)
+    if (typeof window !== 'undefined') {
+      // Update selectedDepartments and selectedLocations based on the URL query params
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get("jobName");
+      const locationQuery = urlParams.get("location");
 
+      console.log(urlParams);
+      console.log("Search:", searchQuery, "Location:", locationQuery);
 
-    // Update selectedLocations based on the locationQuery
-    if (locationQuery) {
-      setSelectedLocations((prev) =>
-        prev.includes(locationQuery)
-          ? prev
-          : [...prev, locationQuery]
-      );
+      // Update selectedDepartments based on the searchQuery
+      if (searchQuery) {
+        setSelectedDepartments((prev) =>
+          prev.includes(searchQuery)
+            ? prev
+            : [...prev, searchQuery]
+        );
+      } else {
+        setSelectedDepartments([]); // Reset when searchQuery is null
+      }
+
+      // Update selectedLocations based on the locationQuery
+      if (locationQuery) {
+        setSelectedLocations((prev) =>
+          prev.includes(locationQuery)
+            ? prev
+            : [...prev, locationQuery]
+        );
+      } else {
+        setSelectedLocations([]); // Reset when locationQuery is null
+      }
     }
-  }, [searchQuery]);
+  }, [searchParams]);
 
 
   // useEffect(() => {
@@ -325,24 +332,24 @@ const urlParams = new URLSearchParams(window.location.search);
       <div className="mb-6">
         <h3 className="font-medium mb-3">Location</h3>
         <div className="space-y-2">
-          {(showAllLocations ? allLocation : allLocation.slice(0, 5)).map(
-            (location, index) => (
+          {(showAllLocations ? allLocation : allLocation?.slice(0, 5))?.map(
+            (location :any, index:any) => (
               <label key={index} className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   className="rounded"
-                  checked={selectedLocations.includes(location.name)}
-                  onChange={() => handleLocationChange(location.name)}
+                  checked={selectedLocations.includes(location.location)}
+                  onChange={() => handleLocationChange(location.location)}
                 />
-                <span className="text-sm">{location.name}</span>
+                <span className="text-sm">{location.location}</span>
                 <span className="text-gray-400 text-xs ml-auto">
-                  {location.count}
+                  {location.length}
                 </span>
               </label>
             )
           )}
         </div>
-        {allLocation.length > 5 && (
+        {allLocation?.length > 5 && (
           <button
             className="text-blue-500 text-sm mt-2"
             onClick={() => setShowAllLocations(!showAllLocations)}

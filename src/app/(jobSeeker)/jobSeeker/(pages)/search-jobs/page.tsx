@@ -15,6 +15,7 @@ export default function SearchJobPage() {
 
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(true);
     const [filtersData, setFiltersData] = useState([]);
+   
     const searchConfig = useSelector((state: RootState) =>
         state.search.find((config: any) => config.id === 1)
     );
@@ -22,41 +23,41 @@ export default function SearchJobPage() {
 
     const { searchFilters }: any = searchConfig;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const ser = urlParams.get("jobName")
-    const loc=urlParams.get("location")
-
-
     // Initialize state to store query parameters
-    const [searchQuery, setSearchQuery] = useState<string | null>(new URLSearchParams(window.location.search).get("jobName"));
-    const [locationQuery, setLocationQuery] = useState<string | null>(new URLSearchParams(window.location.search).get("location"));
+    const [searchQuery, setSearchQuery] = useState<string | null>();
+    const [locationQuery, setLocationQuery] = useState<string | null>();
 
     useEffect(() => {
         // Update the state from URL if URL changes without reloading the page
-        const urlParams = new URLSearchParams(window.location.search);
-        setSearchQuery(urlParams.get("jobName"));
-        setLocationQuery(urlParams.get("location"));
-    }, [urlParams]); // This will run only once when the component mounts
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+    
+            setSearchQuery(urlParams.get("jobName"));
+            setLocationQuery(urlParams.get("location"));
+        }
+    }, [window?.location.search]); // This will run only once when the component mounts
 
     const handleCross = (query: string) => {
         dispatch(resetStore())
-        const urlParams = new URLSearchParams(window.location.search);
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
 
-        // Conditionally remove either 'jobName' or 'location' based on the passed argument
-        if (query === "jobName") {
-            urlParams.delete("jobName");
-            setSearchQuery(null); // Update the state to reflect the removal of the query
-        } else if (query === "location") {
-            urlParams.delete("location");
-            setLocationQuery(null); // Update the state to reflect the removal of the query
+            // Conditionally remove either 'jobName' or 'location' based on the passed argument
+            if (query === "jobName") {
+                urlParams.delete("jobName");
+                setSearchQuery(null); // Update the state to reflect the removal of the query
+            } else if (query === "location") {
+                urlParams.delete("location");
+                setLocationQuery(null); // Update the state to reflect the removal of the query
+            }
+
+            // Update the URL without reloading the page
+            window.history.replaceState(
+                null,
+                "",
+                window.location.pathname + "?" + urlParams.toString()
+            );
         }
-
-        // Update the URL without reloading the page
-        window.history.replaceState(
-            null,
-            "",
-            window.location.pathname + "?" + urlParams.toString()
-        );
     };
 
 
@@ -71,13 +72,13 @@ export default function SearchJobPage() {
                             <p className="md:text-2xl">Search:</p>
                             <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
                                 {searchQuery}
-                                <button onClick={() => handleCross("jobName")} className="mt-1 text-sm">✕</button>
+                                <button onClick={() => handleCross("jobName")} className="mt-1 text-sm cursor-pointer">✕</button>
                             </p>
 
                             <p className="md:text-2xl">Location:</p>
                             <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
                                 {locationQuery}
-                                <button onClick={() => handleCross("location")} className="mt-1 text-sm">✕</button>
+                                <button onClick={() => handleCross("location")} className="mt-1 text-sm cursor-pointer">✕</button>
                             </p>
                         </div>
                     ) : searchQuery ? (
@@ -85,7 +86,7 @@ export default function SearchJobPage() {
                             <p className="md:text-2xl">Search:</p>
                             <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
                                 {searchQuery}
-                                <button onClick={() => handleCross("jobName")} className="mt-1 text-sm">✕</button>
+                                <button onClick={() => handleCross("jobName")} className="mt-1 text-sm cursor-pointer">✕</button>
                             </p>
                         </div>
                     ) : locationQuery ? (
@@ -93,7 +94,7 @@ export default function SearchJobPage() {
                             <p className="md:text-2xl">Location:</p>
                             <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
                                 {locationQuery}
-                                <button onClick={() => handleCross("location")} className="mt-1 text-sm">✕</button>
+                                <button onClick={() => handleCross("location")} className="mt-1 text-sm cursor-pointer">✕</button>
                             </p>
                         </div>
                     ) : null
