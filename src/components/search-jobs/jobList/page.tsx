@@ -28,7 +28,13 @@ export default function JobList({ filtersData }: any) {
         }
     }, [allJob?.data, filtersData])
 
-    if (isLoading) return <p><Loader /></p>
+    if (isLoading) return  <div className="md:min-w-[666px] max-h-[250px] flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg shadow-sm text-center border border-gray-200">
+                        
+                        <div className='fixed insert-0 '>
+                            <Loader/>
+                        </div>
+                        
+                    </div>
 
     return (
 

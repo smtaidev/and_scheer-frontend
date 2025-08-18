@@ -56,7 +56,7 @@ export default function AppliedJobList() {
 
         {
           appliedJobs && appliedJobs.length > 0 ? <><div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
-            <div className="min-w-[1000px]">
+            <div className="min-w-[1200px]">
               {/* Table Header */}
               <div className="bg-primary text-white px-6 py-3 rounded-t-lg text-sm md:text-base lg:text-lg font-medium">
                 <div className="grid grid-cols-7 gap-4">

@@ -33,7 +33,7 @@ interface JobTitle {
 export default function RecomandationJob({ title }: JobTitle) {
     
      const { data: currentUser } = useGetMeQuery({});
-     if(currentUser?.data?.role != "JOB_SEEKER")   return;
+     
 
     const { data: myProfile } = useGetMyProfileQuery(currentUser?.data?.id);
     const profileId = myProfile?.data?.profileId;
@@ -87,10 +87,11 @@ export default function RecomandationJob({ title }: JobTitle) {
     // console.log(jobs);
     console.log(myProfile?.data?.profileId)
     useEffect(() => {
+        if(currentUser?.data?.role != "JOB_SEEKER")   return;
         if (recomandationJobs?.data?.recommendations) {
             setJobLoading(false);
         }
-    }, [recomandationJobs?.data?.recommendations])
+    }, [recomandationJobs?.data?.recommendations,currentUser?.data])
 
     return (
         <div className="bg-card ">

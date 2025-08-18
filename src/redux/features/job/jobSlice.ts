@@ -39,8 +39,15 @@ const jobApi = baseUrlApi.injectEndpoints({
                 }
 
                 if (filters.experience) {
-                    params.append('experience', filters.experience.toString()); // Single value
+                    // If experience is a range (e.g., "0 to 4 years")
+                    if (filters.experience.includes("to")) {
+                        params.append('experience', filters.experience); // Directly append the range like "0 to 4 years"
+                    } else {
+                        // Otherwise, handle as a single experience value (e.g., "8 years")
+                        params.append('experience', filters.experience.toString());
+                    }
                 }
+
 
                 if (filters.salaryRange?.length) {
                     params.append('salaryRange', filters.salaryRange.join(','));  // Join salary range values with commas
@@ -60,15 +67,17 @@ const jobApi = baseUrlApi.injectEndpoints({
                     method: "GET",
                 };
             },
+            providesTags: ['appliedJobs']
         }),
 
         getMyJobPosts: builder.query({
             query: () => "/jobs/my-job-posts",
-
+            providesTags: ['appliedJobs']
         }),
 
         getAppliedJobs: builder.query({
-            query: () => '/apply/apply-job'
+            query: () => '/apply/apply-job',
+            providesTags: ['appliedJobs'],
         }),
         getInterviews: builder.query({
             query: () => '/interviews/my'
@@ -83,7 +92,8 @@ const jobApi = baseUrlApi.injectEndpoints({
                 url: `/apply/apply-job`,
                 method: "POST",
                 body: jobId
-            })
+            }),
+            invalidatesTags: ['appliedJobs']
         }),
 
         createJobPost: builder.mutation({
@@ -109,6 +119,7 @@ const jobApi = baseUrlApi.injectEndpoints({
                 method: "PATCH",
                 body: data,
             }),
+            invalidatesTags: ['appliedJobs']
 
         }),
         saveJobPost: builder.mutation({
@@ -122,7 +133,7 @@ const jobApi = baseUrlApi.injectEndpoints({
         }),
         getSavedJobs: builder.query({
             query: () => '/save-jobs', // This is the correct syntax
-            providesTags: ['SaveJob'],
+            providesTags: ['SaveJob', 'appliedJobs'],
         }),
         deleteSavedPost: builder.mutation({
             query: (id) => ({

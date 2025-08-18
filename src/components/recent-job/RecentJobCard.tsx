@@ -17,6 +17,8 @@ export default function RecentJobCard({ job }: RecentJobCardProps) {
   };
 
   return (
+    // <Link href={`/jobSeeker/job-details/${job?.id}`}>
+    
     <div className="w-full max-w-[457px] border border-gray-100 rounded-lg shadow-sm p-4 bg-white transition-shadow duration-300 hover:shadow-md">
       {/* Company Info */}
       <div className="flex items-center gap-3">
@@ -68,5 +70,6 @@ export default function RecentJobCard({ job }: RecentJobCardProps) {
         )}
       </div>
     </div>
+    // </Link>
   );
 }

@@ -73,14 +73,7 @@ export function LanguageSwitcher() {
 
   const languageNames: Record<string, string> = {
     en: "English",
-    fr: "French",
-    iu: "Inuktut (Syllabics)",
-    es: "Spanish",
     de: "German",
-    ar: "Arabic",
-    pt: "Portuguese",
-    hi: "Hindi",
-    bn: "Bangla",
   };
 
   return (
