@@ -36,10 +36,10 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const { data: user } = useGetMeQuery({});
     const [saveJobPost,] = useSaveJobPostMutation();
     const { data: savedJobs,refetch } = useGetSavedJobsQuery({});
-    const { data: appliedJobs } = useGetAppliedJobsQuery({})
+    const { data: appliedJobs,refetch:jobFetch } = useGetAppliedJobsQuery({})
 
     const defaultOptions = {
-        loop: 1,             // Loop the animation
+        loop: 0,             // Loop the animation
         autoplay: true,         // Play automatically
         animationData: animationData, // Your animation data
         rendererSettings: {
@@ -59,6 +59,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
                 toast.success("Successfully applied for the job!");
                 setIsApplied(true); // Set the flag to show Lottie animation
                 setLoading(false);
+                jobFetch()
             } else {
                 const errorMessage: any =
                     response?.error && 'data' in response.error
@@ -98,7 +99,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             setApplied(false)
         }
         refetch()
-        console.log("Appicatons is here", application)
+        console.log("Appicatons is here",currentCompany)
     }, [savedJobs?.data, currentCompany,isSave]);
     console.log(applied)
 
@@ -204,7 +205,7 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
             <section className="mt-6">
                 <h3 className="text-lg md:text-[28px] font-semibold  dark: mb-2">Why Join Us?</h3>
                 <ul className="list-disc list-inside  dark: space-y-1">
-                    {currentCompany?.features?.find(p => p.featureTitle == "Why Join SM Technology?:")?.point?.map(p => <li>{p}</li>)}
+                    {currentCompany?.features?.find(p => p.featureTitle == "Why Join Us?:")?.point?.map(p => <li>{p}</li>)}
                 </ul>
             </section>
 

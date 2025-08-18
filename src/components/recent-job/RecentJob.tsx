@@ -88,14 +88,15 @@ export default function RecentJob({ title }: JobTitle) {
   return (
     <div className="bg-card">
       <div className=" ml-0 2xl:ml-44 ">
-        <div className="section-gap px-2 relative">
+        <div className="section-gap px-2 relative py-15  px-11 xl:px-15">
           <h1 className="text-2xl md:text-5xl font-semibold mb-6">
             {title || "Recent Jobs"}
           </h1>
-         
-          <div className="swiper-button-prev-custom custom-arrow left-[-50px] my-9 p-2" />
 
-          {loading ||allJobsLoading ? <div className='flex gap-5'>{
+          <div className="swiper-button-prev-custom custom-arrow left-[10px] scale-80 md:scale-100 my-9 p-2" />
+             <div className="swiper-button-next-custom custom-arrow right-[10px] my-9 scale-80 md:scale-100 md:p-2" />
+
+          {loading || allJobsLoading ? <div className='flex gap-5'>{
             ["f", "f", "f"].map(() => <div>
               <div className='flex items-center gap-2 '><Skeleton circle height={50} width={50} /><h2><Skeleton width={200} /></h2></div>
               <h2><Skeleton width={440} /></h2>
@@ -104,9 +105,10 @@ export default function RecentJob({ title }: JobTitle) {
           }</div> : (
             <div className="relative overflow-hidden ">
               {/* Custom Navigation Arrows */}
-              {/* <div className="swiper-button-prev-custom custom-arrow left-[-50px]" /> */}
+            
 
               <div className="">
+                  
                 <Swiper
                   spaceBetween={5}
                   freeMode

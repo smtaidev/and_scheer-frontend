@@ -6,6 +6,7 @@ import { useGetAllCompaniesQuery } from '@/redux/features/company/companySlice'
 import { useGetRecommandedCourseQuery } from '@/redux/features/course/courseSlice'
 import { Company, Course } from '@/types/AllTypes'
 import React, { useEffect, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
 // import PopularCompanyCard from '../../jobSeekerHome/popularCompany/PopularCompanyCard'
 // import CourseCard from '@/app/alloveruser/Suggested/CourseCard'
 
@@ -30,7 +31,13 @@ export default function SerachRightSideBar() {
     }
   }, [res?.data]);
 
-  if (isLoading) return <p><Loader/> </p>
+  if (isLoading) return <div className='flex gap-5  overflow-auto'>{
+                              ["f","f","f"].map(()=>    <div className=''>
+                          <div className='flex items-center gap-2'><Skeleton circle height={50} width={50} /><h2><Skeleton width={200} /></h2></div>
+                          <h2><Skeleton width={440} /></h2>
+                          <p><Skeleton height={100} width={440} /></p>
+                      </div>)
+                          }</div> 
   console.log(companies)
 
 

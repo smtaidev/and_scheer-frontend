@@ -130,12 +130,8 @@ export default function JobDetailspage() {
                                 scrollbarWidth: "none", // For Firefox
                             }}
                         >
-                            <style jsx>{`
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  `}</style>
+                            <style jsx>{` &::-webkit-scrollbar {display: none;}
+`}</style>
                             {allJobs?.length > 0 ? (
                                 allJobs?.map((company) => (
                                     <div
