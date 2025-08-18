@@ -251,13 +251,15 @@ export default function SignUpForm() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full px-3 py-4 bg-primary text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap"
-            >
-              {isLoading ? <LoadingButton /> : "Register"}
-            </button>
+             <button
+          type="submit"
+          disabled={isLoading}
+          className={`w-full px-3 py-4 ${
+            isLoading ? 'bg-white border border-gray-400 ' : 'bg-primary hover:border-gray-400'
+          } text-white text-xs xl:text-sm font-medium hover:cursor-pointer rounded hover:bg-white hover:text-black hover:border-gray-400 border focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all duration-300 whitespace-nowrap`}
+        >
+          {isLoading ? <LoadingButton color="#28C76F" /> : 'Register'}
+        </button>
           </form>
 
           <div className="flex items-center my-6">

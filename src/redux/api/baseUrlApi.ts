@@ -16,6 +16,6 @@ export const baseUrlApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User', 'Profile',"SaveJob","appliedJobs"],
+  tagTypes: ['User', 'Profile',"SaveJob","appliedJobs","JobList"],
   endpoints: () => ({}),
 });

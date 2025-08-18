@@ -16,6 +16,7 @@ import axios from "axios";
 import { Loader } from "../shared/MainLoader";
 import { Job } from "@/types/AllTypes";
 import Skeleton from "react-loading-skeleton";
+import { usePathname } from "next/navigation";
 
 interface JobTitle {
   title: string;
@@ -36,6 +37,8 @@ export default function RecentJob({ title }: JobTitle) {
     {},
     { skip: false }
   );
+  const pathname=usePathname()
+  console.log(pathname)
 
   // Fetch recommended jobs via direct API call (since RTK Query not used for this endpoint)
   useEffect(() => {
@@ -44,10 +47,11 @@ export default function RecentJob({ title }: JobTitle) {
       const token = Cookies.get("accessToken");
       const profileId = myProfile?.data?.profileId;
 
-      if (!profileId || !token) {
+      if (!profileId || !token  ) {
         // Fallback to all jobs if no profile or token
         if (allJobs?.data?.data) {
           setJobs(allJobs.data.data);
+
         }
         setLoading(false);
         return;
@@ -96,7 +100,7 @@ export default function RecentJob({ title }: JobTitle) {
           <div className="swiper-button-prev-custom custom-arrow left-[10px] scale-80 md:scale-100 my-9 p-2" />
              <div className="swiper-button-next-custom custom-arrow right-[10px] my-9 scale-80 md:scale-100 md:p-2" />
 
-          {loading || allJobsLoading ? <div className='flex gap-5'>{
+          {pathname !=='/'? loading:false || allJobsLoading ? <div className='flex gap-5'>{
             ["f", "f", "f"].map(() => <div>
               <div className='flex items-center gap-2 '><Skeleton circle height={50} width={50} /><h2><Skeleton width={200} /></h2></div>
               <h2><Skeleton width={440} /></h2>

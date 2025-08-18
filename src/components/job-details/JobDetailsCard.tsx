@@ -35,8 +35,8 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
     const [applyJob, { isLoading }] = useApplyJobMutation();
     const { data: user } = useGetMeQuery({});
     const [saveJobPost,] = useSaveJobPostMutation();
-    const { data: savedJobs,refetch } = useGetSavedJobsQuery({});
-    const { data: appliedJobs,refetch:jobFetch } = useGetAppliedJobsQuery({})
+    const { data: savedJobs, refetch } = useGetSavedJobsQuery({});
+    const { data: appliedJobs, refetch: jobFetch } = useGetAppliedJobsQuery({})
 
     const defaultOptions = {
         loop: 0,             // Loop the animation
@@ -92,15 +92,16 @@ const JobDetailsCard: React.FC<JobDetailsCardProps> = ({ currentCompany }) => {
         if (avaiable) { setIsSaved(true); } else {
             setIsSaved(false);
         }
-        const application = appliedJobs?.data.find((job:any) => job.jobId === currentCompany?.id);
+        const application = appliedJobs?.data.find((job: any) => job.jobId === currentCompany?.id);
         if (application) {
             setApplied(true)
         } else {
             setApplied(false)
         }
-        refetch()
-        console.log("Appicatons is here",currentCompany)
-    }, [savedJobs?.data, currentCompany,isSave]);
+        refetch();
+        jobFetch()
+        console.log("Appicatons is here", currentCompany)
+    }, [savedJobs?.data, currentCompany, isSave, appliedJobs?.data]);
     console.log(applied)
 
     return (

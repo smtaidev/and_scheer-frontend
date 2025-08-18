@@ -81,7 +81,7 @@ export default function InterviewSheduler() {
           {/* Force horizontal scroll */}
           {
             aiLogData ? <>
-              <div className="min-w-[600px]">
+              <div className="min-w-[1200px]">
 
                 <div className="bg-primary px-6 rounded-t-lg">
                   <div className="grid grid-cols-12 gap-4 py-3 text-white text-md lg:text-xl ">

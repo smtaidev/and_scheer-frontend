@@ -255,7 +255,7 @@ useEffect(() => {
         <div className="flex justify-between items-center mb-3">
           <h3 className="font-medium">Work mode</h3>
           <span className="text-blue-500 text-sm cursor-pointer">
-            Applied ({selectedWorkModes.length})
+            Applied ({selectedWorkModes.length + selectedDepartments.length + selectedCompanies.length + selectedLocations.length + selectedSalaries.length})
           </span>
         </div>
         <div className="space-y-2">
@@ -337,7 +337,7 @@ useEffect(() => {
               <label key={index} className="flex items-center space-x-2">
                 <input
                   type="checkbox"
-                  className="rounded"
+                  className="rounded "
                   checked={selectedLocations.includes(location.location)}
                   onChange={() => handleLocationChange(location.location)}
                 />
