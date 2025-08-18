@@ -23,6 +23,7 @@ export default function SearchField({ setAnimate, animate }: any) {
   const { data: info } = useGetAllJobPostsQuery({ page: 1, limit: 1000 });
   const allJobsPost = info?.data?.data || [];
   const containerRef = useRef<HTMLDivElement>(null);
+  const [warning,setWarning]=useState(false)
 
   const watchedJobName = watch('jobName');
   const watchedLocation = watch('location');
@@ -132,7 +133,10 @@ export default function SearchField({ setAnimate, animate }: any) {
 
   const handleSearch = () => {
     if (!watchedJobName && !watchedLocation) {
-      toast.error('Please enter a job title or location to search.');
+      // toast.error('Please enter a job title or location to search.');
+        setFocusedInput('jobName');
+         setActiveInput('jobName');
+         setWarning(true)
       return;
     }
 
@@ -158,6 +162,7 @@ export default function SearchField({ setAnimate, animate }: any) {
   const handleInputFocus = (inputType: 'jobName' | 'location') => {
     setFocusedInput(inputType);
     setActiveInput(inputType);
+    setWarning(false)
   };
 
   const handleInputBlur = () => {
@@ -268,6 +273,8 @@ export default function SearchField({ setAnimate, animate }: any) {
           Search
         </button>
       </div>
+      {warning && <p className='text-red-600'>Please enter a job title or location to search.</p>}
+      <p className='md:text-[16px] text-subtitle pt-2 '>Popular : UI Designer, UX Researcher, Android, Admin</p>
 
       {/* Enhanced Search Suggestions */}
       {showResults && suggestions.length === 0 && activeInput && (
