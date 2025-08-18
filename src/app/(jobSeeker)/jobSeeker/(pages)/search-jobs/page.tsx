@@ -65,7 +65,7 @@ export default function SearchJobPage() {
         <div className="mt-8">
             {/* <AllCategory /> */}
 
-            <div className="max-w-[1320px] mx-5 xl:mx-auto mb-7 flex gap-4 items-center">
+            <div className="max-w-[1420px] mx-5 xl:mx-auto mb-7 flex gap-4 items-center">
                 {
                     searchQuery && locationQuery ? (
                         <div className="flex gap-4 items-center">

@@ -49,6 +49,9 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
   const [languages, setLanguages] = useState<string[]>(["English"]);
   const [newLanguage, setNewLanguage] = useState("");
 
+
+  console.log("Skill experience",formData)
+
   const addSkill = () => {
     const skill = newSkill.trim();
     if (skill && !skills.includes(skill)) {
@@ -100,6 +103,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
     setFormData(updatedData); // Updating form data to include skills and languages
     // router.push("/jobseekeruser/education");
   };
+  console.log("New fields",fields)
 
   return (
     <div className="flex justify-center mt-12">
@@ -110,7 +114,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
             description="Highlight your work experience and skills. The more detail you provide, the better the AI can tailor your resume to match job opportunities."
           />
 
-          {fields.map((field, index) => (
+          {fields?.map((field, index) => (
             <div key={field.id} className="mb-8">
               {/* Job Title */}
               <div className="mb-4">
@@ -128,7 +132,7 @@ export default function SkillsExperience({ setStep, formData, setFormData }: IPe
                 <FormInput
                   label="Company Name"
                   type="text"
-                  placeholder="SJ Technology"
+                  placeholder="Super Job"
                   defaultValue={formData?.companyName}
                   {...register(`experiences.${index}.companyName`)}
                 />
