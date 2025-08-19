@@ -205,7 +205,7 @@ export default function SearchField({ setAnimate, animate }: any) {
           }`} />
           <input
             type="text"
-            placeholder="e.g. Frontend Developer, Software Engineer"
+            placeholder="Keywords, Job Title, Company"
             className="flex-1 bg-transparent focus:outline-none"
             {...register('jobName')}
             onFocus={() => handleInputFocus('jobName')}
@@ -234,7 +234,7 @@ export default function SearchField({ setAnimate, animate }: any) {
           }`} />
           <input
             type="text"
-            placeholder="e.g. Berlin, Munich, Hamburg"
+            placeholder="Postcode, City, Country"
             className="flex-1 bg-transparent focus:outline-none"
             {...register('location')}
             onFocus={() => handleInputFocus('location')}
