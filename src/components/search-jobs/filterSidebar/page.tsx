@@ -61,11 +61,12 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const [selectedSalaries, setSelectedSalaries] = useState<string[]>([]);
   const [selectedEducations, setSelectedEducations] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [selectedSearchTerm, setSelectedSearchTerm] = useState<string[]>([]);
 
   // Handle All Location Button
   const [showAllLocations, setShowAllLocations] = useState(false);
   const [showAllSalaries, setShowAllSalaries] = useState(false);
-  const [showAllEducations, setShowAllEducations] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   // const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   // Filter store data
@@ -82,7 +83,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const { data: type } = useGetWorkModesQuery({});
   const { data: department } = useGetDepartmentsQuery({});
   const { data: comName } = useGetCompanyNamesQuery({});
-  const {data:location}=useGetAllLocationsQuery({})
+  const { data: location } = useGetAllLocationsQuery({})
   const [filterJobPostsTrigger, { data: info, isFetching }] =
     useLazyGetAllJobPostsQuery();
   // const { data: info, isFetching } = useGetAllJobPostsQuery(filters);
@@ -90,7 +91,7 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   const workType = type?.data;
   const allDepartment = department?.data || [];
   const allCompany = comName?.data;
-  const allLocation=location?.data
+  const allLocation = location?.data
 
 
   // Sort departments by length (highest to lowest) and slice based on showAll state
@@ -161,15 +162,64 @@ export const FilterSidebar = ({ setFiltersData, isFilterSidebarVisible, setIsFil
   );
   const { searchFilters }: any = searchConfig
 
-const  searchParams= useSearchParams()
-  
-useEffect(() => {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
     // Ensure the code runs only in the browser (client-side)
     if (typeof window !== 'undefined') {
       // Update selectedDepartments and selectedLocations based on the URL query params
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get("jobName");
       const locationQuery = urlParams.get("location");
+      const keywordQuery = urlParams.get("searchTerm");
+
+      if (keywordQuery) {
+        setSelectedSearchTerm([keywordQuery]); // Reset and set only the current keywordQuery
+      }else{
+        setSelectedSearchTerm([])
+      }
+
+
+
+      // const res= workType?.find((item: WorkMode) => item?.jobType === keywordQuery);
+      //  const resDep = allDepartment?.find((item: Department) => item?.title === keywordQuery);
+      //  console.log("Res dipp",resDep)
+      //  console.log("Res WOrk",res)
+      //     if( keywordQuery && res) {
+
+      //       if(res) {
+      //         setSelectedWorkModes((prev) =>
+      //           prev.includes(res.jobType)
+      //             ? prev
+      //             : [...prev, res.jobType]
+      //         );
+      //       }else{
+      //         setSelectedWorkModes([]); // Reset when keywordQuery is null
+      //       }
+
+      //     }else if(keywordQuery ){
+
+      //       if (resDep) {
+      //         setSelectedDepartments((prev) =>
+      //           prev.includes(resDep?.title)
+      //             ? prev
+      //             : [...prev, resDep?.title]
+      //         );
+      //       }else{
+      //         setSelectedDepartments([]); // Reset when keywordQuery is null
+      //       }
+      //     }else if(keywordQuery){
+      //       const res = allCompany?.find((item: any) => item.companyName === keywordQuery);
+      //       if (res) {
+      //         setSelectedCompanies((prev) =>
+      //           prev.includes(res?.companyName)
+      //             ? prev
+      //             : [...prev, res?.companyName]
+      //         );
+      //       }else{
+      //         setSelectedCompanies([]); // Reset when keywordQuery is null
+      //       }
+      //     }
 
       console.log(urlParams);
       console.log("Search:", searchQuery, "Location:", locationQuery);
@@ -230,6 +280,7 @@ useEffect(() => {
       salaryRange: selectedSalaries,
       educations: selectedEducations,
       companyName: selectedCompanies,
+      searchTerm: selectedSearchTerm
     };
     console.log("Form Data printed:", formData);
 
@@ -244,7 +295,7 @@ useEffect(() => {
     }
 
     fetchData();
-  }, [selectedWorkModes, selectedDepartments, selectedCompanies, selectedEducations, selectedSalaries, experience, searchFilters,selectedLocations])
+  }, [selectedWorkModes, selectedDepartments, selectedCompanies, selectedEducations, selectedSalaries, experience, searchFilters, selectedLocations])
 
   return (
     <div className="md:w-[337px] h-[600px] lg:h-max overflow-auto lg:bg-white p-6 border border-gray-200 ml-3 2xl:ml-0 shadow-lg rounded-lg lg:rounded-none bg-green-50 relative z-50">
@@ -333,7 +384,7 @@ useEffect(() => {
         <h3 className="font-medium mb-3">Location</h3>
         <div className="space-y-2">
           {(showAllLocations ? allLocation : allLocation?.slice(0, 5))?.map(
-            (location :any, index:any) => (
+            (location: any, index: any) => (
               <label key={index} className="flex items-center space-x-2">
                 <input
                   type="checkbox"

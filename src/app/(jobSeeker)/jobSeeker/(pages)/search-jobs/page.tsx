@@ -15,7 +15,7 @@ export default function SearchJobPage() {
 
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(true);
     const [filtersData, setFiltersData] = useState([]);
-   
+
     const searchConfig = useSelector((state: RootState) =>
         state.search.find((config: any) => config.id === 1)
     );
@@ -26,14 +26,16 @@ export default function SearchJobPage() {
     // Initialize state to store query parameters
     const [searchQuery, setSearchQuery] = useState<string | null>();
     const [locationQuery, setLocationQuery] = useState<string | null>();
+    const [keywordQuery, setKeywordQuery] = useState<string | null>();
 
     useEffect(() => {
         // Update the state from URL if URL changes without reloading the page
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
-    
+
             setSearchQuery(urlParams.get("jobName"));
             setLocationQuery(urlParams.get("location"));
+            setKeywordQuery(urlParams.get("searchTerm"));
         }
     }, [window?.location.search]); // This will run only once when the component mounts
 
@@ -49,8 +51,11 @@ export default function SearchJobPage() {
             } else if (query === "location") {
                 urlParams.delete("location");
                 setLocationQuery(null); // Update the state to reflect the removal of the query
+            } else if (query === "searchTerm") {
+                urlParams.delete("searchTerm");
+                setKeywordQuery(null);
+                
             }
-
             // Update the URL without reloading the page
             window.history.replaceState(
                 null,
@@ -95,6 +100,14 @@ export default function SearchJobPage() {
                             <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
                                 {locationQuery}
                                 <button onClick={() => handleCross("location")} className="mt-1 text-sm cursor-pointer">✕</button>
+                            </p>
+                        </div>
+                    ) : keywordQuery ? (
+                        <div className="flex gap-4 items-center">
+                            <p className="md:text-2xl">Keyword:</p>
+                            <p className="md:text-xl bg-gray-200 px-5 py-1 rounded-full flex gap-3 items-center">
+                                {keywordQuery}
+                                <button onClick={() => handleCross("searchTerm")} className="mt-1 text-sm cursor-pointer">✕</button>
                             </p>
                         </div>
                     ) : null

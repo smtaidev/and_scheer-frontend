@@ -10,6 +10,7 @@ export interface JobFilterType {
     locations?: string[];
     salaryRange?: string[];
     jobType?: string[];
+    searchTerm?: string[];
 }
 
 const jobApi = baseUrlApi.injectEndpoints({
@@ -55,6 +56,9 @@ const jobApi = baseUrlApi.injectEndpoints({
 
                 if (filters.companyName?.length) {
                     params.append('companyName', filters.companyName.join(','));  // Join company names with commas
+                }
+                if (filters.searchTerm?.length) {
+                    params.append('searchTerm', filters.searchTerm.join(','));  // Join company names with commas
                 }
 
                 // Pagination fields (single value)
