@@ -2,13 +2,14 @@
 import { useGetAllJobPostsQuery } from '@/redux/features/job/jobSlice';
 import { useForm } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
-import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
-import { RiUserLocationLine } from 'react-icons/ri';
+import { FaBriefcase, FaMapMarkerAlt, FaRegBuilding, FaSearch } from 'react-icons/fa';
+import { RiHomeSmile2Line, RiMenuSearchFill, RiUserLocationLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilters, setSearchTerm } from '@/redux/features/search/searchSlice';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/redux/store';
+import { IoSearchSharp } from 'react-icons/io5';
 
 export default function SearchField({ setAnimate, animate }: any) {
   interface SearchFormInputs {
@@ -23,7 +24,7 @@ export default function SearchField({ setAnimate, animate }: any) {
   const { data: info } = useGetAllJobPostsQuery({ page: 1, limit: 1000 });
   const allJobsPost = info?.data?.data || [];
   const containerRef = useRef<HTMLDivElement>(null);
-  const [warning,setWarning]=useState(false)
+  const [warning, setWarning] = useState(false)
 
   const watchedJobName = watch('jobName');
   const watchedLocation = watch('location');
@@ -43,6 +44,15 @@ export default function SearchField({ setAnimate, animate }: any) {
     const locations = allJobsPost.map((job: any) => job.location);
     return [...new Set(locations)].sort();
   };
+  const getUniqueType = () => {
+    const workMode = allJobsPost.map((job: any) => job.jobType);
+    return [...new Set(workMode)].sort();
+  };
+  const getUniqueConpany = () => {
+    const workMode = allJobsPost.map((job: any) => job.company.companyName);
+    return [...new Set(workMode)].sort();
+  };
+
 
   // Enhanced filtering logic based on focused input
   useEffect(() => {
@@ -53,7 +63,7 @@ export default function SearchField({ setAnimate, animate }: any) {
     }
 
     const inputValue = activeInput === 'jobName' ? watchedJobName : watchedLocation;
-    
+
     if (!inputValue || inputValue.trim() === '') {
       setSuggestions([]);
       setShowResults(false);
@@ -63,23 +73,42 @@ export default function SearchField({ setAnimate, animate }: any) {
     let filteredSuggestions: any[] = [];
 
     if (activeInput === 'jobName') {
-      // Filter unique job titles
+      // Get unique job titles, types, and companies
       const uniqueTitles = getUniqueJobTitles();
-      filteredSuggestions = uniqueTitles
-        .filter((title:any) => 
-          title.toLowerCase().includes(inputValue.toLowerCase())
-        )
-        .slice(0, 8) // Limit to 8 suggestions
-        .map(title => ({
+      const getTypes = getUniqueType();
+      const getCompany = getUniqueConpany();
+
+      // Combine titles, types, and companies into a single array with type information
+      const combinedSuggestions = [
+        ...uniqueTitles.map((title: any) => ({
           type: 'title',
           value: title,
           displayText: title
-        }));
-    } else if (activeInput === 'location') {
+        })),
+        ...getTypes.map((type: any) => ({
+          type: 'type',
+          value: type,
+          displayText: type
+        })),
+        ...getCompany.map((company: any) => ({
+          type: 'company',
+          value: company,
+          displayText: company
+        }))
+      ];
+
+      // Filter suggestions based on the input value
+      filteredSuggestions = combinedSuggestions
+        .filter((item: any) =>
+          item.value.toLowerCase().includes(inputValue.toLowerCase())
+        )
+        .slice(0, 8); // Limit to 8 suggestions
+    }
+    else if (activeInput === 'location') {
       // Filter unique locations
       const uniqueLocations = getUniqueLocations();
       filteredSuggestions = uniqueLocations
-        .filter((location:any) => 
+        .filter((location: any) =>
           location.toLowerCase().includes(inputValue.toLowerCase())
         )
         .slice(0, 8) // Limit to 8 suggestions
@@ -134,9 +163,9 @@ export default function SearchField({ setAnimate, animate }: any) {
   const handleSearch = () => {
     if (!watchedJobName && !watchedLocation) {
       // toast.error('Please enter a job title or location to search.');
-        setFocusedInput('jobName');
-         setActiveInput('jobName');
-         setWarning(true)
+      setFocusedInput('jobName');
+      setActiveInput('jobName');
+      setWarning(true)
       return;
     }
 
@@ -144,20 +173,26 @@ export default function SearchField({ setAnimate, animate }: any) {
     setActiveInput(null);
     dispatch(setSearchTerm({ id: 1, searchTerm: "jobName" }));
     dispatch(setFilters({ id: 1, searchFilters: [watchedJobName, watchedLocation] }));
-    router.push(`/jobSeeker/search-jobs/?jobName=${encodeURIComponent(watchedJobName)}&&location=${encodeURIComponent(watchedLocation)}`)
+    router.push(`/jobSeeker/search-jobs/?searchTerm=${encodeURIComponent(watchedJobName)}&&location=${encodeURIComponent(watchedLocation)}`)
     setAnimate(!animate);
   };
 
   const handleSuggestionSelect = (suggestion: any) => {
     if (suggestion.type === 'title') {
-      setValue('jobName', suggestion.value);
+      setValue('jobName', suggestion.value);  // Set the job name
+    } else if (suggestion.type === 'type') {
+      setValue('jobName', suggestion.value);  // Set the job type if type is selected
+    } else if (suggestion.type === 'company') {
+      setValue('jobName', suggestion.value);  // Set the job type if type is selected
     } else if (suggestion.type === 'location') {
-      setValue('location', suggestion.value);
+      setValue('location', suggestion.value);  // Set the location if location is selected
     }
-    
+
+    // Hide the suggestion results and reset the active input field
     setShowResults(false);
     setActiveInput(null);
   };
+
 
   const handleInputFocus = (inputType: 'jobName' | 'location') => {
     setFocusedInput(inputType);
@@ -187,22 +222,20 @@ export default function SearchField({ setAnimate, animate }: any) {
     setValue(inputType, '');
     setActiveInput(inputType);
   };
-    const searchConfig = useSelector((state: RootState) =>
-      state.search.find((config: any) => config.id === 1)
-    );
-    const { searchFilters }: any = searchConfig
+  const searchConfig = useSelector((state: RootState) =>
+    state.search.find((config: any) => config.id === 1)
+  );
+  const { searchFilters }: any = searchConfig
 
   return (
     <div className="relative" ref={containerRef}>
       <h1 className="text-xl text-secondary font-medium">Find Your Favorite Job</h1>
       <div className="bg-white p-4 rounded-lg shadow flex flex-col 2xl:flex-row items-stretch gap-4 mt-2">
         {/* Job Name Input */}
-        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${
-          focusedInput === 'jobName' ? 'border-secondary' : 'border-gray-300'
-        }`}>
-          <FaBriefcase className={`transition-colors ${
-            focusedInput === 'jobName' ? 'text-secondary' : 'text-gray-500'
-          }`} />
+        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${focusedInput === 'jobName' ? 'border-secondary' : 'border-gray-300'
+          }`}>
+          <IoSearchSharp className={`transition-colors size-5 ${focusedInput === 'jobName' ? 'text-secondary' : 'text-gray-500'
+            }`} />
           <input
             type="text"
             placeholder="Keywords, Job Title, Company"
@@ -226,12 +259,10 @@ export default function SearchField({ setAnimate, animate }: any) {
         </div>
 
         {/* Location Input */}
-        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${
-          focusedInput === 'location' ? 'border-secondary' : 'border-gray-300'
-        }`}>
-          <FaMapMarkerAlt className={`transition-colors ${
-            focusedInput === 'location' ? 'text-secondary' : 'text-gray-500'
-          }`} />
+        <div className={`flex items-center border-b px-3 py-2 flex-1 gap-2 transition-colors ${focusedInput === 'location' ? 'border-secondary' : 'border-gray-300'
+          }`}>
+          <FaMapMarkerAlt className={`transition-colors ${focusedInput === 'location' ? 'text-secondary' : 'text-gray-500'
+            }`} />
           <input
             type="text"
             placeholder="Postcode, City, Country"
@@ -252,9 +283,9 @@ export default function SearchField({ setAnimate, animate }: any) {
               ✕
             </button>
           )}
-          <button 
-            type="button" 
-            onClick={getCurrentLocation} 
+          <button
+            type="button"
+            onClick={getCurrentLocation}
             className="text-subtitle hover:text-secondary transition-colors"
             title="Use current location"
           >
@@ -267,7 +298,7 @@ export default function SearchField({ setAnimate, animate }: any) {
           type="button"
           className="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded cursor-pointer hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSearch}
-         
+
         >
           <FaSearch />
           Search
@@ -289,7 +320,7 @@ export default function SearchField({ setAnimate, animate }: any) {
         <div className="absolute top-28 bg-white shadow-lg rounded-lg w-full max-h-64 overflow-auto z-10 border border-gray-300">
           <div className="py-2">
             <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide border-b">
-              {activeInput === 'jobName' ? 'Job Titles' : 'Locations'}
+              {activeInput === 'jobName' ? 'Keywords' : 'Locations'}
             </div>
             {suggestions.map((suggestion, index) => (
               <div
@@ -300,9 +331,16 @@ export default function SearchField({ setAnimate, animate }: any) {
                 <div className="flex items-center gap-3">
                   {suggestion.type === 'title' ? (
                     <FaBriefcase className="text-gray-400 text-sm" />
-                  ) : (
-                    <FaMapMarkerAlt className="text-gray-400 text-sm" />
-                  )}
+                  ) : suggestion.type === 'company' ? (
+                    <FaRegBuilding />
+
+                  ) : suggestion.type === 'type' ?(
+                    <><RiHomeSmile2Line /> </>
+                  ):(
+                    <><FaMapMarkerAlt className="text-gray-400 text-sm" /></>
+                  )
+                  }
+
                   <span className="text-gray-900 font-medium">
                     {suggestion.displayText}
                   </span>
