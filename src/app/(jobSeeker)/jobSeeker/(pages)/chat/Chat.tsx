@@ -39,7 +39,7 @@ interface TypingIndicator {
   timeoutId: NodeJS.Timeout;
 }
 
-export default function ChatConversation() {
+export default function ChatConversation({receviedId}: { receviedId: any }) {
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -133,21 +133,6 @@ export default function ChatConversation() {
       }
 
       switch (data.type) {
-        // case "message": {
-        //   console.log("In the targer", jobPostId)
-        //   if (jobPostId && jobPostId) {
-        //     console.log("Under the jpa")
-        //     socket.send(
-        //       JSON.stringify({
-        //         type: "message",
-        //         receiverId: jobSeekerId,
-        //         jobPostId: jobPostId,
-        //         message: newMessage.trim(),
-        //       })
-        //     )
-        //   }
-        //   break;
-        // }
 
         case "authentication":
           console.log("✅ Authentication successful:", data.message);
