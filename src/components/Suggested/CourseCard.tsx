@@ -10,7 +10,7 @@ export default function CourseCard({ course }: { course: Course }) {
       <span className="absolute inset-0 bg-primary/10 transition-all origin-top-left duration-300 ease-in-out scale-0 group-hover:scale-100 rounded-lg z-0"></span>
       <div className="relative w-full h-[250px] overflow-hidden ">
         <Image
-          src={course.image || "/placeholder.svg"}
+          src={course.image || course.image_url || "/placeholder.svg"}
           alt={course.title}
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
           height={220}
@@ -64,7 +64,7 @@ export default function CourseCard({ course }: { course: Course }) {
                 Instructor
               </span>
               <span className="text-sm font-semibold text-gray-900">
-                {course?.visible_instructors[0]?.name || "Unknown"}
+                {/* {course?.visible_instructors[0]?.name || "Unknown"} */}
               </span>
             </div>
           </div>
@@ -72,7 +72,8 @@ export default function CourseCard({ course }: { course: Course }) {
           {/* Action Button */}
           <Link
             target="_blank"
-            href={`${course.visible_instructors[0]?.url || "#"}`}
+            href={`${course.url || "#"}`}
+            // href={`/`}
             className="flex justify-end "
           >
             <button className="text-primary underline font-semibold cursor-pointer">

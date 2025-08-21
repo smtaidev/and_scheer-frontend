@@ -1,18 +1,12 @@
-import Footer from '@/components/shared/footer/Footer'
-import RecentJob from '@/components/recent-job/RecentJob'
-import PopularCompany from '@/components/seeker-home/popularCompany/page'
-import RecentUpload from '@/components/seeker-home/RecentUploaded/RecentUploaded'
-import SeekerBanner from '@/components/seeker-home/SeekerBanner'
-import JobSeekerNavbar from '@/components/seeker-home/SeekerNavbar'
-import TopCategory from '@/components/seeker-home/TopCategory/page'
-import SuggestedCourses from '@/components/Suggested/SuggestedCourses'
-import React from 'react'
-import RecomandationJob from '@/components/recomandation-job/RecomandationJob'
-
+import RecomandationJob from "@/components/recomandation-job/RecomandationJob";
+import PopularCompany from "@/components/seeker-home/popularCompany/page";
+import RecentUpload from "@/components/seeker-home/RecentUploaded/RecentUploaded";
+import SeekerBanner from "@/components/seeker-home/SeekerBanner";
+import TopCategory from "@/components/seeker-home/TopCategory/page";
+import SuggestedCourses from "@/components/Suggested/SuggestedCourses";
 
 export default function JobSeekerHomePage() {
-  const title = "Recommend for you"
-
+  const title = "Recommend for you";
 
   return (
     <div>
@@ -23,7 +17,6 @@ export default function JobSeekerHomePage() {
       <RecentUpload />
       <PopularCompany />
       <SuggestedCourses />
-
     </div>
-  )
+  );
 }

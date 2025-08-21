@@ -17,14 +17,12 @@ export interface CreateJobRequest {
   status?: string;
 }
 
-
 export interface JobResponse {
   success: boolean;
   statusCode: number;
   message: string;
   data: Job;
 }
-
 
 export interface JobsListResponse {
   success: boolean;
@@ -41,17 +39,16 @@ export interface JobsListResponse {
   };
 }
 
-
 export interface Job {
   id: string;
-  jobId:string;
+  jobId: string;
   title: string;
   experience: string;
   deadline: string;
   location: string;
   salaryType: string;
   salaryRange: string;
-  noOfApplicants:number;
+  noOfApplicants: number;
   skills: string[];
   features: {
     featureTitle: string;
@@ -85,8 +82,6 @@ export interface Job {
 
 export type UpdateJobRequest = Partial<CreateJobRequest>;
 
-
-
 //Companies Types
 export interface Company {
   id: string;
@@ -108,7 +103,6 @@ export interface Company {
   updatedAt: string; // ISO Date string
 }
 
-
 export interface CompanyListResponse {
   success: boolean;
   message: string;
@@ -129,8 +123,7 @@ export interface CreateCompanyRequest {
   phoneNumber: string;
 }
 
-export interface UpdateCompanyRequest extends Partial<CreateCompanyRequest> { }
-
+export interface UpdateCompanyRequest extends Partial<CreateCompanyRequest> {}
 
 export type FormData = {
   // Page 1 data
@@ -142,7 +135,7 @@ export type FormData = {
   };
   // Page 2 data (add your page 2 fields here)
   page2Data: {
-  companyName: string;
+    companyName: string;
     industryType: string;
     roleInCompany: string;
     description: string;
@@ -153,7 +146,6 @@ export type FormData = {
     zipCode: string;
   };
 };
-
 
 export interface ProfileData {
   // Personal Info
@@ -174,7 +166,7 @@ export interface ProfileData {
   jobTitle: string;
   CompanyName: string;
   startDate: string; // ISO date string
-  endDate: string;   // ISO date string
+  endDate: string; // ISO date string
   jobDescription: string;
 
   // Skills
@@ -198,7 +190,6 @@ export interface ProfileData {
   graduationCertificateFiles: File;
 }
 
-
 // export interface ResumeState {
 //   personalInfo: Partial<ResumeFormData>; // store personal info separately
 //   experience: Array<Partial<ResumeFormData>>;
@@ -220,17 +211,19 @@ export interface Course {
   instructor: string;
   description: string;
   image: string;
+  image_url?: string;
   rating: number;
   num_reviews: number;
   num_lectures: number;
+  url?: string;
   price_detail: {
     price_string: string;
     amount: number;
     currency: string;
   };
   is_paid: boolean;
-  visible_instructors:{
-    url:string
-    name:string
-  }[]
+  visible_instructors: {
+    url: string;
+    name: string;
+  }[];
 }
